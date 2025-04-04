@@ -3,11 +3,10 @@ import { useCallback, useEffect } from "react";
 import {
   login,
   logout,
-  register,
   setIsAuthenticated,
 } from "@/redux/service/auth/authSlice";
 import type { RootState } from "../../store"; // Adjust the import path to your store
-import type { LoginResponse, RegisterResponse } from "@/redux/api/auth/authApi";
+import { LoginResponse } from "@/constants/config";
 
 const useAuth = () => {
   const dispatch = useDispatch();
@@ -43,47 +42,6 @@ const useAuth = () => {
     [dispatch]
   );
 
-  const handleRegister = useCallback(
-    async (
-      name: string,
-      role: string,
-      username: string,
-      password: string,
-      selfRegister: boolean,
-      primaryPhone: string,
-      email: string,
-      addressType: string
-    ): Promise<RegisterResponse | undefined> => {
-      try {
-        const response = await dispatch(
-          register({
-            name,
-            role,
-            username,
-            password,
-            selfRegister,
-            primaryPhone,
-            email,
-            addressType,
-          })
-        ).unwrap();
-        return response;
-      } catch (error: unknown) {
-        let errMsg: string;
-        if (typeof error === "string") {
-          errMsg = error;
-        } else if (error instanceof Error) {
-          errMsg = error.message;
-        } else {
-          errMsg = "Unknown error";
-        }
-        console.error("Failed to register:", errMsg);
-        return undefined;
-      }
-    },
-    [dispatch]
-  );
-
   const handleLogout = useCallback(async (): Promise<void> => {
     try {
       await dispatch(logout(token)).unwrap();
@@ -105,7 +63,6 @@ const useAuth = () => {
   return {
     token,
     isAuthenticated,
-    register: handleRegister,
     login: handleLogin,
     logout: handleLogout,
   };

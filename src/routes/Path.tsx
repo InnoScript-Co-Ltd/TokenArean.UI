@@ -1,9 +1,10 @@
-import RouteGuard from "@/components/RouteGuard";
+// import RouteGuard from "@/components/RouteGuard";
 import ScrollToTop from "@/components/ScrollToTop";
 import DashboardLayout from "@/layout/DashboardLayout";
 import Dashboard from "@/modules/dashboard/Dashboard";
 import Media from "@/modules/media/Media";
-import Home from "@/pages/Home";
+import GameDetail from "@/modules/website/GameDetail";
+import Home from "@/modules/website/Home";
 import Login from "@/pages/Login";
 import { Route, Routes } from "react-router-dom";
 
@@ -35,6 +36,7 @@ const Path = () => {
 
         {/* Website Pages */}
         <Route path="/" element={<Home />} />
+        <Route path="/game/:gameId" element={<GameDetail />} />
         {/* Website Pages */}
       </Routes>
     </div>

@@ -1,50 +1,7 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { AxiosError } from "axios";
-import { fetchLogin, fetchRegister } from "@/redux/api/auth/authApi";
-import { LoginResponse, RegisterResponse } from "@/redux/api/auth/authApi";
-
-// Define the shape of the data for registration input
-export interface RegisterPayload {
-  name: string;
-  role: string;
-  username: string;
-  password: string;
-  selfRegister: boolean;
-  primaryPhone: string;
-  email: string;
-  addressType: string;
-}
-
-// Thunk for registration; using RegisterResponse as the return type
-export const register = createAsyncThunk<
-  RegisterResponse, // Returned data type
-  RegisterPayload, // Input argument type
-  { rejectValue: string }
->("auth/register", async (payload, { rejectWithValue }) => {
-  try {
-    const registeredData = await fetchRegister(
-      payload.name,
-      payload.role,
-      payload.username,
-      payload.password,
-      payload.selfRegister,
-      payload.primaryPhone,
-      payload.email,
-      payload.addressType
-    );
-    return registeredData;
-  } catch (error: unknown) {
-    let errorMessage = "An unknown error occurred";
-    if (error instanceof AxiosError) {
-      errorMessage =
-        (error.response?.data as { message?: string })?.message ||
-        error.message;
-    } else if (error instanceof Error) {
-      errorMessage = error.message;
-    }
-    return rejectWithValue(errorMessage);
-  }
-});
+import { fetchLogin } from "@/redux/api/auth/authApi";
+import { LoginResponse } from "@/constants/config";
 
 // Define the shape of the data for login input
 export interface LoginPayload {
@@ -125,22 +82,6 @@ const authSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      // Register cases
-      .addCase(register.pending, (state) => {
-        state.status = "loading";
-      })
-      .addCase(
-        register.fulfilled,
-        (state, action: PayloadAction<RegisterResponse>) => {
-          state.status = "succeeded";
-          console.log(action.payload);
-          // Additional state updates can be performed here if needed
-        }
-      )
-      .addCase(register.rejected, (state, action) => {
-        state.status = "failed";
-        state.error = action.payload || "Registration failed";
-      })
       // Login cases
       .addCase(login.pending, (state) => {
         state.status = "loading";
@@ -150,7 +91,7 @@ const authSlice = createSlice({
         (state, action: PayloadAction<LoginResponse>) => {
           state.status = "succeeded";
           // Assuming LoginResponse has a token property
-          const token = action.payload.token;
+          const token = action.payload.data.access_token;
           state.token = token;
           state.isAuthenticated = true;
           sessionStorage.setItem("authToken", token);
