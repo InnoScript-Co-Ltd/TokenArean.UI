@@ -9,7 +9,7 @@ const games = Array(6)
     id: index + 1,
     title: "Genshin Impact",
     image:
-      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTPQC7Snt4RQfAjRZ5sm9u5iqWbskzyyS41QA&s",
+      "https://image.api.playstation.com/vulcan/ap/rnd/202408/2010/6e7d87fef87405e9925e810a1620df04c3b98c2086711336.png",
   }));
 
 const slides = [
@@ -45,7 +45,7 @@ const Home = () => {
           <h2 className="text-xl md:text-2xl lg:text-3xl font-bold mb-5 lg:mb-10">
             MOST POPULAR
           </h2>
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-5 md:gap-10 mt-5 ">
+          <div className="grid grid-cols-1 min-[428px]:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 md:gap-10 mt-5 ">
             {games.slice(0, 3).map((game, index) => (
               <div key={index} className=" col-span-1">
                 <GameCard game={game} />
@@ -59,7 +59,7 @@ const Home = () => {
           <h2 className="text-xl md:text-2xl lg:text-3xl font-bold mb-5 lg:mb-10">
             Mobile Games
           </h2>
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-5 md:gap-10 mt-5 ">
+          <div className="grid grid-cols-1 min-[428px]:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 md:gap-10 mt-5 ">
             {games.map((game, index) => (
               <div key={index} className=" col-span-1">
                 <GameCard game={game} />
@@ -73,7 +73,7 @@ const Home = () => {
           <h2 className="text-xl md:text-2xl lg:text-3xl font-bold mb-5 lg:mb-10">
             New Release
           </h2>
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-5 md:gap-10 mt-5 ">
+          <div className="grid grid-cols-1 min-[428px]:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 md:gap-10 mt-5 ">
             {games.map((game, index) => (
               <div key={index} className=" col-span-1">
                 <GameCard game={game} />
