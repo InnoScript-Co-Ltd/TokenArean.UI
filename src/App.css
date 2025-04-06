@@ -1,5 +1,44 @@
-@import url("https://fonts.googleapis.com/css2?family=Oswald:wght@200..700&family=Saira:ital,wght@0,100..900;1,100..900&display=swap");
+/* Myanmar Square  */
+@font-face {
+  font-family: "MyanmarSquare";
+  src: url("/public/assets/fonts/MyanmarSquare.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: "MyanmarSquare";
+  src: url("/public/assets/fonts/MyanmarSquareLight.ttf") format("truetype");
+  font-weight: 300;
+  font-style: normal;
+}
 
+/* Oswald */
+@font-face {
+  font-family: "Oswald";
+  src: url("/assets/fonts/oswald/Oswald-SemiBold.ttf") format("truetype");
+  font-weight: 600;
+  font-style: normal;
+}
+@font-face {
+  font-family: "Oswald";
+  src: url("/assets/fonts/oswald/Oswald-Bold.ttf") format("truetype");
+  font-weight: bold;
+  font-style: normal;
+}
+@font-face {
+  font-family: "Oswald";
+  src: url("/assets/fonts/oswald/Oswald-Regular.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: "Oswald";
+  src: url("/assets/fonts/oswald/Oswald-Light.ttf") format("truetype");
+  font-weight: 300;
+  font-style: normal;
+}
+
+/* Apply global font style */
 * {
-  font-family: "Oswald", sans-serif;
+  font-family: "MyanmarSquare", "Oswald", sans-serif;
 }
