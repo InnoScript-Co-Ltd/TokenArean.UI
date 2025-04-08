@@ -1,13 +1,13 @@
 /* Myanmar Square  */
 @font-face {
   font-family: "MyanmarSquare";
-  src: url("/public/assets/fonts/MyanmarSquare.ttf") format("truetype");
+  src: url("/assets/fonts/MyanmarSquare.ttf") format("truetype");
   font-weight: normal;
   font-style: normal;
 }
 @font-face {
   font-family: "MyanmarSquare";
-  src: url("/public/assets/fonts/MyanmarSquareLight.ttf") format("truetype");
+  src: url("/assets/fonts/MyanmarSquareLight.ttf") format("truetype");
   font-weight: 300;
   font-style: normal;
 }

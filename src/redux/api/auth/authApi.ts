@@ -1,5 +1,4 @@
-import axios, { AxiosResponse } from "axios";
-import config from "@/constants/environment";
+import axiosInstance from "@/constants/axios";
 import {
   LoginPayload,
   LoginResponse,
@@ -12,11 +11,10 @@ export const fetchLogin = async (
 ): Promise<LoginResponse> => {
   try {
     const requestBody: LoginPayload = { email, password };
-    const response: AxiosResponse<LoginResponse> =
-      await axios.post<LoginResponse>(
-        `${config.API_URL}/auth/login`,
-        requestBody
-      );
+    const response = await axiosInstance.post<LoginResponse>(
+      "/auth/login",
+      requestBody
+    );
     return response.data;
   } catch (error) {
     console.log("Failed to Login:", error);
@@ -24,15 +22,11 @@ export const fetchLogin = async (
   }
 };
 
-export const fetchLogout = async (token: string): Promise<LogoutResponse> => {
-  const headers = { Authorization: `Bearer ${token}` };
+export const fetchLogout = async (): Promise<LogoutResponse> => {
   try {
-    const response: AxiosResponse<LogoutResponse> =
-      await axios.post<LogoutResponse>(
-        `${config.API_URL}v1/user/revoke_token`,
-        { token },
-        { headers }
-      );
+    const response = await axiosInstance.post<LogoutResponse>(
+      "/v1/user/revoke_token"
+    );
     return response.data;
   } catch (error) {
     console.log("Failed to Logout:", error);

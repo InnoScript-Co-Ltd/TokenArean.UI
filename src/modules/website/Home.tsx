@@ -7,9 +7,8 @@ const games = Array(6)
   .fill(null)
   .map((_, index) => ({
     id: index + 1,
-    title: "Genshin Impact",
-    image:
-      "https://image.api.playstation.com/vulcan/ap/rnd/202408/2010/6e7d87fef87405e9925e810a1620df04c3b98c2086711336.png",
+    Title: "Genshin Impact",
+    Logo: "https://image.api.playstation.com/vulcan/ap/rnd/202408/2010/6e7d87fef87405e9925e810a1620df04c3b98c2086711336.png",
   }));
 
 const slides = [
