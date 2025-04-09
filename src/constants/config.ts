@@ -7,14 +7,21 @@ export interface PaginationParams {
 
 // Login
 export interface LoginResponse {
-  message: string;
-  data: {
-    access_token: string;
-  };
+  accessToken: string;
+  refreshToken: string;
 }
 export interface LoginPayload {
   email: string;
   password: string;
+}
+// Login
+
+// Login
+export interface RefreshTokenResponse {
+  accessToken: string;
+}
+export interface RefreshTokenPayload {
+  refreshToken: string;
 }
 // Login
 

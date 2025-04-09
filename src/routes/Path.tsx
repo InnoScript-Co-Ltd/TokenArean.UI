@@ -1,4 +1,5 @@
 // import RouteGuard from "@/components/RouteGuard";
+import RouteGuard from "@/components/RouteGuard";
 import ScrollToTop from "@/components/ScrollToTop";
 import DashboardLayout from "@/layout/DashboardLayout";
 import Dashboard from "@/modules/dashboard/Dashboard";
@@ -17,9 +18,9 @@ const Path = () => {
         <Route
           path="/dashboard"
           element={
-            // <RouteGuard>
-            <DashboardLayout />
-            // </RouteGuard>
+            <RouteGuard>
+              <DashboardLayout />
+            </RouteGuard>
           }
         >
           {/* Dashboard Page */}

@@ -1,8 +1,8 @@
-export const BASE_URL = "http://127.0.0.1:8000/dashboard";
+export const BASE_URL = "http://localhost:5132";
 
 const environment = {
-  API_URL: `${BASE_URL}/v1`,
-  Img_URL: `${BASE_URL}/v1`,
+  API_URL: `${BASE_URL}`,
+  // Img_URL: `${BASE_URL}`,
   // Placeholder_Img: "/assets/placeholder.png",
 };
 

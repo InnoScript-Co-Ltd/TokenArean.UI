@@ -17,7 +17,7 @@ const useAuth = () => {
   );
 
   useEffect(() => {
-    const authToken = sessionStorage.getItem("authToken");
+    const authToken = localStorage.getItem("authToken");
     dispatch(setIsAuthenticated(Boolean(authToken)));
   }, [dispatch]);
 

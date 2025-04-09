@@ -1,6 +1,6 @@
 import axios from "axios";
 import config from "@/constants/environment";
-import { logout } from "@/redux/service/auth/authSlice";
+import { logout, refreshToken } from "@/redux/service/auth/authSlice";
 import type { AppDispatch } from "@/redux/store";
 
 let dispatch: AppDispatch;
@@ -20,7 +20,7 @@ const axiosInstance = axios.create({
 
 // Request interceptor – add token if available
 axiosInstance.interceptors.request.use((req) => {
-  const token = sessionStorage.getItem("authToken");
+  const token = localStorage.getItem("authToken");
   if (token) {
     req.headers.Authorization = `Bearer ${token}`;
   }
@@ -30,13 +30,26 @@ axiosInstance.interceptors.request.use((req) => {
 // Response interceptor – handle 401 / 403 errors
 axiosInstance.interceptors.response.use(
   (res) => res,
-  (error) => {
+  async (error) => {
     const status = error.response?.status;
 
     if ((status === 401 || status === 403) && dispatch) {
-      dispatch(logout());
-      window.location.href = "/login";
-      return Promise.reject(new Error("Session expired"));
+      try {
+        // refresh the token using Redux action
+        const res = await dispatch(refreshToken()).unwrap();
+
+        // update token for retry
+        const newToken = res.accessToken;
+        error.config.headers.Authorization = `Bearer ${newToken}`;
+
+        // retry original request
+        return axiosInstance(error.config);
+      } catch (err) {
+        dispatch(logout());
+        window.location.href = "/login";
+        console.error(err);
+        return Promise.reject(new Error("Session expired"));
+      }
     }
 
     return Promise.reject(error);
