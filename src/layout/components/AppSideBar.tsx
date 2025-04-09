@@ -23,14 +23,14 @@ const data = {
   },
   navMain: [
     {
-      title: "Media",
-      url: "media",
+      title: "Test",
+      url: "test",
       icon: SquareTerminal,
       isActive: true,
       items: [
         {
-          title: "Media List",
-          url: "/dashboard/media",
+          title: "Order List",
+          url: "/dashboard/order",
         },
         {
           title: "Starred",

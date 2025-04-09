@@ -2,7 +2,7 @@
 import ScrollToTop from "@/components/ScrollToTop";
 import DashboardLayout from "@/layout/DashboardLayout";
 import Dashboard from "@/modules/dashboard/Dashboard";
-import Media from "@/modules/media/Media";
+import Order from "@/modules/media/Media";
 import GameDetail from "@/modules/website/GameDetail";
 import Home from "@/modules/website/Home";
 import Login from "@/pages/Login";
@@ -26,7 +26,7 @@ const Path = () => {
           {/* Dashboard Page */}
 
           {/* Media Page */}
-          <Route path="media" element={<Media />} />
+          <Route path="order" element={<Order />} />
           {/* Media Page */}
         </Route>
 
