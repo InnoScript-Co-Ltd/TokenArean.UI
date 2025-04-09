@@ -1,7 +1,7 @@
 // General
 export interface PaginationParams {
-  page?: number;
-  perPage?: number;
+  currentPage?: number;
+  pageSize?: number;
 }
 // General
 
@@ -34,20 +34,31 @@ export interface LogoutResponse {
 // Game
 export interface Game {
   id: string;
-  Title: string;
-  Description: string;
-  Logo: string;
-  BannerImage: string;
-  OrderIndex: number;
-  ServerType: string;
-  IsDisable: boolean;
+  title: string;
+  description: string;
+  logo: string;
+  bannerImage: string;
+  orderIndex: number;
+  serverType: string;
+  isDisable: boolean;
+  createdAt: Date;
 }
 
 export interface GameListResponse {
-  data: Game[];
-  total: number;
-  page: number;
-  limit: number;
+  statusCode: number;
+  message: string;
+  payLoad: {
+    paging: {
+      totalCount: number;
+      totalPages: number;
+      previousPage: number | null;
+      nextPage: number | null;
+      firstRowOnPage: number;
+      lastRowOnPage: number;
+    };
+    items: Game[];
+  };
+  payLoadList: null;
 }
 
 // Create payload — omit id, timestamps
