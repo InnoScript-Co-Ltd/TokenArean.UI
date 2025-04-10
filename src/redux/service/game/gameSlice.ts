@@ -1,4 +1,3 @@
-// src/redux/service/game/gameSlice.ts
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import {
   fetchGame,
@@ -16,8 +15,8 @@ import {
 interface GameState {
   games: Game[];
   total: number;
-  page: number;
-  limit: number;
+  totalPages: number;
+  totalCount: number;
   status: "idle" | "loading" | "succeeded" | "failed";
   error: string | null;
 }
@@ -25,8 +24,8 @@ interface GameState {
 const initialState: GameState = {
   games: [],
   total: 0,
-  page: 1,
-  limit: 10,
+  totalPages: 0,
+  totalCount: 0,
   status: "idle",
   error: null,
 };
@@ -34,17 +33,11 @@ const initialState: GameState = {
 // Thunks
 export const loadGames = createAsyncThunk<
   GameListResponse,
-  PaginationParams | undefined,
+  { pagination: PaginationParams; searchTerm: string | undefined },
   { rejectValue: string }
->("game/loadGames", async (pagination, { rejectWithValue }) => {
+>("game/loadGames", async ({ pagination, searchTerm }, { rejectWithValue }) => {
   try {
-    var response = await fetchGame(pagination);
-    return {
-      data: response.payLoad.items, // Array of games
-      total: response.payLoad.paging.total, // Total number of games
-      page: pagination?.page || 1, // Current page
-      limit: pagination?.perPage || 10, // Limit per page
-    };
+    return await fetchGame(pagination, searchTerm);
   } catch (err) {
     return rejectWithValue((err as Error).message);
   }
@@ -103,10 +96,9 @@ const gameSlice = createSlice({
       })
       .addCase(loadGames.fulfilled, (state, { payload }) => {
         state.status = "succeeded";
-        state.games = payload.data;
-        state.total = payload.total;
-        state.page = payload.page;
-        state.limit = payload.limit;
+        state.games = payload?.payLoad?.items;
+        state.totalPages = payload?.payLoad?.paging?.totalPages;
+        state.totalCount = payload?.payLoad?.paging?.totalCount;
       })
       .addCase(loadGames.rejected, (state, { payload }) => {
         state.status = "failed";

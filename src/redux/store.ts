@@ -1,12 +1,15 @@
 import { configureStore } from "@reduxjs/toolkit";
 import authReducer from "@/redux/service/auth/authSlice";
 import gameReducer from "@/redux/service/game/gameSlice";
+import tokenPackageReducer from "@/redux/service/tokenPackage/tokenPackageSlice";
+
 import { injectStore } from "@/constants/axios";
 
 export const store = configureStore({
   reducer: {
     auth: authReducer,
     game: gameReducer,
+    tokenPackage: tokenPackageReducer,
   },
 });
 

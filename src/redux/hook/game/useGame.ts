@@ -7,34 +7,27 @@ import {
   updateGame,
   deleteGame,
 } from "@/redux/service/game/gameSlice";
-import { GamePayload } from "@/constants/config";
+import { GamePayload, PaginationParams } from "@/constants/config";
 import { useAppDispatch, useAppSelector } from "../hook";
 import { RootState } from "@/redux/store";
 
-interface UseGameOptions {
-  page?: number;
-  perPage?: number;
-}
-
-const useGame = ({ page = 1, perPage = 10 }: UseGameOptions = {}) => {
+const useGame = ({ currentPage = 1, pageSize = 10 }: PaginationParams = {}) => {
   const dispatch = useAppDispatch();
-  const [search, setSearch] = useState("");
+  const [searchTerm, setSearchTerm] = useState("");
 
   const selectGame = useMemo(() => (state: RootState) => state.game, []);
   const gameResponse = useAppSelector(selectGame, shallowEqual);
 
-  const { games, total, limit, status, error } = gameResponse;
-  const pageCount = Math.ceil(total / limit);
-  const totalRecord = total;
+  const { games, totalPages, totalCount, status, error } = gameResponse;
 
   useEffect(() => {
     const pagination = {
-      page,
-      limit: perPage,
-      search,
+      currentPage,
+      pageSize,
     };
-    dispatch(loadGames(pagination));
-  }, [dispatch, page, perPage, search]);
+
+    dispatch(loadGames({ pagination, searchTerm }));
+  }, [dispatch, currentPage, pageSize, searchTerm]);
 
   const handleCreateGame = useCallback(
     async (payload: GamePayload) => {
@@ -76,13 +69,13 @@ const useGame = ({ page = 1, perPage = 10 }: UseGameOptions = {}) => {
 
   return {
     games,
-    pageCount,
-    totalRecord,
-    search,
+    totalCount,
+    totalPages,
+    searchTerm,
     status,
     error,
 
-    setSearch,
+    setSearchTerm,
     handleCreateGame,
     handleUpdateGame,
     handleDeleteGame,

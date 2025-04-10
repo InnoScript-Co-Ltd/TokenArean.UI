@@ -1,18 +1,27 @@
 // General
 export interface PaginationParams {
-  page?: number;
-  perPage?: number;
+  currentPage?: number;
+  pageSize?: number;
 }
 // General
 
 // Login
 export interface LoginResponse {
-  message: string;
   accessToken: string;
+  refreshToken: string;
 }
 export interface LoginPayload {
   email: string;
   password: string;
+}
+// Login
+
+// Login
+export interface RefreshTokenResponse {
+  accessToken: string;
+}
+export interface RefreshTokenPayload {
+  refreshToken: string;
 }
 // Login
 
@@ -32,13 +41,24 @@ export interface Game {
   orderIndex: number;
   serverType: string;
   isDisable: boolean;
+  createdAt: Date;
 }
 
 export interface GameListResponse {
-  data: Game[];
-  total: number;
-  page: number;
-  limit: number;
+  statusCode: number;
+  message: string;
+  payLoad: {
+    paging: {
+      totalCount: number;
+      totalPages: number;
+      previousPage: number | null;
+      nextPage: number | null;
+      firstRowOnPage: number;
+      lastRowOnPage: number;
+    };
+    items: Game[];
+  };
+  payLoadList: null;
 }
 
 // Create payload — omit id, timestamps
@@ -48,6 +68,46 @@ export interface GamePayload {
   platform: string;
 }
 export interface DeleteGameResponse {
+  id: string;
+}
+// Game
+
+// TokenPackage
+export interface TokenPackage {
+  id: string;
+  tokenTitle: string;
+  packageImage: string;
+  unit: string;
+  price: string;
+  currency: number;
+  createdDate: Date;
+  gameDto: Game;
+}
+
+export interface TokenPackageListResponse {
+  statusCode: number;
+  message: string;
+  payLoad: {
+    paging: {
+      totalCount: number;
+      totalPages: number;
+      previousPage: number | null;
+      nextPage: number | null;
+      firstRowOnPage: number;
+      lastRowOnPage: number;
+    };
+    items: TokenPackage[];
+  };
+  payLoadList: null;
+}
+
+// Create payload — omit id, timestamps
+export interface TokenPackagePayload {
+  title: string;
+  genre: string;
+  platform: string;
+}
+export interface DeleteTokenPackageResponse {
   id: string;
 }
 // Game

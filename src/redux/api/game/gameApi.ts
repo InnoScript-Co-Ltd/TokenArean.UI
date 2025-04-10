@@ -10,14 +10,16 @@ import {
 } from "@/constants/config";
 
 export const fetchGame = async (
-  pagination?: PaginationParams
+  pagination?: PaginationParams,
+  searchTerm?: string
 ): Promise<GameListResponse> => {
   try {
     const params = {
+      searchTerm: searchTerm ?? "",
       ...(pagination || {}),
     };
 
-    const response = await axiosInstance.get<GameListResponse>("api/v1/Game", {
+    const response = await axiosInstance.get<GameListResponse>("/api/v1/Game", {
       params,
     });
     console.log(response.data);
@@ -30,7 +32,10 @@ export const fetchGame = async (
 
 export const fetchCreateGame = async (game: GamePayload): Promise<Game> => {
   try {
-    const response = await axiosInstance.post<Game>("/game/create", game);
+    const response = await axiosInstance.post<Game>(
+      "/api/v1/game/create",
+      game
+    );
     return response.data;
   } catch (error) {
     console.error("Failed to add game data:", error);
@@ -43,7 +48,10 @@ export const fetchUpdateGame = async (
   game: GamePayload
 ): Promise<Game> => {
   try {
-    const response = await axiosInstance.put<Game>(`/game/update/${id}`, game);
+    const response = await axiosInstance.put<Game>(
+      `/api/v1/game/update/${id}`,
+      game
+    );
     return response.data;
   } catch (error) {
     console.error("Failed to update game data:", error);

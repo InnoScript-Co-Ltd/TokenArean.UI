@@ -1,8 +1,11 @@
 // import RouteGuard from "@/components/RouteGuard";
+import RouteGuard from "@/components/RouteGuard";
 import ScrollToTop from "@/components/ScrollToTop";
 import DashboardLayout from "@/layout/DashboardLayout";
 import Dashboard from "@/modules/dashboard/Dashboard";
 import Games from "@/modules/game/Games";
+import TokenPackages from "@/modules/tokenpackage/TokenPackages";
+
 import GameDetail from "@/modules/website/GameDetail";
 import Home from "@/modules/website/Home";
 import Login from "@/pages/Login";
@@ -16,9 +19,9 @@ const Path = () => {
         <Route
           path="/dashboard"
           element={
-            // <RouteGuard>
-            <DashboardLayout />
-            // </RouteGuard>
+            <RouteGuard>
+              <DashboardLayout />
+            </RouteGuard>
           }
         >
           {/* Dashboard Page */}
@@ -28,6 +31,10 @@ const Path = () => {
           {/* Game Page */}
           <Route path="games" element={<Games />} />
           {/* Game Page */}
+
+          {/* TokenPackage Page */}
+          <Route path="packages" element={<TokenPackages />} />
+          {/* TokenPackage Page */}
         </Route>
 
         {/* Login Pages */}

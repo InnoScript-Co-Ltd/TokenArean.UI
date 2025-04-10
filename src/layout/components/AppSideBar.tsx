@@ -34,6 +34,18 @@ const data = {
         },
       ],
     },
+    {
+      title: "TokenPackage",
+      url: "packages",
+      icon: Gamepad,
+      isActive: true,
+      items: [
+        {
+          title: "TokenPackage List",
+          url: "/dashboard/packages",
+        },
+      ],
+    },
   ],
 };
 

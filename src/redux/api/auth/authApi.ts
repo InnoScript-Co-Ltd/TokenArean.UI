@@ -2,7 +2,8 @@ import axiosInstance from "@/constants/axios";
 import {
   LoginPayload,
   LoginResponse,
-  LogoutResponse,
+  RefreshTokenPayload,
+  RefreshTokenResponse,
 } from "@/constants/config";
 
 export const fetchLogin = async (
@@ -23,14 +24,38 @@ export const fetchLogin = async (
   }
 };
 
-export const fetchLogout = async (): Promise<LogoutResponse> => {
+export const fetchRefreshToken = async (): Promise<RefreshTokenResponse> => {
   try {
-    const response = await axiosInstance.post<LogoutResponse>(
-      "/v1/user/revoke_token"
+    const storedRefreshToken = localStorage.getItem("refreshToken");
+
+    if (!storedRefreshToken) {
+      throw new Error("No refresh token found");
+    }
+
+    const requestBody: RefreshTokenPayload = {
+      refreshToken: storedRefreshToken,
+    };
+
+    const response = await axiosInstance.post<RefreshTokenResponse>(
+      "/refresh",
+      requestBody
     );
+
     return response.data;
   } catch (error) {
-    console.log("Failed to Logout:", error);
+    console.error("Failed to Refresh:", error);
     throw error;
   }
 };
+
+// export const fetchLogout = async (): Promise<LogoutResponse> => {
+//   try {
+//     const response = await axiosInstance.post<LogoutResponse>(
+//       "/v1/user/revoke_token"
+//     );
+//     return response.data;
+//   } catch (error) {
+//     console.log("Failed to Logout:", error);
+//     throw error;
+//   }
+// };
