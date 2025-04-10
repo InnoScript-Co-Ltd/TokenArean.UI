@@ -5,7 +5,7 @@ import DashboardLayout from "@/layout/DashboardLayout";
 import Dashboard from "@/modules/dashboard/Dashboard";
 import Games from "@/modules/game/Games";
 import TokenPackages from "@/modules/tokenpackage/TokenPackages";
-
+import Orders from "@/modules/order/Orders";
 import GameDetail from "@/modules/website/GameDetail";
 import Home from "@/modules/website/Home";
 import Login from "@/pages/Login";
@@ -35,6 +35,10 @@ const Path = () => {
           {/* TokenPackage Page */}
           <Route path="packages" element={<TokenPackages />} />
           {/* TokenPackage Page */}
+
+          {/* Order Page */}
+          <Route path="orders" element={<Orders />} />
+          {/* Order Page */}
         </Route>
 
         {/* Login Pages */}

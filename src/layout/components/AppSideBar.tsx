@@ -46,6 +46,18 @@ const data = {
         },
       ],
     },
+    {
+      title: "Order",
+      url: "orders",
+      icon: Gamepad,
+      isActive: true,
+      items: [
+        {
+          title: "Order List",
+          url: "/dashboard/orders",
+        },
+      ],
+    },
   ],
 };
 

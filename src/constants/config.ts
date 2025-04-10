@@ -110,4 +110,46 @@ export interface TokenPackagePayload {
 export interface DeleteTokenPackageResponse {
   id: string;
 }
-// Game
+// TokenPackage
+
+// Order
+export interface Order {
+  id: string;
+  inGameUserId: number;
+  tokenPackageDto: TokenPackage;
+  serverInfo: string;
+  mobileNumber: string;
+  screenShot: string;
+  status: number;
+  createdDate: Date;
+  updatedAt: Date;
+  operatorBy: Game[];
+}
+
+export interface OrderListResponse {
+  statusCode: number;
+  message: string;
+  payLoad: {
+    paging: {
+      totalCount: number;
+      totalPages: number;
+      previousPage: number | null;
+      nextPage: number | null;
+      firstRowOnPage: number;
+      lastRowOnPage: number;
+    };
+    items: Order[];
+  };
+  payLoadList: null;
+}
+
+// Create payload — omit id, timestamps
+export interface OrderPayload {
+  title: string;
+  genre: string;
+  platform: string;
+}
+export interface DeleteOrderResponse {
+  id: string;
+}
+// Order
