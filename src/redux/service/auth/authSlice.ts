@@ -1,22 +1,40 @@
+// src/redux/service/auth/authSlice.ts
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { AxiosError } from "axios";
-import { fetchLogin } from "@/redux/api/auth/authApi";
+import { fetchLogin, fetchLogout } from "@/redux/api/auth/authApi";
 import { LoginResponse } from "@/constants/config";
 
-// Define the shape of the data for login input
+// Login payload shape
 export interface LoginPayload {
   email: string;
   password: string;
 }
 
-// Thunk for login; using LoginResponse as the return type
+// Auth state shape
+export interface AuthState {
+  token: string | null;
+  status: "idle" | "loading" | "succeeded" | "failed";
+  error: string | null;
+  isAuthenticated: boolean;
+}
+
+// Initial state
+const initialState: AuthState = {
+  token: sessionStorage.getItem("authToken"),
+  status: "idle",
+  error: null,
+  isAuthenticated: !!sessionStorage.getItem("authToken"),
+};
+
+// Thunk: login
 export const login = createAsyncThunk<
-  LoginResponse, // Returned data type
-  LoginPayload, // Input argument type
+  LoginResponse, // return type
+  LoginPayload, // argument type
   { rejectValue: string }
 >("auth/login", async (payload, { rejectWithValue }) => {
   try {
     const response = await fetchLogin(payload.email, payload.password);
+    console.log("createAsync :", response);
     return response;
   } catch (error: unknown) {
     let errorMessage = "An unknown error occurred";
@@ -31,12 +49,12 @@ export const login = createAsyncThunk<
   }
 });
 
-// Thunk for logout; since no data is returned, we use void.
-export const logout = createAsyncThunk<void, string, { rejectValue: string }>(
+// Thunk: logout with revoke token API call
+export const logout = createAsyncThunk<void, void, { rejectValue: string }>(
   "auth/logout",
-  async (token, { rejectWithValue }) => {
+  async (_, { rejectWithValue }) => {
     try {
-      // Optionally, you could call your API here (e.g., fetchLogout(token))
+      await fetchLogout();
       sessionStorage.removeItem("authToken");
       sessionStorage.removeItem("userData");
     } catch (error: unknown) {
@@ -53,21 +71,6 @@ export const logout = createAsyncThunk<void, string, { rejectValue: string }>(
   }
 );
 
-// Define the state shape for the auth slice
-export interface AuthState {
-  token: string | null;
-  status: "idle" | "loading" | "succeeded" | "failed";
-  error: string | null;
-  isAuthenticated: boolean;
-}
-
-const initialState: AuthState = {
-  token: sessionStorage.getItem("authToken"),
-  status: "idle",
-  error: null,
-  isAuthenticated: !!sessionStorage.getItem("authToken"),
-};
-
 const authSlice = createSlice({
   name: "auth",
   initialState,
@@ -82,16 +85,16 @@ const authSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      // Login cases
+      // Login
       .addCase(login.pending, (state) => {
         state.status = "loading";
+        state.error = null;
       })
       .addCase(
         login.fulfilled,
         (state, action: PayloadAction<LoginResponse>) => {
           state.status = "succeeded";
-          // Assuming LoginResponse has a token property
-          const token = action.payload.data.access_token;
+          const token = action.payload.accessToken;
           state.token = token;
           state.isAuthenticated = true;
           sessionStorage.setItem("authToken", token);
@@ -101,8 +104,11 @@ const authSlice = createSlice({
         state.status = "failed";
         state.error = action.payload || "Login failed";
       })
+
+      // Logout
       .addCase(logout.pending, (state) => {
         state.status = "loading";
+        state.error = null;
       })
       .addCase(logout.fulfilled, (state) => {
         state.status = "succeeded";

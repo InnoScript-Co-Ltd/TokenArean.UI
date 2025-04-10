@@ -1,6 +1,6 @@
 import Banner from "@/components/global/Banner";
 
-const Order = () => {
+const GameList = () => {
   return (
     <>
       <Banner title="Media" />
@@ -16,4 +16,4 @@ const Order = () => {
   );
 };
 
-export default Order;
+export default GameList;

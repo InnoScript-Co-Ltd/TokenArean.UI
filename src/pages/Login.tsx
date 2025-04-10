@@ -44,10 +44,11 @@ const Login = () => {
     e.preventDefault();
     try {
       const response = await login(credentials.email, credentials.password);
+      console.log("Login page:", response);
       if (response?.success === false) {
         throw new Error("Login Failed!");
       }
-      navigate("/");
+      navigate("/dashboard");
     } catch (error) {
       setError(error.message || "An error occurred");
       setCredentials({ email: "", password: "" });
