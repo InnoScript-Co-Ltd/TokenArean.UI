@@ -44,6 +44,7 @@ const useGame = ({ currentPage = 1, pageSize = 10 }: PaginationParams = {}) => {
   const handleUpdateGame = useCallback(
     async (id: string, payload: GamePayload) => {
       try {
+        console.log("handleUpdate Game");
         const response = await dispatch(
           updateGame({ id, data: payload })
         ).unwrap();
@@ -77,7 +78,7 @@ const useGame = ({ currentPage = 1, pageSize = 10 }: PaginationParams = {}) => {
 
     setSearchTerm,
     createGame: handleCreateGame,
-    handleUpdateGame,
+    updateGame: handleUpdateGame,
     handleDeleteGame,
   };
 };

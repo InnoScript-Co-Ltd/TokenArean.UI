@@ -83,8 +83,8 @@ const useTokenPackage = ({
     error,
 
     setSearchTerm,
-    handleCreateTokenPackage,
-    handleUpdateTokenPackage,
+    createTokenPackage: handleCreateTokenPackage,
+    updateTokenPackage: handleUpdateTokenPackage,
     handleDeleteTokenPackage,
   };
 };

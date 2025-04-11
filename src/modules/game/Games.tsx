@@ -4,6 +4,7 @@ import { useState } from "react";
 import GameTable from "./components/GameTable";
 import GameInputModal from "./components/GameInputModal";
 import { Game, GamePayload } from "@/constants/config";
+// import { updateGame } from "@/redux/service/game/gameSlice";
 
 const Games = () => {
   const [pagination, setPagination] = useState({
@@ -14,7 +15,7 @@ const Games = () => {
   const [open, setOpen] = useState(false);
   const [currentGame, setCurrentGame] = useState<Game | null>(null);
 
-  const { games, status, error, createGame } = useGame({
+  const { games, status, error, createGame, updateGame } = useGame({
     currentPage: pagination.currentPage,
     pageSize: pagination.pageSize,
   });
@@ -28,8 +29,8 @@ const Games = () => {
     id: string | number,
     data: GamePayload
   ): Promise<void> => {
-    console.log("Updating game:", id, data);
-
+    console.log("update game:", data);
+    updateGame(id.toString(), data); // ✅ Two separate arguments
     setOpen(false);
   };
 

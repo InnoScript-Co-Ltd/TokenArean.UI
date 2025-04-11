@@ -125,21 +125,20 @@ const GameInputModal: FC<GameInputModalProps> = ({
     if (form.bannerImage) {
       formData.append("file_BannerImage", form.bannerImage);
     }
-
-    // Convert FormData to a plain object
-    const formObject: any = {};
-    formData.forEach((value, key) => {
-      formObject[key] = value;
-    });
+    console.log("title", form.title);
+    // // Convert FormData to a plain object
+    // const formObject: any = {};
+    // formData.forEach((value, key) => {
+    //   formObject[key] = value;
+    // });
 
     // Log the object
-    console.log(formObject);
 
     try {
       if (currentGame?.id) {
-        await handleUpdateGame(currentGame.id.toString(), formObject);
+        await handleUpdateGame(currentGame.id.toString(), formData);
       } else {
-        await handleCreateGame(formObject);
+        await handleCreateGame(formData);
       }
       onOpenChange(false);
     } catch (err) {
@@ -257,7 +256,7 @@ const GameInputModal: FC<GameInputModalProps> = ({
                   <SelectValue placeholder="Select server type" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="NONE">None</SelectItem>
+                  <SelectItem value="NON">None</SelectItem>
                   <SelectItem value="SERVER">Server</SelectItem>
                   <SelectItem value="ZONEID">Zone ID</SelectItem>
                 </SelectContent>

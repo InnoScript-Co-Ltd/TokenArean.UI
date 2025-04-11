@@ -12,9 +12,9 @@ export function injectStore(_dispatch: AppDispatch) {
 // Create Axios instance
 const axiosInstance = axios.create({
   baseURL: config.API_URL,
-  headers: {
-    "Content-Type": "application/json",
-  },
+  // headers: {
+  //   "Content-Type": "application/json",
+  // },
   withCredentials: true,
 });
 

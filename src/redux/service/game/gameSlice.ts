@@ -61,6 +61,7 @@ export const updateGame = createAsyncThunk<
   { rejectValue: string }
 >("game/updateGame", async ({ id, data }, { rejectWithValue }) => {
   try {
+    console.log("update game:", id);
     return await fetchUpdateGame(id, data);
   } catch (err) {
     return rejectWithValue((err as Error).message);

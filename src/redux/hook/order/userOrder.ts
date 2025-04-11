@@ -82,6 +82,7 @@ const useOrder = ({
     error,
 
     setSearchTerm,
+    updateOrder: handleUpdateOrder,
     handleCreateOrder,
     handleUpdateOrder,
     handleDeleteOrder,

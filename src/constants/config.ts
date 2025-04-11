@@ -85,9 +85,9 @@ export interface TokenPackage {
   id: string;
   tokenTitle: string;
   packageImage: string;
-  unit: string;
-  price: string;
-  currency: number;
+  unit: number;
+  price: number;
+  currency: string;
   createdDate: Date;
   gameDto: Game;
 }
@@ -111,9 +111,13 @@ export interface TokenPackageListResponse {
 
 // Create payload — omit id, timestamps
 export interface TokenPackagePayload {
-  title: string;
-  genre: string;
-  platform: string;
+  tokenTitle: string;
+  packageImage: string;
+  unit: number;
+  file_PackageImage: File;
+  price: number;
+  currency: string;
+  gameId: number;
 }
 export interface DeleteTokenPackageResponse {
   id: string;
@@ -128,10 +132,10 @@ export interface Order {
   serverInfo: string;
   mobileNumber: string;
   screenShot: string;
-  status: number;
-  createdDate: Date;
+  status: string;
+  createdAt: Date;
   updatedAt: Date;
-  operatorBy: Game[];
+  operatorBy: Game;
 }
 
 export interface OrderListResponse {
@@ -153,9 +157,13 @@ export interface OrderListResponse {
 
 // Create payload — omit id, timestamps
 export interface OrderPayload {
-  title: string;
-  genre: string;
-  platform: string;
+  inGameUserId: number;
+  screenShot: string;
+  serverInfo: string;
+  file_ScreenShot: File;
+  MobileNumber: string;
+  orderStatus: string;
+  tokenPackageId: number;
 }
 export interface DeleteOrderResponse {
   id: string;
