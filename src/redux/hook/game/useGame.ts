@@ -76,7 +76,7 @@ const useGame = ({ currentPage = 1, pageSize = 10 }: PaginationParams = {}) => {
     error,
 
     setSearchTerm,
-    handleCreateGame,
+    createGame: handleCreateGame,
     handleUpdateGame,
     handleDeleteGame,
   };

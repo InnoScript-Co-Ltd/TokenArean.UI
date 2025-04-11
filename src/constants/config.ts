@@ -41,6 +41,8 @@ export interface Game {
   orderIndex: number;
   serverType: string;
   isDisable: boolean;
+  file_Logo: File;
+  file_BannerImage: File;
   createdAt: Date;
 }
 
@@ -64,8 +66,14 @@ export interface GameListResponse {
 // Create payload — omit id, timestamps
 export interface GamePayload {
   title: string;
-  genre: string;
-  platform: string;
+  description: string;
+  logo: string;
+  bannerImage: string;
+  file_Logo: File;
+  file_BannerImage: File;
+  orderIndex: number;
+  serverType: string;
+  isDisable: boolean;
 }
 export interface DeleteGameResponse {
   id: string;

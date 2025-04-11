@@ -35,7 +35,7 @@ const TokenPackageTable: React.FC<TokenPackageTableProps> = ({
         </TableRow>
       </TableHeader>
       <TableBody>
-        {tokenPackages.map((tokenPackage) => (
+        {tokenPackages?.map((tokenPackage) => (
           <TableRow key={tokenPackage.id}>
             <TableCell>{tokenPackage.gameDto.title}</TableCell>
             <TableCell>{tokenPackage.tokenTitle}</TableCell>

@@ -32,10 +32,8 @@ export const fetchGame = async (
 
 export const fetchCreateGame = async (game: GamePayload): Promise<Game> => {
   try {
-    const response = await axiosInstance.post<Game>(
-      "/api/v1/game/create",
-      game
-    );
+    console.log(game);
+    const response = await axiosInstance.post<Game>("/api/v1/game", game);
     return response.data;
   } catch (error) {
     console.error("Failed to add game data:", error);

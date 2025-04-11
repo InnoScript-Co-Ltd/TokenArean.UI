@@ -35,7 +35,7 @@ const OrderTable: React.FC<OrderTableProps> = ({
         </TableRow>
       </TableHeader>
       <TableBody>
-        {orders.map((order) => (
+        {orders?.map((order) => (
           <TableRow key={order.id}>
             <TableCell>{order.inGameUserId}</TableCell>
             <TableCell>{order.mobileNumber}</TableCell>

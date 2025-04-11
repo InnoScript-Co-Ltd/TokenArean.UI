@@ -15,13 +15,13 @@ interface BannerProps {
 
 const Banner = ({ title, path1, path2 }: BannerProps) => {
   return (
-    <div className="mb-5 flex flex-col gap-3 border-t border-black px-5 py-3">
+    <div className="flex flex-col gap-3">
       <h3 className="text-lg md:text-xl lg:text-2xl xl:text-3xl capitalize tracking-wide font-semibold text-primary">
         {title}
       </h3>
-      <Breadcrumb className=" ml-2">
+      <Breadcrumb className=" sm:ml-2">
         <BreadcrumbList>
-          <BreadcrumbItem className="hidden md:block">
+          <BreadcrumbItem className="">
             <BreadcrumbLink href="/">Home</BreadcrumbLink>
           </BreadcrumbItem>
 
@@ -29,7 +29,7 @@ const Banner = ({ title, path1, path2 }: BannerProps) => {
             <>
               {path1 && (
                 <>
-                  <BreadcrumbSeparator className="hidden md:block" />
+                  <BreadcrumbSeparator className="" />
                   <BreadcrumbItem>
                     <BreadcrumbLink href={`/${path1.toLowerCase()}`}>
                       {path1}
@@ -39,7 +39,7 @@ const Banner = ({ title, path1, path2 }: BannerProps) => {
               )}
               {path2 && (
                 <>
-                  <BreadcrumbSeparator className="hidden md:block" />
+                  <BreadcrumbSeparator className="" />
                   <BreadcrumbItem>
                     <BreadcrumbLink
                       href={`/${path1?.toLowerCase()}/${path2.toLowerCase()}`}
@@ -49,14 +49,14 @@ const Banner = ({ title, path1, path2 }: BannerProps) => {
                   </BreadcrumbItem>
                 </>
               )}
-              <BreadcrumbSeparator className="hidden md:block" />
+              <BreadcrumbSeparator className="" />
               <BreadcrumbItem>
                 <BreadcrumbPage>{title}</BreadcrumbPage>
               </BreadcrumbItem>
             </>
           ) : (
             <>
-              <BreadcrumbSeparator className="hidden md:block" />
+              <BreadcrumbSeparator className="" />
               <BreadcrumbItem>
                 <BreadcrumbPage>{title}</BreadcrumbPage>
               </BreadcrumbItem>
