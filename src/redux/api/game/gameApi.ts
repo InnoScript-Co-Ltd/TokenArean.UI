@@ -1,11 +1,8 @@
-// src/redux/api/game/gameApi.ts
-
 import axiosInstance from "@/constants/axios";
 import {
   DeleteGameResponse,
-  Game,
+  GameEntryResponse,
   GameListResponse,
-  GamePayload,
   PaginationParams,
 } from "@/constants/config";
 
@@ -22,7 +19,7 @@ export const fetchGame = async (
     const response = await axiosInstance.get<GameListResponse>("/api/v1/Game", {
       params,
     });
-    console.log(response.data);
+    // console.log(response.data);
     return response.data;
   } catch (error) {
     console.error("Failed to fetch Game:", error);
@@ -30,10 +27,14 @@ export const fetchGame = async (
   }
 };
 
-export const fetchCreateGame = async (game: GamePayload): Promise<Game> => {
+export const fetchCreateGame = async (
+  game: FormData
+): Promise<GameEntryResponse> => {
   try {
-    console.log(game);
-    const response = await axiosInstance.post<Game>("/api/v1/Game", game);
+    const response = await axiosInstance.post<GameEntryResponse>(
+      "/api/v1/Game",
+      game
+    );
     return response.data;
   } catch (error) {
     console.error("Failed to add game data:", error);
@@ -43,11 +44,14 @@ export const fetchCreateGame = async (game: GamePayload): Promise<Game> => {
 
 export const fetchUpdateGame = async (
   id: string,
-  game: GamePayload
-): Promise<Game> => {
+  game: FormData
+): Promise<GameEntryResponse> => {
   try {
-    console.log("api update game :", id);
-    const response = await axiosInstance.put<Game>(`/api/v1/game/${id}`, game);
+    // console.log("api update game :", id);
+    const response = await axiosInstance.put<GameEntryResponse>(
+      `/api/v1/game/${id}`,
+      game
+    );
     return response.data;
   } catch (error) {
     console.error("Failed to update game data:", error);
@@ -59,7 +63,7 @@ export const fetchDeleteGame = async (
   id: string
 ): Promise<DeleteGameResponse> => {
   const response = await axiosInstance.delete<DeleteGameResponse>(
-    `/game/delete/${id}`
+    `/api/v1/game/${id}`
   );
   return response.data;
 };

@@ -7,7 +7,7 @@ import {
   updateGame,
   deleteGame,
 } from "@/redux/service/game/gameSlice";
-import { GamePayload, PaginationParams } from "@/constants/config";
+import { PaginationParams } from "@/constants/config";
 import { useAppDispatch, useAppSelector } from "../hook";
 import { RootState } from "@/redux/store";
 
@@ -30,7 +30,7 @@ const useGame = ({ currentPage = 1, pageSize = 10 }: PaginationParams = {}) => {
   }, [dispatch, currentPage, pageSize, searchTerm]);
 
   const handleCreateGame = useCallback(
-    async (payload: GamePayload) => {
+    async (payload: FormData) => {
       try {
         const response = await dispatch(createGame(payload)).unwrap();
         return response;
@@ -42,7 +42,7 @@ const useGame = ({ currentPage = 1, pageSize = 10 }: PaginationParams = {}) => {
   );
 
   const handleUpdateGame = useCallback(
-    async (id: string, payload: GamePayload) => {
+    async (id: string, payload: FormData) => {
       try {
         console.log("handleUpdate Game");
         const response = await dispatch(
@@ -79,7 +79,7 @@ const useGame = ({ currentPage = 1, pageSize = 10 }: PaginationParams = {}) => {
     setSearchTerm,
     createGame: handleCreateGame,
     updateGame: handleUpdateGame,
-    handleDeleteGame,
+    deleteGame: handleDeleteGame,
   };
 };
 

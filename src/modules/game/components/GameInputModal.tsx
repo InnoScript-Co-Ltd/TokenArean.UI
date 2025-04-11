@@ -111,13 +111,16 @@ const GameInputModal: FC<GameInputModalProps> = ({
 
   const handleSubmit = async () => {
     const formData = new FormData();
+
     formData.append("title", form.title);
     formData.append("description", form.description);
     formData.append("orderIndex", form.orderIndex.toString());
     formData.append("serverType", form.serverType);
     formData.append("isDisable", String(form.isDisable));
-    formData.append("logo", "");
-    formData.append("bannerImage", "");
+
+    // These fields might be required for backend compatibility
+    formData.append("logo", ""); // You might set this to existing logo URL if needed
+    formData.append("bannerImage", ""); // Same as above
 
     if (form.logo) {
       formData.append("file_Logo", form.logo);
@@ -125,14 +128,6 @@ const GameInputModal: FC<GameInputModalProps> = ({
     if (form.bannerImage) {
       formData.append("file_BannerImage", form.bannerImage);
     }
-    console.log("title", form.title);
-    // // Convert FormData to a plain object
-    // const formObject: any = {};
-    // formData.forEach((value, key) => {
-    //   formObject[key] = value;
-    // });
-
-    // Log the object
 
     try {
       if (currentGame?.id) {

@@ -7,13 +7,13 @@ import {
 } from "@/redux/api/game/gameApi";
 import {
   Game,
+  GameEntryResponse,
   GameListResponse,
-  GamePayload,
   PaginationParams,
 } from "@/constants/config";
 
 interface GameState {
-  games: Game[];
+  games: Game[] | [];
   total: number;
   totalPages: number;
   totalCount: number;
@@ -44,8 +44,8 @@ export const loadGames = createAsyncThunk<
 });
 
 export const createGame = createAsyncThunk<
-  Game,
-  GamePayload,
+  GameEntryResponse,
+  FormData,
   { rejectValue: string }
 >("game/createGame", async (payload, { rejectWithValue }) => {
   try {
@@ -56,12 +56,12 @@ export const createGame = createAsyncThunk<
 });
 
 export const updateGame = createAsyncThunk<
-  Game,
-  { id: string; data: GamePayload },
+  GameEntryResponse,
+  { id: string; data: FormData },
   { rejectValue: string }
 >("game/updateGame", async ({ id, data }, { rejectWithValue }) => {
   try {
-    console.log("update game:", id);
+    // console.log("update game:", id);
     return await fetchUpdateGame(id, data);
   } catch (err) {
     return rejectWithValue((err as Error).message);
@@ -75,6 +75,7 @@ export const deleteGame = createAsyncThunk<
 >("game/deleteGame", async (id, { rejectWithValue }) => {
   try {
     const res = await fetchDeleteGame(id);
+    console.log(res);
     return res.id;
   } catch (err) {
     return rejectWithValue((err as Error).message);
@@ -113,7 +114,8 @@ const gameSlice = createSlice({
       })
       .addCase(createGame.fulfilled, (state, { payload }) => {
         state.status = "succeeded";
-        state.games.unshift(payload);
+        state.games = [payload?.payLoad, ...(state.games || [])];
+        state.totalCount = state.totalCount + 1;
       })
       .addCase(createGame.rejected, (state, { payload }) => {
         state.status = "failed";
@@ -127,8 +129,9 @@ const gameSlice = createSlice({
       })
       .addCase(updateGame.fulfilled, (state, { payload }) => {
         state.status = "succeeded";
-        const idx = state.games.findIndex((g) => g.id === payload.id);
-        if (idx !== -1) state.games[idx] = payload;
+        const updatedGame = payload.payLoad;
+        const idx = state.games.findIndex((g) => g.id === payload.payLoad.id);
+        if (idx !== -1) state.games[idx] = updatedGame;
       })
       .addCase(updateGame.rejected, (state, { payload }) => {
         state.status = "failed";
@@ -142,7 +145,9 @@ const gameSlice = createSlice({
       })
       .addCase(deleteGame.fulfilled, (state, { payload: deletedId }) => {
         state.status = "succeeded";
+        console.log(deletedId);
         state.games = state.games.filter((g) => g.id !== deletedId);
+        state.totalCount = state.totalCount - 1;
       })
       .addCase(deleteGame.rejected, (state, { payload }) => {
         state.status = "failed";

@@ -63,14 +63,21 @@ export interface GameListResponse {
   payLoadList: null;
 }
 
+export interface GameEntryResponse {
+  statusCode: number;
+  message: string;
+  payLoad: Game;
+  payLoadList: null;
+}
+
 // Create payload — omit id, timestamps
 export interface GamePayload {
   title: string;
   description: string;
   logo: string;
   bannerImage: string;
-  file_Logo: File;
-  file_BannerImage: File;
+  file_Logo: File | null;
+  file_BannerImage: File | null;
   orderIndex: number;
   serverType: string;
   isDisable: boolean;
