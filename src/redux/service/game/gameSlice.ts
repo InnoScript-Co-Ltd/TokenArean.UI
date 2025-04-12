@@ -76,7 +76,7 @@ export const deleteGame = createAsyncThunk<
   try {
     const res = await fetchDeleteGame(id);
     console.log(res);
-    return res.id;
+    return res.payLoad.id;
   } catch (err) {
     return rejectWithValue((err as Error).message);
   }

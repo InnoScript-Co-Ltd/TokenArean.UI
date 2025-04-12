@@ -37,7 +37,7 @@ const useTokenPackage = ({
   }, [dispatch, currentPage, pageSize, searchTerm]);
 
   const handleCreateTokenPackage = useCallback(
-    async (payload: TokenPackagePayload) => {
+    async (payload: FormData) => {
       try {
         const response = await dispatch(createTokenPackage(payload)).unwrap();
         return response;
@@ -49,7 +49,7 @@ const useTokenPackage = ({
   );
 
   const handleUpdateTokenPackage = useCallback(
-    async (id: string, payload: TokenPackagePayload) => {
+    async (id: string, payload: FormData) => {
       try {
         const response = await dispatch(
           updateTokenPackage({ id, data: payload })
@@ -85,7 +85,7 @@ const useTokenPackage = ({
     setSearchTerm,
     createTokenPackage: handleCreateTokenPackage,
     updateTokenPackage: handleUpdateTokenPackage,
-    handleDeleteTokenPackage,
+    deleteTokenPackage: handleDeleteTokenPackage,
   };
 };
 

@@ -115,6 +115,12 @@ export interface TokenPackageListResponse {
   };
   payLoadList: null;
 }
+export interface TokenPackageEntryResponse {
+  statusCode: number;
+  message: string;
+  payLoad: TokenPackage;
+  payLoadList: null;
+}
 
 // Create payload — omit id, timestamps
 export interface TokenPackagePayload {
@@ -161,6 +167,12 @@ export interface OrderListResponse {
   };
   payLoadList: null;
 }
+export interface OrderEntryResponse {
+  statusCode: number;
+  message: string;
+  payLoad: Order;
+  payLoadList: null;
+}
 
 // Create payload — omit id, timestamps
 export interface OrderPayload {
@@ -176,3 +188,43 @@ export interface DeleteOrderResponse {
   id: string;
 }
 // Order
+// User
+export interface User {
+  id: string;
+  email: string;
+  emailConfirmed: boolean;
+}
+
+export interface UserListResponse {
+  statusCode: number;
+  message: string;
+  payLoad: {
+    paging: {
+      totalCount: number;
+      totalPages: number;
+      previousPage: number | null;
+      nextPage: number | null;
+      firstRowOnPage: number;
+      lastRowOnPage: number;
+    };
+    items: User[];
+  };
+  payLoadList: null;
+}
+
+export interface UserEntryResponse {
+  statusCode: number;
+  message: string;
+  payLoad: User;
+  payLoadList: null;
+}
+
+// Create payload — omit id, timestamps
+export interface UserPayload {
+  email: string;
+  password: string;
+}
+export interface DeleteUserResponse {
+  id: string;
+}
+// User

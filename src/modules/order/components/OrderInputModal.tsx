@@ -27,7 +27,7 @@ interface OrderInputModalProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   currentOrder?: Order | null;
-  handleCreateOrder: (data: FormData) => Promise<void>;
+  // handleCreateOrder: (data: FormData) => Promise<void>;
   handleUpdateOrder: (id: string, data: FormData) => Promise<void>;
 }
 

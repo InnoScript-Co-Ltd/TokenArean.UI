@@ -1,4 +1,4 @@
-import { Trefoil } from "ldrs/react";
+import { Trefoil } from     "ldrs/react";
 import "ldrs/react/Trefoil.css";
 
 const Loader = () => {

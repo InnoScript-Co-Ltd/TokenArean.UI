@@ -8,7 +8,7 @@ import {
 import {
   Order,
   OrderListResponse,
-  OrderPayload,
+  OrderEntryResponse,
   PaginationParams,
 } from "@/constants/config";
 
@@ -47,8 +47,8 @@ export const loadOrders = createAsyncThunk<
 );
 
 export const createOrder = createAsyncThunk<
-  Order,
-  OrderPayload,
+  OrderEntryResponse,
+  FormData,
   { rejectValue: string }
 >("order/createOrder", async (payload, { rejectWithValue }) => {
   try {
@@ -59,8 +59,8 @@ export const createOrder = createAsyncThunk<
 });
 
 export const updateOrder = createAsyncThunk<
-  Order,
-  { id: string; data: OrderPayload },
+  OrderEntryResponse,
+  { id: string; data: FormData },
   { rejectValue: string }
 >("order/updateOrder", async ({ id, data }, { rejectWithValue }) => {
   try {
@@ -77,7 +77,7 @@ export const deleteOrder = createAsyncThunk<
 >("order/deleteOrder", async (id, { rejectWithValue }) => {
   try {
     const res = await fetchDeleteOrder(id);
-    return res.id;
+    return res.payLoad.id;
   } catch (err) {
     return rejectWithValue((err as Error).message);
   }
@@ -129,8 +129,8 @@ const orderSlice = createSlice({
       })
       .addCase(updateOrder.fulfilled, (state, { payload }) => {
         state.status = "succeeded";
-        const idx = state.orders.findIndex((g) => g.id === payload.id);
-        if (idx !== -1) state.orders[idx] = payload;
+        const idx = state.orders.findIndex((g) => g.id === payload.payLoad.id);
+        if (idx !== -1) state.orders[idx] = payload.payLoad;
       })
       .addCase(updateOrder.rejected, (state, { payload }) => {
         state.status = "failed";
