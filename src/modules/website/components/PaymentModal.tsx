@@ -6,12 +6,12 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { MdOutlineFileUpload } from "react-icons/md";
-import { TokenPackage } from "@/constants/config";
+import { OrderPayload, TokenPackage } from "@/constants/config";
 
 export interface PaymentModalProps {
   selectedPackage: TokenPackage | null;
   total: string | number | null;
-  onScreenshotChange: (dataUrl: File) => void;
+  setForm: React.Dispatch<React.SetStateAction<OrderPayload>>;
   onClose: () => void;
   onConfirm: () => void;
 }
@@ -19,16 +19,16 @@ export interface PaymentModalProps {
 const PaymentModal: React.FC<PaymentModalProps> = ({
   selectedPackage,
   total,
-  onScreenshotChange,
+  setForm,
   onClose,
   onConfirm,
 }) => {
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
 
   const handleFile = (file: File) => {
+    setForm((prev) => ({ ...prev, screenShot: file }));
     const url = URL.createObjectURL(file);
     setPreviewUrl(url);
-    onScreenshotChange(file);
   };
 
   return (
