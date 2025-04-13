@@ -5,6 +5,8 @@ import DashboardLayout from "@/layout/DashboardLayout";
 import Dashboard from "@/modules/dashboard/Dashboard";
 import Games from "@/modules/game/Games";
 import TokenPackages from "@/modules/tokenpackage/TokenPackages";
+import Users from "@/modules/user/Users";
+
 import Orders from "@/modules/order/Orders";
 import GameDetail from "@/modules/website/GameDetail";
 import Home from "@/modules/website/Home";
@@ -27,6 +29,10 @@ const Path = () => {
           {/* Dashboard Page */}
           <Route index element={<Dashboard />} />
           {/* Dashboard Page */}
+
+          {/* User Page */}
+          <Route path="users" element={<Users />} />
+          {/* User Page */}
 
           {/* Game Page */}
           <Route path="games" element={<Games />} />

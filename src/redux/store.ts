@@ -3,6 +3,7 @@ import authReducer from "@/redux/service/auth/authSlice";
 import gameReducer from "@/redux/service/game/gameSlice";
 import tokenPackageReducer from "@/redux/service/tokenPackage/tokenPackageSlice";
 import orderReducer from "@/redux/service/order/orderSlice";
+import userReducer from "@/redux/service/user/userSlice";
 
 import { injectStore } from "@/constants/axios";
 
@@ -12,6 +13,7 @@ export const store = configureStore({
     game: gameReducer,
     tokenPackage: tokenPackageReducer,
     order: orderReducer,
+    user: userReducer,
   },
 });
 

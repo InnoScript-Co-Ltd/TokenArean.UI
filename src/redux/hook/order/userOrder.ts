@@ -48,7 +48,7 @@ const useOrder = ({
   );
 
   const handleUpdateOrder = useCallback(
-    async (id: string, payload: OrderPayload) => {
+    async (id: string, payload: FormData) => {
       try {
         const response = await dispatch(
           updateOrder({ id, data: payload })
@@ -83,9 +83,8 @@ const useOrder = ({
 
     setSearchTerm,
     updateOrder: handleUpdateOrder,
+    deleteOrder: handleDeleteOrder,
     handleCreateOrder,
-    handleUpdateOrder,
-    handleDeleteOrder,
   };
 };
 

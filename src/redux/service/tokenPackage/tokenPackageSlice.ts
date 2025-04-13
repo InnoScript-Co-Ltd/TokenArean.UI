@@ -8,7 +8,7 @@ import {
 import {
   TokenPackage,
   TokenPackageListResponse,
-  TokenPackagePayload,
+  TokenPackageEntryResponse,
   PaginationParams,
 } from "@/constants/config";
 
@@ -47,8 +47,8 @@ export const loadTokenPackages = createAsyncThunk<
 );
 
 export const createTokenPackage = createAsyncThunk<
-  TokenPackage,
-  TokenPackagePayload,
+  TokenPackageEntryResponse,
+  FormData,
   { rejectValue: string }
 >("tokenPackage/createTokenPackage", async (payload, { rejectWithValue }) => {
   try {
@@ -59,8 +59,8 @@ export const createTokenPackage = createAsyncThunk<
 });
 
 export const updateTokenPackage = createAsyncThunk<
-  TokenPackage,
-  { id: string; data: TokenPackagePayload },
+  TokenPackageEntryResponse,
+  { id: string; data: FormData },
   { rejectValue: string }
 >(
   "tokenPackage/updateTokenPackage",
@@ -80,7 +80,7 @@ export const deleteTokenPackage = createAsyncThunk<
 >("tokenPackage/deleteTokenPackage", async (id, { rejectWithValue }) => {
   try {
     const res = await fetchDeleteTokenPackage(id);
-    return res.id;
+    return res.payLoad.id;
   } catch (err) {
     return rejectWithValue((err as Error).message);
   }
@@ -118,7 +118,13 @@ const tokenPackageSlice = createSlice({
       })
       .addCase(createTokenPackage.fulfilled, (state, { payload }) => {
         state.status = "succeeded";
-        state.tokenPackages.unshift(payload);
+        console.log("payload.payLoad :", payload.payLoad);
+        state.tokenPackages = [
+          payload?.payLoad,
+          ...(state.tokenPackages || []),
+        ];
+        state.totalCount = state.totalCount + 1;
+        // state.tokenPackages.unshift(payload);
       })
       .addCase(createTokenPackage.rejected, (state, { payload }) => {
         state.status = "failed";
@@ -132,8 +138,11 @@ const tokenPackageSlice = createSlice({
       })
       .addCase(updateTokenPackage.fulfilled, (state, { payload }) => {
         state.status = "succeeded";
-        const idx = state.tokenPackages.findIndex((g) => g.id === payload.id);
-        if (idx !== -1) state.tokenPackages[idx] = payload;
+        const idx = state.tokenPackages.findIndex(
+          (g) => g.id === payload.payLoad.id
+        );
+
+        if (idx !== -1) state.tokenPackages[idx] = payload.payLoad;
       })
       .addCase(updateTokenPackage.rejected, (state, { payload }) => {
         state.status = "failed";

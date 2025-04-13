@@ -78,6 +78,7 @@ export const deleteGame = createAsyncThunk<
   { rejectValue: string }
 >("game/deleteGame", async (id, { rejectWithValue }) => {
   try {
+
     return await fetchDeleteGame(id);
   } catch (err) {
     return rejectWithValue((err as Error).message);
@@ -91,6 +92,7 @@ export const loadGameDetail = createAsyncThunk<
 >("game/loadGameDetail", async (id, { rejectWithValue }) => {
   try {
     return await fetchGameDetail(id);
+
   } catch (err) {
     return rejectWithValue((err as Error).message);
   }

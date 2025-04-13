@@ -44,7 +44,6 @@ const useGame = ({ currentPage = 1, pageSize = 12 }: PaginationParams = {}) => {
   const handleUpdateGame = useCallback(
     async (id: string, payload: FormData) => {
       try {
-        console.log("handleUpdate Game");
         const response = await dispatch(
           updateGame({ id, data: payload })
         ).unwrap();

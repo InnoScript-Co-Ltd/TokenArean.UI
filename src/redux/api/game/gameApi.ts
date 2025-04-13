@@ -47,7 +47,6 @@ export const fetchUpdateGame = async (
   game: FormData
 ): Promise<GameEntryResponse> => {
   try {
-    // console.log("api update game :", id);
     const response = await axiosInstance.put<GameEntryResponse>(
       `/api/v1/game/${id}`,
       game

@@ -4,6 +4,7 @@ import axiosInstance from "@/constants/axios";
 import {
   DeleteOrderResponse,
   Order,
+  OrderEntryResponse,
   OrderListResponse,
   OrderPayload,
   PaginationParams,
@@ -33,9 +34,15 @@ export const fetchOrder = async (
   }
 };
 
-export const fetchCreateOrder = async (order: FormData): Promise<Order> => {
+
+export const fetchCreateOrder = async (
+  order: FormData
+): Promise<OrderEntryResponse> => {
   try {
-    const response = await axiosInstance.post<Order>("/api/v1/Order", order);
+    const response = await axiosInstance.post<OrderEntryResponse>(
+      "/api/v1/Order",
+      order
+    );
     return response.data;
   } catch (error) {
     console.error("Failed to add Order data:", error);
@@ -45,10 +52,10 @@ export const fetchCreateOrder = async (order: FormData): Promise<Order> => {
 
 export const fetchUpdateOrder = async (
   id: string,
-  order: OrderPayload
-): Promise<Order> => {
+  order: FormData
+): Promise<OrderEntryResponse> => {
   try {
-    const response = await axiosInstance.put<Order>(
+    const response = await axiosInstance.put<OrderEntryResponse>(
       `/api/v1/Order/${id}`,
       order
     );
@@ -63,7 +70,7 @@ export const fetchDeleteOrder = async (
   id: string
 ): Promise<DeleteOrderResponse> => {
   const response = await axiosInstance.delete<DeleteOrderResponse>(
-    `/Order/${id}`
+    `/api/v1/Order/${id}`
   );
   return response.data;
 };

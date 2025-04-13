@@ -5,7 +5,7 @@ import {
   DeleteTokenPackageResponse,
   TokenPackage,
   TokenPackageListResponse,
-  TokenPackagePayload,
+  TokenPackageEntryResponse,
   PaginationParams,
 } from "@/constants/config";
 
@@ -34,10 +34,10 @@ export const fetchTokenPackage = async (
 };
 
 export const fetchCreateTokenPackage = async (
-  tokenPackage: TokenPackagePayload
-): Promise<TokenPackage> => {
+  tokenPackage: FormData
+): Promise<TokenPackageEntryResponse> => {
   try {
-    const response = await axiosInstance.post<TokenPackage>(
+    const response = await axiosInstance.post<TokenPackageEntryResponse>(
       "/api/v1/TokenPackage",
       tokenPackage
     );
@@ -50,10 +50,10 @@ export const fetchCreateTokenPackage = async (
 
 export const fetchUpdatTokenPackage = async (
   id: string,
-  tokenPackage: TokenPackagePayload
-): Promise<TokenPackage> => {
+  tokenPackage: FormData
+): Promise<TokenPackageEntryResponse> => {
   try {
-    const response = await axiosInstance.put<TokenPackage>(
+    const response = await axiosInstance.put<TokenPackageEntryResponse>(
       `/api/v1/TokenPackage/${id}`,
       tokenPackage
     );
@@ -68,7 +68,7 @@ export const fetchDeleteTokenPackage = async (
   id: string
 ): Promise<DeleteTokenPackageResponse> => {
   const response = await axiosInstance.delete<DeleteTokenPackageResponse>(
-    `/TokenPackage/${id}`
+    `/api/v1/TokenPackage/${id}`
   );
   return response.data;
 };

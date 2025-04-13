@@ -23,6 +23,18 @@ const data = {
   },
   navMain: [
     {
+      title: "User",
+      url: "users",
+      icon: Gamepad,
+      isActive: true,
+      items: [
+        {
+          title: "Users List",
+          url: "/dashboard/users",
+        },
+      ],
+    },
+    {
       title: "Game",
       url: "games",
       icon: Gamepad,
