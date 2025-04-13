@@ -11,7 +11,7 @@ import { PaginationParams } from "@/constants/config";
 import { useAppDispatch, useAppSelector } from "../hook";
 import { RootState } from "@/redux/store";
 
-const useGame = ({ currentPage = 1, pageSize = 10 }: PaginationParams = {}) => {
+const useGame = ({ currentPage = 1, pageSize = 12 }: PaginationParams = {}) => {
   const dispatch = useAppDispatch();
   const [searchTerm, setSearchTerm] = useState("");
 

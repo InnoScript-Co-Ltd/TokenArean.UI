@@ -43,6 +43,7 @@ export interface Game {
   isDisable: boolean;
   file_Logo: File;
   file_BannerImage: File;
+  tokenPackageDto: TokenPackage[] | null;
   createdAt: Date;
 }
 
@@ -63,28 +64,30 @@ export interface GameListResponse {
   payLoadList: null;
 }
 
+export interface GameDetailResponse {
+  message: string;
+  payLoad: Game;
+  payLoadList: null;
+  statusCode: number;
+}
 export interface GameEntryResponse {
   statusCode: number;
   message: string;
   payLoad: Game;
   payLoadList: null;
 }
-
-// Create payload — omit id, timestamps
 export interface GamePayload {
   title: string;
   description: string;
-  logo: string;
-  bannerImage: string;
-  file_Logo: File | null;
-  file_BannerImage: File | null;
+  logo: string | null;
+  bannerImage: string | null;
+  file_Logo?: File | null;
+  file_BannerImage?: File | null;
   orderIndex: number;
   serverType: string;
   isDisable: boolean;
 }
-export interface DeleteGameResponse {
-  id: string;
-}
+
 // Game
 
 // TokenPackage
@@ -164,13 +167,13 @@ export interface OrderListResponse {
 
 // Create payload — omit id, timestamps
 export interface OrderPayload {
-  inGameUserId: number;
-  screenShot: string;
-  serverInfo: string;
-  file_ScreenShot: File;
-  MobileNumber: string;
-  orderStatus: string;
-  tokenPackageId: number;
+  inGameUserId: number | string;
+  serverInfo?: string;
+  screenShot?: string | null;
+  file_ScreenShot?: File | null;
+  mobileNumber?: string;
+  orderStatus?: string;
+  tokenPackageId: number | string;
 }
 export interface DeleteOrderResponse {
   id: string;

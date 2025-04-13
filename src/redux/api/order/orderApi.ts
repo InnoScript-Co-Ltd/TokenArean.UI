@@ -33,7 +33,7 @@ export const fetchOrder = async (
   }
 };
 
-export const fetchCreateOrder = async (order: OrderPayload): Promise<Order> => {
+export const fetchCreateOrder = async (order: FormData): Promise<Order> => {
   try {
     const response = await axiosInstance.post<Order>("/api/v1/Order", order);
     return response.data;

@@ -48,7 +48,7 @@ export const loadOrders = createAsyncThunk<
 
 export const createOrder = createAsyncThunk<
   Order,
-  OrderPayload,
+  FormData,
   { rejectValue: string }
 >("order/createOrder", async (payload, { rejectWithValue }) => {
   try {

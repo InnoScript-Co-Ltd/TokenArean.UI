@@ -6,11 +6,12 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { MdOutlineFileUpload } from "react-icons/md";
+import { TokenPackage } from "@/constants/config";
 
 export interface PaymentModalProps {
-  selectedPackage: { name: string; image: string; price: string } | null;
-  total: string;
-  onScreenshotChange: (dataUrl: string) => void;
+  selectedPackage: TokenPackage | null;
+  total: string | number | null;
+  onScreenshotChange: (dataUrl: File) => void;
   onClose: () => void;
   onConfirm: () => void;
 }
@@ -22,16 +23,12 @@ const PaymentModal: React.FC<PaymentModalProps> = ({
   onClose,
   onConfirm,
 }) => {
-  const [previewImage, setPreviewImage] = useState<string | null>(null);
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
 
   const handleFile = (file: File) => {
-    const reader = new FileReader();
-    reader.onloadend = () => {
-      const dataUrl = reader.result as string;
-      setPreviewImage(dataUrl);
-      onScreenshotChange(dataUrl);
-    };
-    reader.readAsDataURL(file);
+    const url = URL.createObjectURL(file);
+    setPreviewUrl(url);
+    onScreenshotChange(file);
   };
 
   return (
@@ -46,13 +43,13 @@ const PaymentModal: React.FC<PaymentModalProps> = ({
           {selectedPackage ? (
             <div className="flex items-center gap-4">
               <img
-                src={selectedPackage.image}
-                alt={selectedPackage.name}
+                src={selectedPackage?.packageImage}
+                alt={selectedPackage?.tokenTitle}
                 className="w-12 h-12 object-cover rounded"
               />
               <div>
-                <p className="font-semibold">{selectedPackage.name}</p>
-                <p className="text-gray-600">{selectedPackage.price}</p>
+                <p className="font-semibold">{selectedPackage?.tokenTitle}</p>
+                <p className="text-gray-600">{selectedPackage?.price}</p>
               </div>
             </div>
           ) : (
@@ -87,9 +84,9 @@ const PaymentModal: React.FC<PaymentModalProps> = ({
           onClick={() => document.getElementById("receipt")?.click()}
           className="mt-3 px-2 py-4 md:px-4 md:py-8 border-dashed border-2 border-gray-300 rounded-lg text-center cursor-pointer hover:bg-gray-50 transition"
         >
-          {previewImage ? (
+          {previewUrl ? (
             <img
-              src={previewImage}
+              src={previewUrl}
               alt="Preview"
               className="mx-auto h-full max-h-60 object-contain rounded-md"
             />

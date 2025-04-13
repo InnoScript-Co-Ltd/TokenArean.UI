@@ -36,7 +36,7 @@ const useOrder = ({
   }, [dispatch, currentPage, pageSize, searchTerm]);
 
   const handleCreateOrder = useCallback(
-    async (payload: OrderPayload) => {
+    async (payload: FormData) => {
       try {
         const response = await dispatch(createOrder(payload)).unwrap();
         return response;

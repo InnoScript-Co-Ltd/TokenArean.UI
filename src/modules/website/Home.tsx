@@ -2,14 +2,9 @@ import Header from "./components/Header";
 import Footer from "./components/Footer";
 import EmblaCarousel from "./components/EmblaCarousel";
 import GameCard from "@/components/global/GameCard";
-
-const games = Array(6)
-  .fill(null)
-  .map((_, index) => ({
-    id: index + 1,
-    Title: "Genshin Impact",
-    Logo: "https://image.api.playstation.com/vulcan/ap/rnd/202408/2010/6e7d87fef87405e9925e810a1620df04c3b98c2086711336.png",
-  }));
+import useGame from "@/redux/hook/game/useGame";
+import { useState } from "react";
+import { FaChevronDown } from "react-icons/fa";
 
 const slides = [
   {
@@ -32,6 +27,19 @@ const slides = [
 ];
 
 const Home = () => {
+  const [pagination, setPagination] = useState({
+    currentPage: 1,
+    pageSize: 12,
+  });
+  const { games, totalCount } = useGame({
+    currentPage: pagination.currentPage,
+    pageSize: pagination.pageSize,
+  });
+
+  const handleSeeMore = () => {
+    setPagination({ currentPage: 1, pageSize: pagination.pageSize + 12 });
+  };
+
   return (
     <>
       <Header />
@@ -45,16 +53,27 @@ const Home = () => {
             MOST POPULAR
           </h2>
           <div className="grid grid-cols-1 min-[428px]:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 md:gap-10 mt-5 ">
-            {games.slice(0, 3).map((game, index) => (
+            {games?.map((game, index) => (
               <div key={index} className=" col-span-1">
                 <GameCard game={game} />
               </div>
             ))}
           </div>
+
+          {totalCount == null || totalCount <= 12 ? (
+            <></>
+          ) : (
+            <div
+              onClick={handleSeeMore}
+              className=" flex justify-center items-center mt-8 cursor-pointer"
+            >
+              See More <FaChevronDown />
+            </div>
+          )}
         </section>
 
         {/* Mobile Games */}
-        <section className="mt-16">
+        {/* <section className="mt-16">
           <h2 className="text-xl md:text-2xl lg:text-3xl font-bold mb-5 lg:mb-10">
             Mobile Games
           </h2>
@@ -65,10 +84,10 @@ const Home = () => {
               </div>
             ))}
           </div>
-        </section>
+        </section> */}
 
         {/* New Release */}
-        <section className="mt-16">
+        {/* <section className="mt-16">
           <h2 className="text-xl md:text-2xl lg:text-3xl font-bold mb-5 lg:mb-10">
             New Release
           </h2>
@@ -79,7 +98,7 @@ const Home = () => {
               </div>
             ))}
           </div>
-        </section>
+        </section> */}
       </main>
       <Footer />
     </>

@@ -5,102 +5,28 @@ import Footer from "./components/Footer";
 import { IoShieldCheckmarkSharp } from "react-icons/io5";
 import { PiMedalFill } from "react-icons/pi";
 import PaymentModal from "./components/PaymentModal";
-
-type PackageItem = {
-  id: number;
-  name: string;
-  image: string;
-  price: string;
-};
-
-const packages: PackageItem[] = [
-  {
-    id: 1,
-    name: "100 Gem",
-    image:
-      "https://cdn1.codashop.com/S/content/common/images/denom-image/GENSHIN/60_Genshin-Impact_Crystals.png",
-    price: "100 Ks",
-  },
-  {
-    id: 2,
-    name: "200 Gem",
-    image:
-      "https://cdn1.codashop.com/S/content/common/images/denom-image/GENSHIN/60_Genshin-Impact_Crystals.png",
-    price: "200 Ks",
-  },
-  {
-    id: 3,
-    name: "300 Gem",
-    image:
-      "https://cdn1.codashop.com/S/content/common/images/denom-image/GENSHIN/60_Genshin-Impact_Crystals.png",
-    price: "300 Ks",
-  },
-  {
-    id: 4,
-    name: "400 Gem",
-    image:
-      "https://cdn1.codashop.com/S/content/common/images/denom-image/GENSHIN/60_Genshin-Impact_Crystals.png",
-    price: "400 Ks",
-  },
-  {
-    id: 5,
-    name: "500 Gem",
-    image:
-      "https://cdn1.codashop.com/S/content/common/images/denom-image/GENSHIN/60_Genshin-Impact_Crystals.png",
-    price: "500 Ks",
-  },
-  {
-    id: 6,
-    name: "600 Gem",
-    image:
-      "https://cdn1.codashop.com/S/content/common/images/denom-image/GENSHIN/60_Genshin-Impact_Crystals.png",
-    price: "600 Ks",
-  },
-  {
-    id: 7,
-    name: "700 Gem",
-    image:
-      "https://cdn1.codashop.com/S/content/common/images/denom-image/GENSHIN/60_Genshin-Impact_Crystals.png",
-    price: "700 Ks",
-  },
-  {
-    id: 8,
-    name: "800 Gem",
-    image:
-      "https://cdn1.codashop.com/S/content/common/images/denom-image/GENSHIN/60_Genshin-Impact_Crystals.png",
-    price: "800 Ks",
-  },
-  {
-    id: 9,
-    name: "900 Gem",
-    image:
-      "https://cdn1.codashop.com/S/content/common/images/denom-image/GENSHIN/60_Genshin-Impact_Crystals.png",
-    price: "900 Ks",
-  },
-];
+import useGameDetail from "@/redux/hook/game/useGameDetail";
+import { OrderPayload, TokenPackage } from "@/constants/config";
+import useOrder from "@/redux/hook/order/userOrder";
 
 const GameDetail: React.FC = () => {
   const { gameId } = useParams();
+  const { gameDetail } = useGameDetail({ id: gameId });
+  const { handleCreateOrder } = useOrder();
+
   const currentLang = "mm";
 
-  const [selectedPackage, setSelectedPackage] = useState<PackageItem | null>(
+  const [isPaymentModalOpen, setIsPaymentModalOpen] = useState(false);
+  const [selectedPackage, setSelectedPackage] = useState<TokenPackage | null>(
     null
   );
-  const [formData, setFormData] = useState({
-    InGameUserId: "",
-    ServerInfo: "",
-    MobileNumber: "",
-    TokenPackageId: "",
-    ScreenShot: "",
+  const [formData, setFormData] = useState<OrderPayload>({
+    inGameUserId: "",
+    serverInfo: "",
+    mobileNumber: "",
+    tokenPackageId: "",
+    screenShot: "",
   });
-  const [isPaymentModalOpen, setIsPaymentModalOpen] = useState(false);
-
-  const gameDetail = {
-    id: gameId,
-    Title: "Genshin Impact",
-    Logo: "https://image.api.playstation.com/vulcan/ap/rnd/202408/2010/6e7d87fef87405e9925e810a1620df04c3b98c2086711336.png",
-    ServerType: "zone id", // "server" | "zone id" | ""
-  };
 
   const handleInputChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
@@ -113,17 +39,29 @@ const GameDetail: React.FC = () => {
     if (!selectedPackage) return;
     setFormData((prev) => ({
       ...prev,
-      TokenPackageId: selectedPackage.id.toString(),
+      tokenPackageId: selectedPackage.id.toString(),
     }));
     setIsPaymentModalOpen(true);
   };
 
-  const handleScreenshotChange = (dataUrl: string) => {
-    setFormData((prev) => ({ ...prev, ScreenShot: dataUrl }));
+  const handleScreenshotChange = (file: File) => {
+    setFormData((prev) => ({ ...prev, file_ScreenShot: file }));
   };
 
   const handleConfirmPayment = () => {
-    console.log("Submitting Payment:", formData);
+    const payload = new FormData();
+
+    payload.append("inGameUserId", String(formData.inGameUserId));
+    payload.append("serverInfo", String(formData.serverInfo));
+    payload.append("mobileNumber", String(formData.mobileNumber));
+    payload.append("tokenPackageId", String(formData.tokenPackageId));
+    payload.append("screenShot", "");
+
+    if (formData.screenShot) {
+      payload.append("file_ScreenShot", formData.screenShot);
+    }
+
+    handleCreateOrder(payload);
     setIsPaymentModalOpen(false);
   };
 
@@ -139,14 +77,14 @@ const GameDetail: React.FC = () => {
           <div className="col-span-3 md:col-span-1 px-3 py-6 border rounded-lg shadow-sm flex flex-col gap-3">
             <div className="w-full aspect-[2/1] overflow-hidden rounded-lg">
               <img
-                src={gameDetail.Logo}
-                alt={gameDetail.Title}
+                src={gameDetail?.logo}
+                alt={gameDetail?.title}
                 className="w-full h-auto object-cover rounded-md mb-4"
               />
             </div>
             <div className="flex flex-col gap-4 p-0 sm:p-4">
               <h1 className="text-xl lg:text-2xl xl:text-3xl font-bold">
-                {gameDetail.Title}
+                {gameDetail?.title}
               </h1>
               <div className="flex flex-wrap gap-3">
                 <div className="rounded-full bg-[#00a9de40] text-[#333] px-3 py-1 flex items-center gap-1">
@@ -187,13 +125,13 @@ const GameDetail: React.FC = () => {
                 {/* User ID */}
                 <div
                   className={`col-span-3 ${
-                    gameDetail.ServerType ? "sm:col-span-2" : "sm:col-span-3"
+                    gameDetail?.serverType ? "sm:col-span-2" : "sm:col-span-3"
                   }`}
                 >
                   <input
                     type="text"
-                    name="InGameUserId"
-                    value={formData.InGameUserId}
+                    name="inGameUserId"
+                    value={formData?.inGameUserId}
                     onChange={handleInputChange}
                     placeholder="Enter User ID ..."
                     className="w-full h-12 px-5 rounded-md bg-[#f5f5f5] border-0"
@@ -201,12 +139,12 @@ const GameDetail: React.FC = () => {
                 </div>
 
                 {/* Server Info */}
-                {gameDetail.ServerType && (
+                {gameDetail?.serverType && (
                   <div className="col-span-3 sm:col-span-1">
-                    {gameDetail.ServerType.toLowerCase() === "server" ? (
+                    {gameDetail?.serverType.toLowerCase() === "server" ? (
                       <select
-                        name="ServerInfo"
-                        value={formData.ServerInfo}
+                        name="serverInfo"
+                        value={formData?.serverInfo}
                         onChange={handleInputChange}
                         className="w-full h-12 px-5 rounded-md bg-[#f5f5f5] border-0"
                       >
@@ -219,8 +157,8 @@ const GameDetail: React.FC = () => {
                     ) : (
                       <input
                         type="text"
-                        name="ServerInfo"
-                        value={formData.ServerInfo}
+                        name="serverInfo"
+                        value={formData?.serverInfo}
                         onChange={handleInputChange}
                         placeholder="Enter Zone ID ..."
                         className="w-full h-12 px-5 rounded-md bg-[#f5f5f5] border-0"
@@ -233,8 +171,8 @@ const GameDetail: React.FC = () => {
                 <div className="col-span-3">
                   <input
                     type="text"
-                    name="MobileNumber"
-                    value={formData.MobileNumber}
+                    name="mobileNumber"
+                    value={formData?.mobileNumber}
                     onChange={handleInputChange}
                     placeholder="Enter Mobile Number (Optional) ..."
                     className="w-full h-12 px-5 rounded-md bg-[#f5f5f5] border-0"
@@ -254,12 +192,12 @@ const GameDetail: React.FC = () => {
                     <>
                       <div className="flex items-center gap-4">
                         <img
-                          src={selectedPackage.image}
-                          alt={selectedPackage.name}
+                          src={selectedPackage?.packageImage}
+                          alt={selectedPackage?.tokenTitle}
                           className="w-10 h-10 object-cover rounded"
                         />
                         <span className="font-semibold">
-                          {selectedPackage.name}
+                          {selectedPackage?.tokenTitle}
                         </span>
                       </div>
                       <span className="font-semibold">
@@ -302,20 +240,20 @@ const GameDetail: React.FC = () => {
               : "Select Game Item"}
           </h2>
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5">
-            {packages.map((pkg) => (
+            {gameDetail?.tokenPackageDto?.map((pkg) => (
               <div
-                key={pkg.id}
+                key={pkg?.id}
                 onClick={() => setSelectedPackage(pkg)}
                 className={`cursor-pointer border rounded-lg p-4 flex flex-col items-center hover:shadow-md transition ${
-                  selectedPackage?.id === pkg.id ? "ring-2 ring-blue-500" : ""
+                  selectedPackage?.id === pkg?.id ? "ring-2 ring-blue-500" : ""
                 }`}
               >
                 <img
-                  src={pkg.image}
-                  alt={pkg.name}
+                  src={pkg?.packageImage}
+                  alt={pkg?.tokenTitle}
                   className="w-16 h-16 object-cover mb-3"
                 />
-                <span className="font-semibold">{pkg.name}</span>
+                <span className="font-semibold">{pkg?.tokenTitle}</span>
                 <span className="text-gray-600 mt-1">{pkg.price}</span>
               </div>
             ))}

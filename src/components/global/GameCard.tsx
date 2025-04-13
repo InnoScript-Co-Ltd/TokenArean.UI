@@ -7,7 +7,6 @@ type GameCardProps = {
 };
 
 const GameCard: React.FC<GameCardProps> = ({ game }) => {
-  console.log("game", game.logo);
   return (
     <Link to={`/game/${game.id}`}>
       <div className="rounded-xl overflow-hidden group/game-card shadow-lg hover:shadow-2xl transition-all duration-300">
