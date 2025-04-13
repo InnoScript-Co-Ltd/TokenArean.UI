@@ -7,15 +7,14 @@ type GameCardProps = {
 };
 
 const GameCard: React.FC<GameCardProps> = ({ game }) => {
-
   return (
     <Link to={`/game/${game.id}`}>
       <div className="rounded-xl overflow-hidden group/game-card shadow-lg hover:shadow-2xl transition-all duration-300">
-        <div className="w-full aspect-[9/8] overflow-hidden">
+        <div className="w-full aspect-[9/8] overflow-hidden ">
           <img
             src={game.logo}
             alt={game.title}
-            className="w-full object-cover group-hover/game-card:scale-110 transition-all duration-300"
+            className="w-full h-full object-cover group-hover/game-card:scale-110 transition-all duration-300"
           />
         </div>
         <div className="w-full py-4 flex justify-center items-center gap-3 group-hover/game-card:gap-4 transition-all duration-300 bg-primary">
