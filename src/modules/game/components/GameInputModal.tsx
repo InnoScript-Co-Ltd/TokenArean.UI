@@ -21,7 +21,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import type { Game } from "@/constants/config";
+import type { Game, GamePayload } from "@/constants/config";
 
 interface GameInputModalProps {
   open: boolean;
@@ -31,16 +31,6 @@ interface GameInputModalProps {
   handleUpdateGame: (id: string, data: FormData) => Promise<void>;
 }
 
-interface FormState {
-  logo: File | null;
-  bannerImage: File | null;
-  title: string;
-  description: string;
-  orderIndex: number;
-  serverType: string;
-  isDisable: boolean;
-}
-
 const GameInputModal: FC<GameInputModalProps> = ({
   open,
   onOpenChange,
@@ -48,7 +38,9 @@ const GameInputModal: FC<GameInputModalProps> = ({
   handleCreateGame,
   handleUpdateGame,
 }) => {
-  const [form, setForm] = useState<FormState>({
+  const [logoPreview, setLogoPreview] = useState<string>("");
+  const [bannerPreview, setBannerPreview] = useState<string>("");
+  const [form, setForm] = useState<GamePayload>({
     logo: null,
     bannerImage: null,
     title: "",
@@ -57,8 +49,6 @@ const GameInputModal: FC<GameInputModalProps> = ({
     serverType: "",
     isDisable: false,
   });
-  const [logoPreview, setLogoPreview] = useState<string>("");
-  const [bannerPreview, setBannerPreview] = useState<string>("");
 
   useEffect(() => {
     if (currentGame) {

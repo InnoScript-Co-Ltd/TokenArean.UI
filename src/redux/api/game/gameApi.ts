@@ -1,6 +1,6 @@
 import axiosInstance from "@/constants/axios";
 import {
-  DeleteGameResponse,
+  GameDetailResponse,
   GameEntryResponse,
   GameListResponse,
   PaginationParams,
@@ -60,9 +60,23 @@ export const fetchUpdateGame = async (
 
 export const fetchDeleteGame = async (
   id: string
-): Promise<DeleteGameResponse> => {
-  const response = await axiosInstance.delete<DeleteGameResponse>(
+): Promise<GameEntryResponse> => {
+  const response = await axiosInstance.delete<GameEntryResponse>(
     `/api/v1/game/${id}`
   );
   return response.data;
+};
+
+export const fetchGameDetail = async (
+  id: string
+): Promise<GameDetailResponse> => {
+  try {
+    const response = await axiosInstance.get<GameDetailResponse>(
+      `/api/v1/game/${id}`
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Failed to fetch Game Detail:", error);
+    throw error;
+  }
 };

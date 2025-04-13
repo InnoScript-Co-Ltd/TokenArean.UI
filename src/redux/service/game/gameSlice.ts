@@ -4,9 +4,11 @@ import {
   fetchCreateGame,
   fetchUpdateGame,
   fetchDeleteGame,
+  fetchGameDetail,
 } from "@/redux/api/game/gameApi";
 import {
   Game,
+  GameDetailResponse,
   GameEntryResponse,
   GameListResponse,
   PaginationParams,
@@ -14,6 +16,7 @@ import {
 
 interface GameState {
   games: Game[] | [];
+  gameDetail: Game | null;
   total: number;
   totalPages: number;
   totalCount: number;
@@ -23,6 +26,7 @@ interface GameState {
 
 const initialState: GameState = {
   games: [],
+  gameDetail: null,
   total: 0,
   totalPages: 0,
   totalCount: 0,
@@ -69,14 +73,26 @@ export const updateGame = createAsyncThunk<
 });
 
 export const deleteGame = createAsyncThunk<
-  string,
+  GameEntryResponse,
   string,
   { rejectValue: string }
 >("game/deleteGame", async (id, { rejectWithValue }) => {
   try {
-    const res = await fetchDeleteGame(id);
-    console.log(res);
-    return res.payLoad.id;
+
+    return await fetchDeleteGame(id);
+  } catch (err) {
+    return rejectWithValue((err as Error).message);
+  }
+});
+
+export const loadGameDetail = createAsyncThunk<
+  GameDetailResponse,
+  string,
+  { rejectValue: string }
+>("game/loadGameDetail", async (id, { rejectWithValue }) => {
+  try {
+    return await fetchGameDetail(id);
+
   } catch (err) {
     return rejectWithValue((err as Error).message);
   }
@@ -143,15 +159,30 @@ const gameSlice = createSlice({
         state.status = "loading";
         state.error = null;
       })
-      .addCase(deleteGame.fulfilled, (state, { payload: deletedId }) => {
+      .addCase(deleteGame.fulfilled, (state, { payload }) => {
         state.status = "succeeded";
-        console.log(deletedId);
+        const deletedId = payload?.payLoad.id;
+
         state.games = state.games.filter((g) => g.id !== deletedId);
         state.totalCount = state.totalCount - 1;
       })
       .addCase(deleteGame.rejected, (state, { payload }) => {
         state.status = "failed";
         state.error = payload || "Failed to delete game";
+      })
+
+      // gameDetail
+      .addCase(loadGameDetail.pending, (state) => {
+        state.status = "loading";
+        state.error = null;
+      })
+      .addCase(loadGameDetail.fulfilled, (state, { payload }) => {
+        state.status = "succeeded";
+        state.gameDetail = payload?.payLoad;
+      })
+      .addCase(loadGameDetail.rejected, (state, { payload }) => {
+        state.status = "failed";
+        state.error = payload || "Failed to load game detail";
       });
   },
 });
