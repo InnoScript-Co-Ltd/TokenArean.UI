@@ -241,7 +241,7 @@ const GameInputModal: FC<GameInputModalProps> = ({
                   <SelectValue placeholder="Select server type" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="NON">None</SelectItem>
+                  <SelectItem value="">None</SelectItem>
                   <SelectItem value="SERVER">Server</SelectItem>
                   <SelectItem value="ZONEID">Zone ID</SelectItem>
                 </SelectContent>
