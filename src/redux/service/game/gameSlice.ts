@@ -5,6 +5,7 @@ import {
   fetchUpdateGame,
   fetchDeleteGame,
   fetchGameDetail,
+  fetchBannerImage,
 } from "@/redux/api/game/gameApi";
 import {
   Game,
@@ -16,6 +17,7 @@ import {
 
 interface GameState {
   games: Game[] | [];
+  bannerList: Game[] | []; // the banner list data from the API
   gameDetail: Game | null;
   total: number;
   totalPages: number;
@@ -26,6 +28,7 @@ interface GameState {
 
 const initialState: GameState = {
   games: [],
+  bannerList: [], // the banner list data from the API
   gameDetail: null,
   total: 0,
   totalPages: 0,
@@ -46,6 +49,17 @@ export const loadGames = createAsyncThunk<
     return rejectWithValue((err as Error).message);
   }
 });
+export const loadBannerList = createAsyncThunk<GameEntryResponse>(
+  // { rejectValue: string }
+  "game/loadBannerList",
+  async (_, { rejectWithValue }) => {
+    try {
+      return await fetchBannerImage();
+    } catch (err) {
+      return rejectWithValue((err as Error).message);
+    }
+  }
+);
 
 export const createGame = createAsyncThunk<
   GameEntryResponse,
@@ -78,7 +92,6 @@ export const deleteGame = createAsyncThunk<
   { rejectValue: string }
 >("game/deleteGame", async (id, { rejectWithValue }) => {
   try {
-
     return await fetchDeleteGame(id);
   } catch (err) {
     return rejectWithValue((err as Error).message);
@@ -92,7 +105,6 @@ export const loadGameDetail = createAsyncThunk<
 >("game/loadGameDetail", async (id, { rejectWithValue }) => {
   try {
     return await fetchGameDetail(id);
-
   } catch (err) {
     return rejectWithValue((err as Error).message);
   }
@@ -119,6 +131,18 @@ const gameSlice = createSlice({
         state.totalCount = payload?.payLoad?.paging?.totalCount;
       })
       .addCase(loadGames.rejected, (state, { payload }) => {
+        state.status = "failed";
+        state.error = payload || "Failed to load games";
+      })
+      .addCase(loadBannerList.pending, (state) => {
+        state.status = "loading";
+        state.error = null;
+      })
+      .addCase(loadBannerList.fulfilled, (state, { payload }) => {
+        state.status = "succeeded";
+        state.bannerList = payload?.payLoadList;
+      })
+      .addCase(loadBannerList.rejected, (state, { payload }) => {
         state.status = "failed";
         state.error = payload || "Failed to load games";
       })

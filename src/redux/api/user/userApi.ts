@@ -36,7 +36,7 @@ export const fetchCreateUser = async (
 ): Promise<UserEntryResponse> => {
   try {
     const response = await axiosInstance.post<UserEntryResponse>(
-      "/register",
+      "api/v1/Auth/Register",
       User
     );
     return response.data;

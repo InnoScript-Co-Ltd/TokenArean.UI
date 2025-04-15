@@ -47,7 +47,6 @@ export const loadOrders = createAsyncThunk<
 );
 
 export const createOrder = createAsyncThunk<
-  Order,
   OrderEntryResponse,
   FormData,
   { rejectValue: string }

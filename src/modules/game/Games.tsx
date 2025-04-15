@@ -29,7 +29,7 @@ const Games: React.FC = () => {
     currentPage: pagination.currentPage,
     pageSize: pagination.pageSize,
   });
-
+  console.log("game", games);
   // Handlers
   const handlePageChange = useCallback((page: number) => {
     setPagination((p) => ({ ...p, currentPage: page }));

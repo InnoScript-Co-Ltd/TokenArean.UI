@@ -26,6 +26,18 @@ export const fetchGame = async (
     throw error;
   }
 };
+export const fetchBannerImage = async (): Promise<GameEntryResponse> => {
+  try {
+    const response = await axiosInstance.get<GameEntryResponse>(
+      "/api/v1/Game/BannerList"
+    );
+    console.log("bannerImage", response.data);
+    return response.data;
+  } catch (error) {
+    console.error("Failed to fetch Game:", error);
+    throw error;
+  }
+};
 
 export const fetchCreateGame = async (
   game: FormData
