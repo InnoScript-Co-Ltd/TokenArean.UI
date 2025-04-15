@@ -5,6 +5,7 @@ import GameCard from "@/components/global/GameCard";
 import useGame from "@/redux/hook/game/useGame";
 import { useState } from "react";
 import { FaChevronDown } from "react-icons/fa";
+import { useLanguage } from "@/redux/hook/language/useLanguage";
 
 const slides = [
   {
@@ -35,6 +36,7 @@ const Home = () => {
     currentPage: pagination.currentPage,
     pageSize: pagination.pageSize,
   });
+  const { lang } = useLanguage();
 
   const handleSeeMore = () => {
     setPagination({ currentPage: 1, pageSize: pagination.pageSize + 12 });
@@ -50,7 +52,7 @@ const Home = () => {
         {/* Most Popular */}
         <section className="mt-16">
           <h2 className="text-xl md:text-2xl lg:text-3xl font-bold mb-5 lg:mb-10">
-            MOST POPULAR
+            {lang === "en" ? " MOST POPULAR" : "လူကြိုက်များသောဂိမ်းများ"}
           </h2>
           <div className="grid grid-cols-1 min-[428px]:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 md:gap-10 mt-5 ">
             {games?.map((game, index) => (

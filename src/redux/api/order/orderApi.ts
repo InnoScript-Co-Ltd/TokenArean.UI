@@ -26,14 +26,13 @@ export const fetchOrder = async (
         params,
       }
     );
-    console.log(response.data);
+    // console.log(response.data);
     return response.data;
   } catch (error) {
     console.error("Failed to fetch Order:", error);
     throw error;
   }
 };
-
 
 export const fetchCreateOrder = async (
   order: FormData

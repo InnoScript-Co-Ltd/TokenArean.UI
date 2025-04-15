@@ -7,6 +7,7 @@ import {
 } from "@/components/ui/dialog";
 import { MdOutlineFileUpload } from "react-icons/md";
 import { OrderPayload, TokenPackage } from "@/constants/config";
+import { useLanguage } from "@/redux/hook/language/useLanguage";
 
 export interface PaymentModalProps {
   selectedPackage: TokenPackage | null;
@@ -23,6 +24,7 @@ const PaymentModal: React.FC<PaymentModalProps> = ({
   onClose,
   onConfirm,
 }) => {
+  const { lang } = useLanguage();
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
 
   const handleFile = (file: File) => {
@@ -35,7 +37,11 @@ const PaymentModal: React.FC<PaymentModalProps> = ({
     <Dialog open onOpenChange={(open) => !open && onClose()}>
       <DialogContent className="max-w-md">
         <DialogHeader>
-          <DialogTitle>Confirm & Upload Receipt</DialogTitle>
+          <DialogTitle>
+            {lang === "mm"
+              ? "အတည်ပြုပြီး ScreenShot အားပေးပို့ပါ"
+              : "Confirm & Upload ScreenShot"}
+          </DialogTitle>
         </DialogHeader>
 
         {/* Confirmation */}
@@ -53,10 +59,16 @@ const PaymentModal: React.FC<PaymentModalProps> = ({
               </div>
             </div>
           ) : (
-            <p className="text-red-500">No package selected</p>
+            <p className="text-red-500">
+              {lang === "mm"
+                ? "ဂိမ်းPackage မရွေးချယ်ရသေးပါ"
+                : "No package selected"}
+            </p>
           )}
           <div className="mt-2 flex justify-between">
-            <span className="font-semibold">Total:</span>
+            <span className="font-semibold">
+              {lang === "mm" ? "စုစုပေါင်း : " : "Total : "}
+            </span>
             <span className="font-semibold">{total}</span>
           </div>
         </div>
@@ -93,9 +105,13 @@ const PaymentModal: React.FC<PaymentModalProps> = ({
           ) : (
             <>
               <MdOutlineFileUpload className="mx-auto text-4xl text-gray-500" />
-              <p className="mt-2 text-gray-600">Drag & Drop Receipt Here</p>
+              <p className="mt-2 text-gray-600">
+                {lang === "mm"
+                  ? "ScreenShot ထည့်ပါ"
+                  : "Drag & Drop ScreenShot Here"}
+              </p>
               <p className="mt-1 text-sm text-primary font-semibold">
-                Browse Image
+                {lang === "mm" ? "ပုံရှာရန်" : "Browse Image"}
               </p>
             </>
           )}
@@ -106,7 +122,7 @@ const PaymentModal: React.FC<PaymentModalProps> = ({
             onClick={onConfirm}
             className=" w-full cursor-pointer bg-primary text-white font-semibold py-2 px-4 rounded-md hover:opacity-90 transition"
           >
-            Confirm
+            {lang === "mm" ? "ဝယ်ယူမည်" : "Confirm"}
           </button>
         </div>
       </DialogContent>
