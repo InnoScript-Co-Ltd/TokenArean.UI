@@ -25,7 +25,7 @@ const GameDetail: React.FC = () => {
     serverInfo: "",
     mobileNumber: "",
     tokenPackageId: "",
-    screenShot: "",
+    screenShot: null,
   });
 
   const handleInputChange = (
@@ -44,11 +44,7 @@ const GameDetail: React.FC = () => {
     setIsPaymentModalOpen(true);
   };
 
-  const handleScreenshotChange = (file: File) => {
-    setFormData((prev) => ({ ...prev, file_ScreenShot: file }));
-  };
-
-  const handleConfirmPayment = () => {
+  const handleConfirmPayment = async () => {
     const payload = new FormData();
 
     payload.append("inGameUserId", String(formData.inGameUserId));
@@ -56,12 +52,12 @@ const GameDetail: React.FC = () => {
     payload.append("mobileNumber", String(formData.mobileNumber));
     payload.append("tokenPackageId", String(formData.tokenPackageId));
     payload.append("screenShot", "");
-
     if (formData.screenShot) {
       payload.append("file_ScreenShot", formData.screenShot);
     }
+    console.log(payload);
 
-    handleCreateOrder(payload);
+    await handleCreateOrder(payload);
     setIsPaymentModalOpen(false);
   };
 
@@ -266,7 +262,7 @@ const GameDetail: React.FC = () => {
         <PaymentModal
           selectedPackage={selectedPackage}
           total={total}
-          onScreenshotChange={handleScreenshotChange}
+          setForm={setFormData}
           onClose={() => setIsPaymentModalOpen(false)}
           onConfirm={handleConfirmPayment}
         />

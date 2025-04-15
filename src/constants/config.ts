@@ -181,7 +181,7 @@ export interface OrderEntryResponse {
 export interface OrderPayload {
   inGameUserId: number | string;
   serverInfo?: string;
-  screenShot?: string | null;
+  screenShot?: string | File | null;
   file_ScreenShot?: File | null;
   mobileNumber?: string;
   orderStatus?: string;

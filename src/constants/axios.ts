@@ -31,23 +31,28 @@ axiosInstance.interceptors.request.use((req) => {
 axiosInstance.interceptors.response.use(
   (res) => res,
   async (error) => {
-    const status = error.response?.status;
+    const original = error.config;
+    if (original.url?.includes("/refresh")) {
+      dispatch(logout());
+      window.location.href = "/login";
+      return Promise.reject(error);
+    }
 
-    if ((status === 401 || status === 403) && dispatch) {
+    if (
+      (error.response?.status === 401 || error.response?.status === 403) &&
+      !original._retry
+    ) {
+      original._retry = true;
       try {
-        // refresh the token using Redux action
-        const res = await dispatch(refreshToken()).unwrap();
-
-        // update token for retry
-        const newToken = res.accessToken;
-        error.config.headers.Authorization = `Bearer ${newToken}`;
-
-        // retry original request
-        return axiosInstance(error.config);
-      } catch (err) {
+        const { accessToken } = await dispatch(refreshToken()).unwrap();
+        axiosInstance.defaults.headers.common[
+          "Authorization"
+        ] = `Bearer ${accessToken}`;
+        original.headers["Authorization"] = `Bearer ${accessToken}`;
+        return axiosInstance(original);
+      } catch {
         dispatch(logout());
         window.location.href = "/login";
-        console.error(err);
         return Promise.reject(new Error("Session expired"));
       }
     }
