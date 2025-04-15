@@ -7,13 +7,12 @@ import { useState } from "react";
 import { FaChevronDown } from "react-icons/fa";
 import { useLanguage } from "@/redux/hook/language/useLanguage";
 
-
 const Home = () => {
   const [pagination, setPagination] = useState({
     currentPage: 1,
     pageSize: 12,
   });
-  const { games, totalCount, bannerList } = useGame({
+  const { games, totalCount } = useGame({
     currentPage: pagination.currentPage,
     pageSize: pagination.pageSize,
   });
@@ -26,26 +25,21 @@ const Home = () => {
   return (
     <>
       <Header />
-      <main className=" my-8">
+      <main className=" pt-8">
         {/* Carousel */}
-        <EmblaCarousel games={games} options={{ loop: true }} />
-
-
-        {/* Most Popular */}
-        <section className="mt-16">
-          <h2 className="text-xl md:text-2xl lg:text-3xl font-bold mb-5 lg:mb-10">
-            MOST POPULAR
-          </h2>
-          <div className="grid grid-cols-1 min-[428px]:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 md:gap-10 mt-5 ">
-            {games?.map((game, index) => (
-              <div key={index} className=" col-span-1">
-                <GameCard game={game} />
-              </div>
-            ))}
+        {totalCount == null || totalCount < 3 ? (
+          <div className=" container mx-auto px-5 ">
+            <img
+              src={games[0]?.bannerImage}
+              className=" min-h-[300px] w-full h-full object-cover rounded-lg shadow-lg overflow-hidden "
+              alt=""
+            />
           </div>
+        ) : (
+          <EmblaCarousel games={games} options={{ loop: true }} />
+        )}
 
-
-        <div className=" container mx-auto p-5">
+        <div className="container mx-auto p-5">
           {/* Most Popular */}
           <section className="mt-16">
             <h2 className="text-xl md:text-2xl lg:text-3xl font-bold mb-5 lg:mb-10">

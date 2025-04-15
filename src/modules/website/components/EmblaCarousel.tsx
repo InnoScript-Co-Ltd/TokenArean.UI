@@ -6,14 +6,13 @@ import {
 } from "embla-carousel";
 import useEmblaCarousel from "embla-carousel-react";
 import { Game } from "@/constants/config";
-import { Link } from "react-router-dom";
 
 const TWEEN_FACTOR_BASE = 0.84;
 const numberWithinRange = (number: number, min: number, max: number): number =>
   Math.min(Math.max(number, min), max);
 
 type PropType = {
-  slides: Game[];
+  games: Game[];
   options?: EmblaOptionsType;
 };
 
@@ -101,6 +100,7 @@ const EmblaCarousel: React.FC<PropType> = ({ games, options }) => {
 
     return () => clearInterval(autoplay);
   }, [emblaApi]);
+
   return (
     <div className="embla overflow-hidden">
       <div className="embla__viewport" ref={emblaRef}>
@@ -110,13 +110,11 @@ const EmblaCarousel: React.FC<PropType> = ({ games, options }) => {
               className="embla__slide flex-[0_0_80%] px-1 transition-opacity duration-100"
               key={index}
             >
-              <Link to={`/game/${slide.id}`}>
-                <img
-                  className="embla__slide__img w-full h-64 object-cover rounded-lg shadow-lg"
-                  src={slide.bannerImage}
-                  alt={slide.bannerImage || `Slide ${index + 1}`}
-                />
-              </Link>
+              <img
+                className="embla__slide__img w-full h-64 object-cover rounded-lg shadow-lg"
+                src={slide.bannerImage}
+                alt={slide.title || `Slide ${index + 1}`}
+              />
             </div>
           ))}
         </div>
