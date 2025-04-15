@@ -58,7 +58,7 @@ const GameInputModal: FC<GameInputModalProps> = ({
         title: currentGame.title,
         description: currentGame.description,
         orderIndex: currentGame.orderIndex,
-        serverType: currentGame.serverType,
+        serverType: "",
         isDisable: currentGame.isDisable,
       });
       setLogoPreview(currentGame.logo);

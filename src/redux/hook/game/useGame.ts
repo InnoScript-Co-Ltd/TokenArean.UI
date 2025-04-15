@@ -3,6 +3,7 @@ import { shallowEqual } from "react-redux";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import {
   loadGames,
+  loadBannerList,
   createGame,
   updateGame,
   deleteGame,
@@ -18,7 +19,8 @@ const useGame = ({ currentPage = 1, pageSize = 12 }: PaginationParams = {}) => {
   const selectGame = useMemo(() => (state: RootState) => state.game, []);
   const gameResponse = useAppSelector(selectGame, shallowEqual);
 
-  const { games, totalPages, totalCount, status, error } = gameResponse;
+  const { games, totalPages, totalCount, status, error, bannerList } =
+    gameResponse;
 
   useEffect(() => {
     const pagination = {
@@ -28,6 +30,9 @@ const useGame = ({ currentPage = 1, pageSize = 12 }: PaginationParams = {}) => {
 
     dispatch(loadGames({ pagination, searchTerm }));
   }, [dispatch, currentPage, pageSize, searchTerm]);
+  useEffect(() => {
+    dispatch(loadBannerList());
+  }, [dispatch]);
 
   const handleCreateGame = useCallback(
     async (payload: FormData) => {
@@ -69,6 +74,7 @@ const useGame = ({ currentPage = 1, pageSize = 12 }: PaginationParams = {}) => {
 
   return {
     games,
+    bannerList,
     totalCount,
     totalPages,
     searchTerm,

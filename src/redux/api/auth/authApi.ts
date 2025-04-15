@@ -13,7 +13,7 @@ export const fetchLogin = async (
   try {
     const requestBody: LoginPayload = { email, password };
     const response = await axiosInstance.post<LoginResponse>(
-      "/login",
+      "api/v1/Auth/Login",
       requestBody
     );
     console.log("login:", response);

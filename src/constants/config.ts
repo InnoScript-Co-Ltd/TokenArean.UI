@@ -74,7 +74,7 @@ export interface GameEntryResponse {
   statusCode: number;
   message: string;
   payLoad: Game;
-  payLoadList: null;
+  payLoadList: Game[];
 }
 export interface GamePayload {
   title: string;
