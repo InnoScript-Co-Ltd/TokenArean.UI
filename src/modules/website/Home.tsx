@@ -6,6 +6,7 @@ import useGame from "@/redux/hook/game/useGame";
 import { useState } from "react";
 import { FaChevronDown } from "react-icons/fa";
 import { useLanguage } from "@/redux/hook/language/useLanguage";
+import { Link } from "react-router-dom";
 
 const Home = () => {
   const [pagination, setPagination] = useState({
@@ -29,11 +30,13 @@ const Home = () => {
         {/* Carousel */}
         {totalCount == null || totalCount < 3 ? (
           <div className=" container mx-auto px-5 ">
-            <img
-              src={games[0]?.bannerImage}
-              className=" min-h-[300px] w-full h-full object-cover rounded-lg shadow-lg overflow-hidden "
-              alt=""
-            />
+            <Link to={`game/${games[0]?.id}`}>
+              <img
+                src={games[0]?.bannerImage}
+                className=" min-h-[300px] w-full h-full object-cover rounded-lg shadow-lg overflow-hidden "
+                alt=""
+              />
+            </Link>
           </div>
         ) : (
           <EmblaCarousel games={games} options={{ loop: true }} />

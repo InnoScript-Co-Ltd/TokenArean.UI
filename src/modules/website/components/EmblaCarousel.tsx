@@ -6,6 +6,7 @@ import {
 } from "embla-carousel";
 import useEmblaCarousel from "embla-carousel-react";
 import { Game } from "@/constants/config";
+import { Link } from "react-router-dom";
 
 const TWEEN_FACTOR_BASE = 0.84;
 const numberWithinRange = (number: number, min: number, max: number): number =>
@@ -105,17 +106,18 @@ const EmblaCarousel: React.FC<PropType> = ({ games, options }) => {
     <div className="embla overflow-hidden">
       <div className="embla__viewport" ref={emblaRef}>
         <div className="embla__container flex">
-          {games.map((slide, index) => (
-            <div
+          {games?.map((slide, index) => (
+            <Link
+              to={`/game/${slide?.id}`}
               className="embla__slide flex-[0_0_80%] px-1 transition-opacity duration-100"
               key={index}
             >
               <img
                 className="embla__slide__img w-full h-64 object-cover rounded-lg shadow-lg"
-                src={slide.bannerImage}
-                alt={slide.title || `Slide ${index + 1}`}
+                src={slide?.bannerImage}
+                alt={slide?.title || `Slide ${index + 1}`}
               />
-            </div>
+            </Link>
           ))}
         </div>
       </div>

@@ -31,8 +31,6 @@ const GameTable: React.FC<GameTableProps> = ({
 }) => {
   const totalPages = Math.ceil(totalCount / pageSize);
 
-  console.log(totalCount);
-
   return (
     <>
       <Table>
