@@ -37,10 +37,12 @@ const GameDetail: React.FC = () => {
 
   const handleBuyNow = () => {
     if (!selectedPackage) return;
+
     setFormData((prev) => ({
       ...prev,
       tokenPackageId: selectedPackage.id.toString(),
     }));
+
     setIsPaymentModalOpen(true);
   };
 
@@ -58,6 +60,14 @@ const GameDetail: React.FC = () => {
     console.log(payload);
 
     await handleCreateOrder(payload);
+
+    setFormData({
+      inGameUserId: "",
+      serverInfo: "",
+      mobileNumber: "",
+      tokenPackageId: "",
+      screenShot: null,
+    });
     setIsPaymentModalOpen(false);
   };
 
@@ -150,6 +160,7 @@ const GameDetail: React.FC = () => {
                         ? "အသုံးပြုသူ IDထည့်ပါ ..."
                         : "Enter User ID ..."
                     }
+                    required
                     className="w-full h-12 px-5 rounded-md bg-[#f5f5f5] border-0"
                   />
                 </div>
@@ -250,7 +261,7 @@ const GameDetail: React.FC = () => {
                 {/* Buy Now Button */}
                 <button
                   onClick={handleBuyNow}
-                  disabled={!selectedPackage}
+                  disabled={!selectedPackage || !formData?.inGameUserId}
                   className="bg-primary text-white w-full cursor-pointer py-2 px-6 rounded-md font-semibold hover:opacity-80 transition disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   {lang === "mm" ? "ဝယ်ယူမည်" : "Buy Now"}
