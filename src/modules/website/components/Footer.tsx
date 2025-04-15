@@ -1,39 +1,40 @@
 import React from "react";
+import { FaFacebook, FaTelegram } from "react-icons/fa";
 
 const Footer: React.FC = () => {
   return (
-    <footer className="bg-gray-100 p-6 mt-10 text-center">
-      <div className="flex justify-between items-center max-w-5xl mx-auto">
-        <div className="flex items-center space-x-2">
-          <img src="/logo.png" alt="Logo" className="h-8" />
+    <footer className="bg-gray-100 mt-10 text-center">
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-5 container mx-auto text-left px-5 pt-5">
+        {/* Logo Section */}
+        <div className="flex items-center">
+          {/* <img src="/logo.png" alt="Logo" className="h-8" /> */}
           <span className="text-lg font-bold">LOGO</span>
         </div>
+
+        {/* Contact Info */}
         <div className="text-sm">
-          <p>
-            <strong>Contact Info</strong>
-          </p>
+          <p className="font-semibold mb-1">Contact Info</p>
           <p>Address: Your address here</p>
           <p>Email: email@mail.com</p>
           <p>Phone: 098877887</p>
         </div>
+
+        {/* Social Icons */}
         <div>
-          <p>
-            <strong>Follow Us</strong>
-          </p>
-          <div className="flex space-x-2">
+          <p className="font-semibold mb-1">Contact Us</p>
+          <div className="flex mt-4 gap-5">
             <a href="#">
-              <img src="/icons/facebook.png" alt="FB" className="h-6" />
+              <FaFacebook className=" text-3xl" />
             </a>
             <a href="#">
-              <img src="/icons/linkedin.png" alt="LI" className="h-6" />
-            </a>
-            <a href="#">
-              <img src="/icons/youtube.png" alt="YT" className="h-6" />
+              <FaTelegram className=" text-3xl" />
             </a>
           </div>
         </div>
       </div>
-      <p className="text-xs mt-4">© 2025. All rights reserved.</p>
+      <div className=" border-t flex justify-center items-center mt-4 p-2">
+        <p className="text-xs">© 2025. All rights reserved.</p>
+      </div>
     </footer>
   );
 };

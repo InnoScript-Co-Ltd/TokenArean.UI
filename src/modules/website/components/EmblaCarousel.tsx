@@ -5,25 +5,19 @@ import {
   EmblaOptionsType,
 } from "embla-carousel";
 import useEmblaCarousel from "embla-carousel-react";
-import type { Game } from "@/constants/config";
+import { Game } from "@/constants/config";
 import { Link } from "react-router-dom";
 
 const TWEEN_FACTOR_BASE = 0.84;
 const numberWithinRange = (number: number, min: number, max: number): number =>
   Math.min(Math.max(number, min), max);
 
-// type Slide = {
-//   id: number;
-//   image: string;
-//   alt?: string;
-// };
-
 type PropType = {
   slides: Game[];
   options?: EmblaOptionsType;
 };
 
-const EmblaCarousel: React.FC<PropType> = ({ slides, options }) => {
+const EmblaCarousel: React.FC<PropType> = ({ games, options }) => {
   const [emblaRef, emblaApi] = useEmblaCarousel(options);
   const tweenFactor = useRef(0);
   const [selectedIndex, setSelectedIndex] = useState(0);
@@ -111,7 +105,7 @@ const EmblaCarousel: React.FC<PropType> = ({ slides, options }) => {
     <div className="embla overflow-hidden">
       <div className="embla__viewport" ref={emblaRef}>
         <div className="embla__container flex">
-          {slides.map((slide, index) => (
+          {games.map((slide, index) => (
             <div
               className="embla__slide flex-[0_0_80%] px-1 transition-opacity duration-100"
               key={index}
@@ -130,7 +124,7 @@ const EmblaCarousel: React.FC<PropType> = ({ slides, options }) => {
 
       {/* Dots Navigation */}
       <div className="flex justify-center mt-4 space-x-2">
-        {slides.map((_, index) => (
+        {games.map((_, index) => (
           <button
             key={index}
             className={`w-10 h-2 rounded-full ${

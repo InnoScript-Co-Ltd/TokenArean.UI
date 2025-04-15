@@ -8,13 +8,13 @@ import PaymentModal from "./components/PaymentModal";
 import useGameDetail from "@/redux/hook/game/useGameDetail";
 import { OrderPayload, TokenPackage } from "@/constants/config";
 import useOrder from "@/redux/hook/order/userOrder";
+import { useLanguage } from "@/redux/hook/language/useLanguage";
 
 const GameDetail: React.FC = () => {
   const { gameId } = useParams();
   const { gameDetail } = useGameDetail({ id: gameId });
   const { handleCreateOrder } = useOrder();
-
-  const currentLang = "mm";
+  const { lang } = useLanguage();
 
   const [isPaymentModalOpen, setIsPaymentModalOpen] = useState(false);
   const [selectedPackage, setSelectedPackage] = useState<TokenPackage | null>(
@@ -94,13 +94,29 @@ const GameDetail: React.FC = () => {
               </div>
               <div className="mt-4">
                 <h2 className="text-lg font-semibold">
-                  {currentLang === "mm" ? "ညွှန်ကြားချက်" : "How to Top Up"}
+                  {lang === "mm" ? "ညွှန်ကြားချက်" : "How to Top Up"}
                 </h2>
-                <ol className="list-decimal list-inside text-sm space-y-1">
-                  <li>Enter Your User ID & Select Server</li>
-                  <li>Enter Your Mobile Number (Optional)</li>
-                  <li>Choose Your Desired Package</li>
-                  <li>Click "Buy Now" to finalize your purchase</li>
+                <ol className="list-decimal list-inside text-sm space-y-1 mt-3">
+                  <li>
+                    {lang === "mm"
+                      ? "အသုံးပြုသူ ID နှင့် Server ကိုထည့်ပါ"
+                      : "Enter Your User ID & Select Server"}
+                  </li>
+                  <li>
+                    {lang === "mm"
+                      ? "အသုံးပြုသူ ဖုန်းနံပတ်ထည့်ပါ"
+                      : "Enter Your Mobile Number (Optional)"}
+                  </li>
+                  <li>
+                    {lang === "mm"
+                      ? "ဝယ်ယူလိုသော Package ကိုရွေးချယ်ပါ"
+                      : "Choose Your Desired Package"}
+                  </li>
+                  <li>
+                    {lang === "mm"
+                      ? '"ဝယ်ယူမည်" ကိုနှိပ်ပါက ဝယ်ယူခြင်းအောင်မြင်ပါပြီ'
+                      : 'Click "Buy Now" to finalize your purchase'}
+                  </li>
                 </ol>
               </div>
             </div>
@@ -112,7 +128,7 @@ const GameDetail: React.FC = () => {
               <div className="grid grid-cols-3 gap-5">
                 <div className="col-span-3">
                   <p className="text-xl font-semibold text-[#333]">
-                    {currentLang === "mm"
+                    {lang === "mm"
                       ? "အကောင့်အချက်အလက်များ ဖြည့်သွင်းပါ"
                       : "Enter Account Details"}
                   </p>
@@ -129,7 +145,11 @@ const GameDetail: React.FC = () => {
                     name="inGameUserId"
                     value={formData?.inGameUserId}
                     onChange={handleInputChange}
-                    placeholder="Enter User ID ..."
+                    placeholder={
+                      lang === "mm"
+                        ? "အသုံးပြုသူ IDထည့်ပါ ..."
+                        : "Enter User ID ..."
+                    }
                     className="w-full h-12 px-5 rounded-md bg-[#f5f5f5] border-0"
                   />
                 </div>
@@ -144,7 +164,11 @@ const GameDetail: React.FC = () => {
                         onChange={handleInputChange}
                         className="w-full h-12 px-5 rounded-md bg-[#f5f5f5] border-0"
                       >
-                        <option value="">Select Server</option>
+                        <option value="">
+                          {lang === "mm"
+                            ? "Server ရွေးချယ်ပါ"
+                            : "Select Server"}
+                        </option>
                         <option value="America">America</option>
                         <option value="Europe">Europe</option>
                         <option value="Asia">Asia</option>
@@ -156,7 +180,11 @@ const GameDetail: React.FC = () => {
                         name="serverInfo"
                         value={formData?.serverInfo}
                         onChange={handleInputChange}
-                        placeholder="Enter Zone ID ..."
+                        placeholder={
+                          lang === "mm"
+                            ? "Zone IDထည့်ပါ ..."
+                            : "Enter Zone ID ..."
+                        }
                         className="w-full h-12 px-5 rounded-md bg-[#f5f5f5] border-0"
                       />
                     )}
@@ -170,7 +198,11 @@ const GameDetail: React.FC = () => {
                     name="mobileNumber"
                     value={formData?.mobileNumber}
                     onChange={handleInputChange}
-                    placeholder="Enter Mobile Number (Optional) ..."
+                    placeholder={
+                      lang === "mm"
+                        ? "အသုံးပြုသူ ဖုန်းနံပတ်ထည့်ပါ ..."
+                        : "Enter Mobile Number (Optional) ..."
+                    }
                     className="w-full h-12 px-5 rounded-md bg-[#f5f5f5] border-0"
                   />
                 </div>
@@ -179,9 +211,9 @@ const GameDetail: React.FC = () => {
               {/* Selected Item & Total */}
               <div className="mt-6 space-y-4">
                 <p className="text-lg font-semibold text-[#333]">
-                  {currentLang === "mm"
-                    ? "ရွေးချယ်ထားသော ဂိမ်းItem"
-                    : "Selected Game Item"}
+                  {lang === "mm"
+                    ? "ရွေးချယ်ထားသော ဂိမ်းPackage"
+                    : "Selected Game Package"}
                 </p>
                 <div className="bg-[#f5f5f5] p-4 rounded-lg flex items-center justify-between">
                   {selectedPackage ? (
@@ -202,15 +234,15 @@ const GameDetail: React.FC = () => {
                     </>
                   ) : (
                     <span className="text-gray-500">
-                      {currentLang === "mm"
-                        ? "ဂိမ်းItem မရွေးချယ်ရသေးပါ"
+                      {lang === "mm"
+                        ? "ဂိမ်းPackage မရွေးချယ်ရသေးပါ"
                         : "Select Game Item ..."}
                     </span>
                   )}
                 </div>
                 <div className="flex justify-between px-4">
                   <span className="text-lg font-semibold">
-                    {currentLang === "mm" ? "စုစုပေါင်း" : "Total"}
+                    {lang === "mm" ? "စုစုပေါင်း" : "Total"}
                   </span>
                   <span className="text-lg font-semibold">{total}</span>
                 </div>
@@ -221,7 +253,7 @@ const GameDetail: React.FC = () => {
                   disabled={!selectedPackage}
                   className="bg-primary text-white w-full cursor-pointer py-2 px-6 rounded-md font-semibold hover:opacity-80 transition disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                  {currentLang === "mm" ? "ဝယ်မည်" : "Buy Now"}
+                  {lang === "mm" ? "ဝယ်ယူမည်" : "Buy Now"}
                 </button>
               </div>
             </div>
@@ -231,9 +263,7 @@ const GameDetail: React.FC = () => {
         {/* Package Grid */}
         <section className="mt-12">
           <h2 className="text-2xl font-bold mb-5">
-            {currentLang === "mm"
-              ? "ဂိမ်းItem ရွေးချယ်မည်"
-              : "Select Game Item"}
+            {lang === "mm" ? "ဂိမ်းItem ရွေးချယ်မည်" : "Select Game Item"}
           </h2>
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5">
             {gameDetail?.tokenPackageDto?.map((pkg) => (
