@@ -7,7 +7,7 @@ import {
   updateOrder,
   deleteOrder,
 } from "@/redux/service/order/orderSlice";
-import { OrderPayload, PaginationParams } from "@/constants/config";
+import { PaginationParams } from "@/constants/config";
 import { useAppDispatch, useAppSelector } from "../hook";
 import { RootState } from "@/redux/store";
 
