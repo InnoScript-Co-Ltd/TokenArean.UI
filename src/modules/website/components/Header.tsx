@@ -1,28 +1,55 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { FaSearch } from "react-icons/fa";
+import { Input } from "@/components/ui/input";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { useLanguage } from "@/redux/hook/language/useLanguage";
 
 const Header: React.FC = () => {
+  const [keyword, setKeyword] = useState("");
+  const { lang, changeLanguage } = useLanguage();
+
   return (
-    <header className=" container mx-auto px-2 py-3 md:p-5">
+    <header className="container mx-auto px-2 py-3 md:p-5">
       <div className="flex flex-col min-[400px]:flex-row gap-y-3 md:items-center justify-between min-h-16 px-5 py-3 shadow-md">
-        <Link to={"/"} className="flex items-center gap-5">
+        <Link to="/" className="flex items-center gap-5">
           <span className="text-lg font-bold">Logo</span>
         </Link>
 
         <div className="flex items-center gap-5 max-[400px]:w-full h-full">
-          <input
-            type="text"
-            placeholder="Search"
-            className="border px-3 py-1 rounded h-full max-[400px]:w-full min-w-[180px] lg:min-w-[300px]"
-          />
-          <a
-            href="mailto:thantzinhtet2001@gmail.com"
-            className="bg-primary text-white flex justify-center items-center px-5 py-2 hover:opacity-70 rounded h-full text-sm"
+          <div className="relative w-full md:w-auto">
+            <FaSearch className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+            <Input
+              id="search"
+              name="search"
+              type="text"
+              placeholder="Search game..."
+              value={keyword}
+              onChange={(e) => setKeyword(e.target.value)}
+              className="pl-10"
+            />
+          </div>
+
+          <Select
+            value={lang}
+            onValueChange={(value) => changeLanguage(value as "en" | "mm")}
           >
-            <span className=" hidden md:block">Contact Us</span>
-            <FaSearch className=" block md:hidden" />
-          </a>
+            <SelectTrigger className="w-[180px]">
+              <SelectValue placeholder="Language">
+                {lang === "en" ? "English" : "မြန်မာ"}
+              </SelectValue>
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="mm">မြန်မာ</SelectItem>
+              <SelectItem value="en">English</SelectItem>
+            </SelectContent>
+          </Select>
         </div>
       </div>
     </header>

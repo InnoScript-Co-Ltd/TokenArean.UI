@@ -15,65 +15,65 @@ import { NavMain } from "./NavMain";
 import { NavUser } from "./NavUser";
 import { Link } from "react-router-dom";
 
-const data = {
-  user: {
-    name: "shadcn",
-    email: "m@example.com",
-    avatar: "/avatars/shadcn.jpg",
-  },
-  navMain: [
-    {
-      title: "User",
-      url: "users",
-      icon: Gamepad,
-      isActive: true,
-      items: [
-        {
-          title: "Users List",
-          url: "/dashboard/users",
-        },
-      ],
-    },
-    {
-      title: "Game",
-      url: "games",
-      icon: Gamepad,
-      isActive: true,
-      items: [
-        {
-          title: "Game List",
-          url: "/dashboard/games",
-        },
-      ],
-    },
-    {
-      title: "TokenPackage",
-      url: "packages",
-      icon: Gamepad,
-      isActive: true,
-      items: [
-        {
-          title: "TokenPackage List",
-          url: "/dashboard/packages",
-        },
-      ],
-    },
-    {
-      title: "Order",
-      url: "orders",
-      icon: Gamepad,
-      isActive: true,
-      items: [
-        {
-          title: "Order List",
-          url: "/dashboard/orders",
-        },
-      ],
-    },
-  ],
-};
-
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+  const data = {
+    user: {
+      name: "User",
+      email: "user@gmail.com",
+      avatar: "/avatars/shadcn.jpg",
+    },
+    navMain: [
+      {
+        title: "User",
+        url: "users",
+        icon: Gamepad,
+        isActive: true,
+        items: [
+          {
+            title: "Users List",
+            url: "/dashboard/users",
+          },
+        ],
+      },
+      {
+        title: "Game",
+        url: "games",
+        icon: Gamepad,
+        isActive: true,
+        items: [
+          {
+            title: "Game List",
+            url: "/dashboard/games",
+          },
+        ],
+      },
+      {
+        title: "TokenPackage",
+        url: "packages",
+        icon: Gamepad,
+        isActive: true,
+        items: [
+          {
+            title: "TokenPackage List",
+            url: "/dashboard/packages",
+          },
+        ],
+      },
+      {
+        title: "Order",
+        url: "orders",
+        icon: Gamepad,
+        isActive: true,
+        items: [
+          {
+            title: "Order List",
+            url: "/dashboard/orders",
+          },
+        ],
+      },
+    ],
+  };
+
   return (
     <Sidebar collapsible="icon" {...props}>
       <SidebarHeader>

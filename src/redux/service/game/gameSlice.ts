@@ -142,9 +142,9 @@ const gameSlice = createSlice({
         state.status = "succeeded";
         state.bannerList = payload?.payLoadList;
       })
-      .addCase(loadBannerList.rejected, (state, { payload }) => {
+      .addCase(loadBannerList.rejected, (state) => {
         state.status = "failed";
-        state.error = payload || "Failed to load games";
+        state.error = "Failed to load games";
       })
 
       // createGame

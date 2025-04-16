@@ -29,10 +29,8 @@ const useGame = ({ currentPage = 1, pageSize = 12 }: PaginationParams = {}) => {
     };
 
     dispatch(loadGames({ pagination, searchTerm }));
-  }, [dispatch, currentPage, pageSize, searchTerm]);
-  useEffect(() => {
     dispatch(loadBannerList());
-  }, [dispatch]);
+  }, [dispatch, currentPage, pageSize, searchTerm]);
 
   const handleCreateGame = useCallback(
     async (payload: FormData) => {
