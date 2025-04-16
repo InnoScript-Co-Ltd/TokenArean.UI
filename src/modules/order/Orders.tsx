@@ -71,7 +71,9 @@ const Orders: React.FC = () => {
 
   return (
     <>
-      <Banner title="Orders" />
+      <div className="flex flex-row gap-5 items-center justify-between px-5 py-3">
+        <Banner title="Orders" />
+      </div>
       <div className="my-5 px-5 py-3 min-w-[500px] overflow-x-auto w-full">
         <OrderTable
           orders={orders}

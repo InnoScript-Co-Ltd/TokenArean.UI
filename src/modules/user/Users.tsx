@@ -86,17 +86,18 @@ const Users: React.FC = () => {
   if (status === "failed") return <p>Error: {error}</p>;
   return (
     <>
-      <Banner title="Users" />
-      <button
-        onClick={() => {
-          setCurrentUser(null);
-          setOpen(true);
-        }}
-        className=" px-3 sm:px-5 py-2 text-white bg-primary rounded-md shadow-md hover:opacity-70 duration-200 transition-all w-fit h-fit cursor-pointer text-sm md:text-base"
-      >
-        Add User
-      </button>
-
+      <div className="flex flex-row gap-5 items-center justify-between px-5 py-3">
+        <Banner title="Users" />
+        <button
+          onClick={() => {
+            setCurrentUser(null);
+            setOpen(true);
+          }}
+          className=" px-3 sm:px-5 py-2 text-white bg-primary rounded-md shadow-md hover:opacity-70 duration-200 transition-all w-fit h-fit cursor-pointer text-sm md:text-base"
+        >
+          Add User
+        </button>
+      </div>
       <div className="my-5 px-5 py-3 min-w-[500px] overflow-x-auto w-full">
         <UserTable
           Users={Users}

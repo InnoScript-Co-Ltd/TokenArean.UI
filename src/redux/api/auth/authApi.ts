@@ -14,11 +14,11 @@ export const fetchLogin = async (
   try {
     const requestBody: LoginPayload = { email, password };
     const response = await axiosInstance.post<LoginResponse>(
-      "/Login",
+      "api/v1/auth/Login",
       requestBody
     );
     console.log("login:", response);
-    return response.data;
+    return response.data.payLoad;
   } catch (error) {
     console.log("Failed to Login:", error);
     throw error;
@@ -38,11 +38,11 @@ export const fetchRefreshToken = async (): Promise<RefreshTokenResponse> => {
     };
 
     const response = await axiosInstance.post<RefreshTokenResponse>(
-      "/refresh",
+      "api/v1/auth/refresh",
       requestBody
     );
 
-    return response.data;
+    return response.data.payLoad;
   } catch (error) {
     console.error("Failed to Refresh:", error);
     throw error;
