@@ -8,19 +8,18 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { LoginPayload } from "@/constants/config";
+import { ForgetPasswordPayload } from "@/constants/config";
 import useAuth from "@/redux/hook/auth/useAuth";
 import { AxiosError } from "axios";
 import { useState, ChangeEvent, FormEvent } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
-const Login = () => {
+const ForgotPassword = () => {
   const navigate = useNavigate();
-  const { login } = useAuth();
+  const { forgotPassword } = useAuth();
 
-  const [credentials, setCredentials] = useState<LoginPayload>({
+  const [credentials, setCredentials] = useState<ForgetPasswordPayload>({
     email: "",
-    password: "",
   });
   const [error, setError] = useState<string | null>(null);
 
@@ -35,11 +34,9 @@ const Login = () => {
   const submitHandler = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      await login(credentials.email, credentials.password);
-      // if (response?.success === false) {
-      //   throw new Error("Login Failed!");
-      // }
-      navigate("/dashboard");
+      await forgotPassword(credentials.email);
+
+      navigate("/login");
     } catch (error) {
       if (error instanceof AxiosError) {
         setError(error.response?.data?.message || "Network Error");
@@ -48,7 +45,7 @@ const Login = () => {
       } else {
         setError("Wrong Credentials");
       }
-      setCredentials({ email: "", password: "" });
+      setCredentials({ email: "" });
     }
   };
 
@@ -56,9 +53,9 @@ const Login = () => {
     <div className="flex items-center justify-center h-screen">
       <Card>
         <CardHeader>
-          <CardTitle className="text-2xl">Login</CardTitle>
+          <CardTitle className="text-2xl">Forgot Password</CardTitle>
           <CardDescription>
-            Enter your email below to login to your account
+            Enter your email below to reset your password
           </CardDescription>
           {error && <div className="text-red-500 text-sm">{error}</div>}
         </CardHeader>
@@ -77,27 +74,9 @@ const Login = () => {
                   required
                 />
               </div>
-              <div className="grid gap-2">
-                <div className="flex items-center justify-between">
-                  <Label htmlFor="password">Password</Label>
-                  <Link
-                    className=" text-sm hover:opacity-70"
-                    to={"/forget-password"}
-                  >
-                    Forget Password
-                  </Link>
-                </div>
-                <Input
-                  id="password"
-                  type="password"
-                  name="password"
-                  value={credentials.password}
-                  onChange={handleChange}
-                  required
-                />
-              </div>
+
               <Button type="submit" className="w-full cursor-pointer">
-                Login
+                Confirm
               </Button>
             </div>
           </form>
@@ -107,4 +86,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default ForgotPassword;

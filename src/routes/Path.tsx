@@ -12,6 +12,7 @@ import GameDetail from "@/modules/website/GameDetail";
 import Home from "@/modules/website/Home";
 import Login from "@/pages/Login";
 import { Route, Routes } from "react-router-dom";
+import ForgotPassword from "@/pages/ForgotPassword";
 
 const Path = () => {
   return (
@@ -50,6 +51,10 @@ const Path = () => {
         {/* Login Pages */}
         <Route path="/login" element={<Login />} />
         {/* Login Pages */}
+
+        {/* Forgot Password Pages */}
+        <Route path="/forget-password" element={<ForgotPassword />} />
+        {/* Forgot Password Pages */}
 
         {/* Website Pages */}
         <Route path="/" element={<Home />} />

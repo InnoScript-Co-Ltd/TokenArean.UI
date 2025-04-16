@@ -7,8 +7,10 @@ export interface PaginationParams {
 
 // Login
 export interface LoginResponse {
-  accessToken: string;
-  refreshToken: string;
+  payLoad: {
+    accessToken: string;
+    refreshToken: string;
+  };
 }
 export interface LoginPayload {
   email: string;
@@ -16,14 +18,23 @@ export interface LoginPayload {
 }
 // Login
 
-// Login
+// Refresh Token
 export interface RefreshTokenResponse {
   accessToken: string;
 }
 export interface RefreshTokenPayload {
   refreshToken: string;
 }
-// Login
+// Refresh Token
+
+// Forget Password
+export interface ForgetPasswordResponse {
+  message: string;
+}
+export interface ForgetPasswordPayload {
+  email: string;
+}
+// Forget Password
 
 // Logout
 export interface LogoutResponse {
