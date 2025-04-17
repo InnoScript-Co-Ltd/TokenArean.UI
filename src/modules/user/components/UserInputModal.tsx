@@ -1,4 +1,3 @@
-// src/components/GameInputModal.tsx
 import { FC, useEffect, useState, ChangeEvent } from "react";
 import {
   Dialog,

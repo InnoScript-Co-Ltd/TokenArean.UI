@@ -1,8 +1,6 @@
-// src/pages/Games.tsx
 import Banner from "@/components/global/Banner";
 import { useState, useCallback } from "react";
 import Loader from "@/components/global/Loader";
-
 import UserTable from "./components/UserTable";
 import useUser from "@/redux/hook/user/useUser";
 import { User, UserPayload } from "@/constants/config";
