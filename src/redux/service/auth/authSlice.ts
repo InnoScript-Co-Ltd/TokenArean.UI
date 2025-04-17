@@ -5,6 +5,7 @@ import {
   fetchForgetPassword,
   fetchLogin,
   fetchRefreshToken,
+  fetchLogout,
 } from "@/redux/api/auth/authApi";
 import {
   ForgetPasswordPayload,
@@ -84,7 +85,7 @@ export const logout = createAsyncThunk<void, void, { rejectValue: string }>(
   "auth/logout",
   async (_, { rejectWithValue }) => {
     try {
-      // await fetchLogout();
+      await fetchLogout();
       localStorage.removeItem("authToken");
       localStorage.removeItem("userData");
     } catch (error: unknown) {
@@ -117,6 +118,7 @@ export const forgotPassword = createAsyncThunk<
       errorMessage =
         (error.response?.data as { message?: string })?.message ||
         error.message;
+      return rejectWithValue(error.response?.data.Message);
     } else if (error instanceof Error) {
       errorMessage = error.message;
     }

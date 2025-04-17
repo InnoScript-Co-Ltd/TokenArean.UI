@@ -29,18 +29,21 @@ const OrderTable: React.FC<OrderTableProps> = ({
   onDelete,
 }) => {
   const totalPages = Math.ceil(totalCount / pageSize);
-
+  console.log(orders);
   return (
     <>
       <Table>
         <TableHeader>
           <TableRow>
-            <TableHead>User Id</TableHead>
+            <TableHead>InGameUserId</TableHead>
             <TableHead>Mobile Number</TableHead>
+            <TableHead>Game</TableHead>
+            <TableHead>TokenPackage</TableHead>
             <TableHead>ServerInfo</TableHead>
             <TableHead>Status</TableHead>
             <TableHead>Unit</TableHead>
             <TableHead>Price</TableHead>
+            <TableHead>Operator By</TableHead>
             <TableHead>Created At</TableHead>
             <TableHead>Updated At</TableHead>
             {(onEdit || onDelete) && <TableHead>Actions</TableHead>}
@@ -51,10 +54,14 @@ const OrderTable: React.FC<OrderTableProps> = ({
             <TableRow key={order.id}>
               <TableCell>{order.inGameUserId}</TableCell>
               <TableCell>{order.mobileNumber}</TableCell>
+              <TableCell>{order.gameTitle}</TableCell>
+              <TableCell>{order.tokenPackageDto.tokenTitle}</TableCell>
               <TableCell>{order.serverInfo}</TableCell>
               <TableCell>{order.status}</TableCell>
               <TableCell>{order.tokenPackageDto.unit}</TableCell>
               <TableCell>{order.tokenPackageDto.price}</TableCell>
+              <TableCell>{order.userDto?.email}</TableCell>
+
               <TableCell>
                 {new Date(order.createdAt).toLocaleString()}
               </TableCell>

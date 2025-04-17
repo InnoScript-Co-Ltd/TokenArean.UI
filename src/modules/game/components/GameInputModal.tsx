@@ -62,6 +62,7 @@ const GameInputModal: FC<GameInputModalProps> = ({
         serverType: currentGame?.serverType,
         isDisable: currentGame?.isDisable,
       });
+
       setLogoPreview(currentGame.logo);
       setBannerPreview(currentGame.bannerImage);
     } else {
@@ -106,13 +107,12 @@ const GameInputModal: FC<GameInputModalProps> = ({
     formData.append("title", form.title);
     formData.append("description", form.description);
     formData.append("orderIndex", form.orderIndex.toString());
-    formData.append("serverType", form.serverType);
-    formData.append("isDisable", String(form.isDisable));
+    formData.append("serverType", form.serverType === null ? "" : "");
+    formData.append("isDisable", form.isDisable ? "True" : "False");
 
     // These fields might be required for backend compatibility
     formData.append("logo", ""); // You might set this to existing logo URL if needed
     formData.append("bannerImage", ""); // Same as above
-
     if (form.logo) {
       formData.append("file_Logo", form.logo);
     }
@@ -137,8 +137,6 @@ const GameInputModal: FC<GameInputModalProps> = ({
     !form.bannerImage ||
     !form.title.trim() ||
     form.orderIndex === 0;
-
-  console.log(form);
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange} modal>

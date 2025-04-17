@@ -2,8 +2,6 @@
 
 import axiosInstance from "@/constants/axios";
 import {
-  DeleteTokenPackageResponse,
-  TokenPackage,
   TokenPackageListResponse,
   TokenPackageEntryResponse,
   PaginationParams,
@@ -66,8 +64,8 @@ export const fetchUpdatTokenPackage = async (
 
 export const fetchDeleteTokenPackage = async (
   id: string
-): Promise<DeleteTokenPackageResponse> => {
-  const response = await axiosInstance.delete<DeleteTokenPackageResponse>(
+): Promise<TokenPackageEntryResponse> => {
+  const response = await axiosInstance.delete<TokenPackageEntryResponse>(
     `/api/v1/TokenPackage/${id}`
   );
   return response.data;

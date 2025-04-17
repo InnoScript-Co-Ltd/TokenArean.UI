@@ -13,6 +13,7 @@ import Home from "@/modules/website/Home";
 import Login from "@/pages/Login";
 import { Route, Routes } from "react-router-dom";
 import ForgotPassword from "@/pages/ForgotPassword";
+import ChangePassword from "@/pages/ChangePassword";
 
 const Path = () => {
   return (
@@ -30,6 +31,10 @@ const Path = () => {
           {/* Dashboard Page */}
           <Route index element={<Dashboard />} />
           {/* Dashboard Page */}
+
+          {/* ChangePassword Page */}
+          <Route path="change-password" element={<ChangePassword />} />
+          {/* ChangePassword Page */}
 
           {/* User Page */}
           <Route path="users" element={<Users />} />

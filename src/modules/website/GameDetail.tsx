@@ -108,9 +108,17 @@ const GameDetail: React.FC = () => {
                 </h2>
                 <ol className="list-decimal list-inside text-sm space-y-1 mt-3">
                   <li>
-                    {lang === "mm"
-                      ? "အသုံးပြုသူ ID နှင့် Server ကိုထည့်ပါ"
-                      : "Enter Your User ID & Select Server"}
+                    {gameDetail?.serverType === null
+                      ? lang === "mm"
+                        ? "အသုံးပြုသူ ID ကိုထည့်ပါ"
+                        : "Enter Your User ID"
+                      : gameDetail?.serverType === "SERVER"
+                      ? lang === "mm"
+                        ? "အသုံးပြုသူ ID နှင့် Server ကိုထည့်ပါ"
+                        : "Enter Your User ID & Select Server"
+                      : lang === "mm"
+                      ? "အသုံးပြုသူ ID နှင့် ServerId ကိုထည့်ပါ"
+                      : "Enter Your User ID & Input ServerId"}
                   </li>
                   <li>
                     {lang === "mm"

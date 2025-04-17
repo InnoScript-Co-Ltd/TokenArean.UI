@@ -39,11 +39,13 @@ const ForgotPassword = () => {
       navigate("/login");
     } catch (error) {
       if (error instanceof AxiosError) {
-        setError(error.response?.data?.message || "Network Error");
+        console.log("error", error);
+
+        setError(error.response?.data?.Message || "Network Error");
       } else if (error instanceof Error) {
         setError(error.message);
       } else {
-        setError("Wrong Credentials");
+        setError(String(error));
       }
       setCredentials({ email: "" });
     }

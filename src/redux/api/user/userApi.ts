@@ -2,12 +2,12 @@
 
 import axiosInstance from "@/constants/axios";
 import {
-  DeleteUserResponse,
-  User,
   UserListResponse,
   UserEntryResponse,
   PaginationParams,
   UserPayload,
+  ChangePasswordPayload,
+  ChangePasswordResponse,
 } from "@/constants/config";
 
 export const fetchUser = async (
@@ -45,6 +45,22 @@ export const fetchCreateUser = async (
     throw error;
   }
 };
+export const fetchChangePassword = async (
+  ChangePassword: ChangePasswordPayload
+): Promise<ChangePasswordResponse> => {
+  try {
+    console.log(ChangePassword);
+    const response = await axiosInstance.post<ChangePasswordResponse>(
+      "api/v1/User/change-password",
+      ChangePassword
+    );
+    console.log(response);
+    return response.data;
+  } catch (error) {
+    console.error("Failed to Change Password:", error);
+    throw error;
+  }
+};
 
 export const fetchUpdatUser = async (
   id: string,
@@ -64,8 +80,8 @@ export const fetchUpdatUser = async (
 
 export const fetchDeleteUser = async (
   id: string
-): Promise<DeleteUserResponse> => {
-  const response = await axiosInstance.delete<DeleteUserResponse>(
+): Promise<UserEntryResponse> => {
+  const response = await axiosInstance.delete<UserEntryResponse>(
     `/api/v1/User/${id}`
   );
   return response.data;

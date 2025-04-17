@@ -36,6 +36,17 @@ export interface ForgetPasswordPayload {
 }
 // Forget Password
 
+// Change Password
+export interface ChangePasswordResponse {
+  message: string;
+}
+export interface ChangePasswordPayload {
+  oldPassword: string;
+  newPassword: string;
+  confirmPassword: string;
+}
+// Change Password
+
 // Logout
 export interface LogoutResponse {
   message: string;
@@ -162,7 +173,8 @@ export interface Order {
   status: string;
   createdAt: Date;
   updatedAt: Date;
-  operatorBy: Game;
+  userDto: User;
+  gameTitle: string;
 }
 
 export interface OrderListResponse {

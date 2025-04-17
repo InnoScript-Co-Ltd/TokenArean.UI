@@ -1,18 +1,15 @@
 // src/pages/Games.tsx
 import Banner from "@/components/global/Banner";
 import { useState, useCallback } from "react";
-import { useNavigate } from "react-router-dom";
 import Loader from "@/components/global/Loader";
 
 import UserTable from "./components/UserTable";
 import useUser from "@/redux/hook/user/useUser";
 import { User, UserPayload } from "@/constants/config";
 import UserInputModal from "./components/UserInputModal";
-import useGame from "@/redux/hook/game/useGame";
 import ConfirmModal from "@/components/global/ConfirmModal";
 
 const Users: React.FC = () => {
-  const navigate = useNavigate();
   const [pagination, setPagination] = useState({
     currentPage: 1,
     pageSize: 12,

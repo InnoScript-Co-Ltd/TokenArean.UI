@@ -4,13 +4,18 @@ import {
   fetchCreateUser,
   fetchUpdatUser,
   fetchDeleteUser,
+  fetchChangePassword,
 } from "@/redux/api/user/userApi";
+import { AxiosError } from "axios";
+
 import {
   User,
   UserListResponse,
   UserEntryResponse,
   PaginationParams,
   UserPayload,
+  ChangePasswordResponse,
+  ChangePasswordPayload,
 } from "@/constants/config";
 
 interface UserState {
@@ -53,6 +58,27 @@ export const createUser = createAsyncThunk<
     return await fetchCreateUser(payload);
   } catch (err) {
     return rejectWithValue((err as Error).message);
+  }
+});
+export const changePassword = createAsyncThunk<
+  ChangePasswordResponse,
+  ChangePasswordPayload,
+  { rejectValue: string }
+>("User/change-password", async (payload, { rejectWithValue }) => {
+  try {
+    return await fetchChangePassword(payload);
+  } catch (error: unknown) {
+    let errorMessage = "An unknown error occurred";
+    if (error instanceof AxiosError) {
+      errorMessage =
+        (error.response?.data as { message?: string })?.message ||
+        error.message;
+      console.log(error);
+      return rejectWithValue(error.response?.data.message);
+    } else if (error instanceof Error) {
+      errorMessage = error.message;
+    }
+    return rejectWithValue(errorMessage);
   }
 });
 
@@ -151,6 +177,17 @@ const UserSlice = createSlice({
       .addCase(deleteUser.rejected, (state, { payload }) => {
         state.status = "failed";
         state.error = payload || "Failed to delete User";
+      })
+      .addCase(changePassword.pending, (state) => {
+        state.status = "loading";
+        state.error = null;
+      })
+      .addCase(changePassword.fulfilled, (state) => {
+        state.status = "succeeded";
+      })
+      .addCase(changePassword.rejected, (state, action) => {
+        state.status = "failed";
+        state.error = action.payload || "Forgot Password failed";
       });
   },
 });
