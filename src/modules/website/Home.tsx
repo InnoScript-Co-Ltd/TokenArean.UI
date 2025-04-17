@@ -13,7 +13,7 @@ const Home = () => {
     currentPage: 1,
     pageSize: 12,
   });
-  const { games, totalCount } = useGame({
+  const { games, totalCount, bannerList } = useGame({
     currentPage: pagination.currentPage,
     pageSize: pagination.pageSize,
   });
@@ -22,7 +22,7 @@ const Home = () => {
   const handleSeeMore = () => {
     setPagination({ currentPage: 1, pageSize: pagination.pageSize + 12 });
   };
-
+  console.log("bannerList:", bannerList);
   return (
     <>
       <Header />
@@ -30,16 +30,16 @@ const Home = () => {
         {/* Carousel */}
         {totalCount == null || totalCount < 3 ? (
           <div className=" container mx-auto px-5 ">
-            <Link to={`game/${games[0]?.id}`}>
+            <Link to={`game/${bannerList[0]?.id}`}>
               <img
-                src={games[0]?.bannerImage}
+                src={bannerList[0]?.bannerImage}
                 className=" min-h-[300px] w-full h-full object-cover rounded-lg shadow-lg overflow-hidden "
                 alt=""
               />
             </Link>
           </div>
         ) : (
-          <EmblaCarousel games={games} options={{ loop: true }} />
+          <EmblaCarousel games={bannerList} options={{ loop: true }} />
         )}
 
         <div className="container mx-auto p-5">

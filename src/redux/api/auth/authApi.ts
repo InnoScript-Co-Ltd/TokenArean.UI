@@ -51,7 +51,10 @@ export const fetchRefreshToken = async (): Promise<RefreshTokenResponse> => {
 
 export const fetchLogout = async (): Promise<LogoutResponse> => {
   try {
-    const response = await axiosInstance.post<LogoutResponse>("/revoke_token");
+    const response = await axiosInstance.post<LogoutResponse>(
+      "api/v1/Auth/Logout"
+    );
+    console.log("logout", response);
     return response.data;
   } catch (error) {
     console.log("Failed to Logout:", error);

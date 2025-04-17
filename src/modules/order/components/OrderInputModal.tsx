@@ -1,5 +1,5 @@
 // src/components/GameInputModal.tsx
-import React, { FC, useEffect, useState, ChangeEvent } from "react";
+import React, { FC, useEffect, useState, useRef, ChangeEvent } from "react";
 import {
   Dialog,
   DialogContent,
@@ -12,8 +12,6 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
-import { Switch } from "@/components/ui/switch";
-import { Textarea } from "@/components/ui/textarea";
 import {
   Select,
   SelectContent,
@@ -27,7 +25,6 @@ interface OrderInputModalProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   currentOrder?: Order | null;
-  // handleCreateOrder: (data: FormData) => Promise<void>;
   handleUpdateOrder: (id: string, data: FormData) => Promise<void>;
 }
 
@@ -55,6 +52,7 @@ const OrderInputModal: FC<OrderInputModalProps> = ({
     tokenPackageId: "",
   });
   const [screenShotPreview, setScreenShotPreview] = useState<string>("");
+  const imageRef = useRef<HTMLImageElement>(null);
 
   useEffect(() => {
     if (currentOrder) {
@@ -90,16 +88,6 @@ const OrderInputModal: FC<OrderInputModalProps> = ({
     }));
   };
 
-  const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const { name, files } = e.target;
-    if (files && files[0]) {
-      const file = files[0];
-      setForm((prev) => ({ ...prev, [name]: file }));
-      const url = URL.createObjectURL(file);
-      if (name === "screenshot") setScreenShotPreview(url);
-    }
-  };
-
   const handleSubmit = async () => {
     const formData = new FormData();
     formData.append("inGameUserId", form.inGameUserId.toString());
@@ -108,16 +96,10 @@ const OrderInputModal: FC<OrderInputModalProps> = ({
     formData.append("serverInfo", form.serverInfo);
     formData.append("tokenPackageId", form.tokenPackageId);
     formData.append("screenShot", "");
+
     if (form.screenShot) {
       formData.append("file_ScreenShot", form.screenShot);
     }
-    // // Convert FormData to a plain object
-    // const formObject: any = {};
-    // formData.forEach((value, key) => {
-    //   formObject[key] = value;
-    // });
-
-    // Log the object
 
     try {
       if (currentOrder?.id) {
@@ -129,135 +111,144 @@ const OrderInputModal: FC<OrderInputModalProps> = ({
     }
   };
 
+  const handleFullscreen = () => {
+    if (imageRef.current) {
+      const img = imageRef.current;
+      if (img.requestFullscreen) {
+        img.requestFullscreen();
+      } else if ((img as any).webkitRequestFullscreen) {
+        (img as any).webkitRequestFullscreen();
+      } else if ((img as any).msRequestFullscreen) {
+        (img as any).msRequestFullscreen();
+      } else {
+        console.warn("Fullscreen API is not supported.");
+      }
+    }
+  };
+
   return (
-    <Dialog open={open} onOpenChange={onOpenChange} modal>
-      <DialogContent className="sm:max-w-lg">
-        <DialogHeader>
-          <DialogTitle>
-            {currentOrder ? "Edit Order" : "Add New Order"}
-          </DialogTitle>
-          <DialogDescription>
-            {currentOrder
-              ? "Update the details of your Order."
-              : "Fill out the form to add a new order."}
-          </DialogDescription>
-        </DialogHeader>
-
-        <div className="flex flex-col gap-5">
-          <div className="grid grid-cols-3 gap-4">
-            {/* Logo Upload */}
-            <div className="col-span-1">
-              <label
-                htmlFor="screenShot_input"
-                className="cursor-pointer w-full aspect-square max-h-[120px] bg-gray-100 border border-dashed rounded flex items-center justify-center overflow-hidden"
-              >
-                {screenShotPreview ? (
-                  <img
-                    src={screenShotPreview}
-                    alt="ScreenShot preview"
-                    className="w-full h-full object-cover object-center"
-                  />
-                ) : (
-                  <span className="text-gray-500 text-sm sm:text-base">
-                    No Screenshot
-                  </span>
-                )}
-              </label>
-              <input
-                type="file"
-                id="screenShot_input"
-                name="screenShot"
-                accept="image/*"
-                readOnly
-                className="sr-only"
-              />
+    <>
+      <Dialog open={open} onOpenChange={onOpenChange} modal>
+        <DialogContent className="sm:max-w-lg">
+          {/* Ensure this has z-50 or lower */}
+          <DialogHeader>
+            <DialogTitle>
+              {currentOrder ? "Edit Order" : "Add New Order"}
+            </DialogTitle>
+            <DialogDescription>
+              {currentOrder
+                ? "Update the details of your Order."
+                : "Fill out the form to add a new order."}
+            </DialogDescription>
+          </DialogHeader>
+          <div className="flex flex-col gap-5">
+            {/* Screenshot Upload & Preview */}
+            <div className="grid grid-cols-3 gap-4">
+              <div className="col-span-1">
+                <label
+                  htmlFor="screenShot_input"
+                  className="cursor-pointer w-full aspect-square max-h-[120px] bg-gray-100 border border-dashed rounded flex items-center justify-center overflow-hidden"
+                >
+                  {screenShotPreview ? (
+                    <img
+                      ref={imageRef}
+                      src={screenShotPreview}
+                      alt="ScreenShot Preview"
+                      className="w-full h-full object-cover object-center"
+                      onClick={() => handleFullscreen()}
+                    />
+                  ) : (
+                    <span className="text-gray-500 text-sm sm:text-base">
+                      No Screenshot
+                    </span>
+                  )}
+                </label>
+              </div>
             </div>
-          </div>
 
-          {/* InGameUserId */}
-          <div className="flex flex-col gap-3">
-            <Label htmlFor="inGameUserId">InGameUserId</Label>
-            <Input
-              id="inGameUserId"
-              name="inGameUserId"
-              value={form.inGameUserId}
-              readOnly
-            />
-          </div>
-
-          <div className="grid grid-cols-2 gap-5">
-            {/* ServerInfo  */}
-            <div className="col-span-1 flex flex-col gap-3">
-              <Label htmlFor="serverInfo">ServerInfo</Label>
+            {/* InGameUserId */}
+            <div className="flex flex-col gap-3">
+              <Label htmlFor="inGameUserId">InGameUserId</Label>
               <Input
-                id="serverInfo"
-                name="serverInfo"
-                value={form.serverInfo}
+                id="inGameUserId"
+                name="inGameUserId"
+                value={form.inGameUserId}
+                disabled
+              />
+            </div>
+
+            <div className="grid grid-cols-2 gap-5">
+              {/* Server Info */}
+              <div className="flex flex-col gap-3">
+                <Label htmlFor="serverInfo">Server Info</Label>
+                <Input
+                  id="serverInfo"
+                  name="serverInfo"
+                  value={form.serverInfo}
+                  readOnly
+                />
+              </div>
+
+              {/* Order Status */}
+              <div className="flex flex-col gap-3">
+                <Label htmlFor="orderStatus">Order Status</Label>
+                <Select
+                  value={form.orderStatus}
+                  onValueChange={(value) =>
+                    setForm((prev) => ({ ...prev, orderStatus: value }))
+                  }
+                >
+                  <SelectTrigger className="w-full cursor-pointer">
+                    <SelectValue placeholder="Select Order Status" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="PENDING">PENDING</SelectItem>
+                    <SelectItem value="COMPLETED">COMPLETED</SelectItem>
+                    <SelectItem value="CANCELLED">CANCELLED</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+            </div>
+
+            {/* Mobile Number */}
+            <div className="flex flex-col gap-3">
+              <Label htmlFor="mobileNumber">Mobile Number</Label>
+              <Input
+                id="mobileNumber"
+                name="mobileNumber"
+                value={form.mobileNumber}
                 readOnly
               />
             </div>
 
-            {/* Server Type */}
-            <div className="col-span-1 flex flex-col gap-3">
-              <Label htmlFor="orderStatus">Order Status</Label>
-              <Select
-                value={form.orderStatus}
-                onValueChange={(value) =>
-                  setForm((prev) => ({ ...prev, orderStatus: value }))
-                }
-              >
-                <SelectTrigger className="w-full cursor-pointer">
-                  <SelectValue placeholder="Select Order Status" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="PENDING">PENDING</SelectItem>
-                  <SelectItem value="COMPLETED">COMPLETED</SelectItem>
-                  <SelectItem value="CANCELLED">CANCELLED</SelectItem>
-                </SelectContent>
-              </Select>
+            {/* Token Package */}
+            <div className="flex flex-col gap-3">
+              <Label htmlFor="tokenPackageTitle">Token Package</Label>
+              <Input
+                id="tokenPackageTitle"
+                value={currentOrder?.tokenPackageDto.tokenTitle || ""}
+                readOnly
+              />
             </div>
-          </div>
 
-          {/* Disabled Switch */}
-          <div className="flex flex-col gap-3">
-            <Label htmlFor="mobileNumber">Mobile Number</Label>
-            <Input
-              id="mobileNumber"
-              name="mobileNumber"
-              value={form.mobileNumber}
-              readOnly
+            <input
+              type="hidden"
+              name="tokenPackageId"
+              value={form.tokenPackageId}
+              onChange={handleChange}
             />
           </div>
-
-          {/* Description */}
-          <div className="flex flex-col gap-3">
-            <Label htmlFor="tokenPackageTitle">Token Package</Label>
-            <Input
-              id="tokenPackageTitle"
-              value={currentOrder?.tokenPackageDto.tokenTitle || ""}
-              readOnly
-            />
-          </div>
-
-          {/* Hidden input or normal input to store tokenPackageId */}
-          <input
-            type="hidden"
-            name="tokenPackageId"
-            value={form.tokenPackageId}
-            onChange={handleChange}
-          />
-        </div>
-
-        <DialogFooter>
-          <DialogClose asChild>
-            <Button variant="outline">Cancel</Button>
-          </DialogClose>
-          <Button onClick={handleSubmit}>
-            {currentOrder ? "Update Order" : "Create Order"}
-          </Button>
-        </DialogFooter>
-      </DialogContent>
-    </Dialog>
+          <DialogFooter>
+            <DialogClose asChild>
+              <Button variant="outline">Cancel</Button>
+            </DialogClose>
+            <Button onClick={handleSubmit}>
+              {currentOrder ? "Update Order" : "Create Order"}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+    </>
   );
 };
 

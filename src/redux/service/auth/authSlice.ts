@@ -1,7 +1,11 @@
 // src/redux/service/auth/authSlice.ts
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { AxiosError } from "axios";
-import { fetchLogin, fetchRefreshToken } from "@/redux/api/auth/authApi";
+import {
+  fetchLogin,
+  fetchRefreshToken,
+  fetchLogout,
+} from "@/redux/api/auth/authApi";
 import {
   LoginPayload,
   LoginResponse,
@@ -78,7 +82,7 @@ export const logout = createAsyncThunk<void, void, { rejectValue: string }>(
   "auth/logout",
   async (_, { rejectWithValue }) => {
     try {
-      // await fetchLogout();
+      await fetchLogout();
       localStorage.removeItem("authToken");
       localStorage.removeItem("userData");
     } catch (error: unknown) {
