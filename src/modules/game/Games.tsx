@@ -117,6 +117,7 @@ const Games: React.FC = () => {
         currentGame={currentGame}
         handleCreateGame={handleCreateGame}
         handleUpdateGame={handleUpdateGame}
+        error={error}
       />
 
       <ConfirmModal

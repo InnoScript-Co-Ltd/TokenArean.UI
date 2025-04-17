@@ -13,7 +13,7 @@ import { useLanguage } from "@/redux/hook/language/useLanguage";
 const GameDetail: React.FC = () => {
   const { gameId } = useParams();
   const { gameDetail } = useGameDetail({ id: gameId });
-  const { handleCreateOrder } = useOrder();
+  const { handleCreateOrder, error } = useOrder();
   const { lang } = useLanguage();
 
   const [isPaymentModalOpen, setIsPaymentModalOpen] = useState(false);
@@ -226,6 +226,16 @@ const GameDetail: React.FC = () => {
                   />
                 </div>
               </div>
+
+              {error ? (
+                <p className=" text-sm text-red-500 ">
+                  {lang === "mm"
+                    ? "အသုံးပြုသူအိုင်ဒီနှင် ့ဖုန်းနံပတ်အားပြန်လည်စစ်ဆေးပေးပါ"
+                    : "Check User ID and Mobile Number again"}
+                </p>
+              ) : (
+                <></>
+              )}
 
               {/* Selected Item & Total */}
               <div className="mt-6 space-y-4">

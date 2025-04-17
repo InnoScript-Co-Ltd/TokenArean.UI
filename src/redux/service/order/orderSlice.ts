@@ -77,7 +77,7 @@ export const deleteOrder = createAsyncThunk<
 >("order/deleteOrder", async (id, { rejectWithValue }) => {
   try {
     const res = await fetchDeleteOrder(id);
-    return res.payLoad.id;
+    return res.id;
   } catch (err) {
     return rejectWithValue((err as Error).message);
   }
@@ -113,12 +113,14 @@ const orderSlice = createSlice({
         state.status = "loading";
         state.error = null;
       })
-      .addCase(createOrder.fulfilled, (state, { payload }) => {
+      .addCase(createOrder.fulfilled, (state) => {
         state.status = "succeeded";
-        state.orders.unshift(payload);
+        // console.log(payload);
+        // state.orders.unshift(payload);
       })
       .addCase(createOrder.rejected, (state, { payload }) => {
         state.status = "failed";
+        console.log(payload);
         state.error = payload || "Failed to create Order";
       })
 

@@ -1,18 +1,16 @@
 // src/pages/Games.tsx
 import Banner from "@/components/global/Banner";
 import { useState, useCallback } from "react";
-import { useNavigate } from "react-router-dom";
 import Loader from "@/components/global/Loader";
 
 import TokenPackageTable from "./components/TokenPackageTable";
 import useTokenPackage from "@/redux/hook/tokenPackage/useTokenPackage";
-import { TokenPackage, TokenPackagePayload } from "@/constants/config";
+import { TokenPackage } from "@/constants/config";
 import TokenPackageInputModal from "./components/TokenPackageInputModal";
 import useGame from "@/redux/hook/game/useGame";
 import ConfirmModal from "@/components/global/ConfirmModal";
 
 const TokenPackages: React.FC = () => {
-  const navigate = useNavigate();
   const [pagination, setPagination] = useState({
     currentPage: 1,
     pageSize: 12,

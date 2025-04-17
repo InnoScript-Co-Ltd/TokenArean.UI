@@ -1,5 +1,4 @@
-// src/components/GameInputModal.tsx
-import React, { FC, useEffect, useState, ChangeEvent } from "react";
+import { FC, useEffect, useState, ChangeEvent } from "react";
 import {
   Dialog,
   DialogContent,
@@ -29,6 +28,7 @@ interface GameInputModalProps {
   currentGame?: Game | null;
   handleCreateGame: (data: FormData) => Promise<void>;
   handleUpdateGame: (id: string, data: FormData) => Promise<void>;
+  error: string | null;
 }
 
 const GameInputModal: FC<GameInputModalProps> = ({
@@ -37,6 +37,7 @@ const GameInputModal: FC<GameInputModalProps> = ({
   currentGame,
   handleCreateGame,
   handleUpdateGame,
+  error,
 }) => {
   const [logoPreview, setLogoPreview] = useState<string>("");
   const [bannerPreview, setBannerPreview] = useState<string>("");
@@ -45,7 +46,7 @@ const GameInputModal: FC<GameInputModalProps> = ({
     bannerImage: null,
     title: "",
     description: "",
-    orderIndex: 0,
+    orderIndex: 1,
     serverType: "",
     isDisable: false,
   });
@@ -53,14 +54,15 @@ const GameInputModal: FC<GameInputModalProps> = ({
   useEffect(() => {
     if (currentGame) {
       setForm({
-        logo: null,
-        bannerImage: null,
-        title: currentGame.title,
-        description: currentGame.description,
-        orderIndex: currentGame.orderIndex,
-        serverType: "",
-        isDisable: currentGame.isDisable,
+        logo: currentGame?.logo,
+        bannerImage: currentGame?.bannerImage,
+        title: currentGame?.title,
+        description: currentGame?.description,
+        orderIndex: currentGame?.orderIndex,
+        serverType: currentGame?.serverType,
+        isDisable: currentGame?.isDisable,
       });
+
       setLogoPreview(currentGame.logo);
       setBannerPreview(currentGame.bannerImage);
     } else {
@@ -69,7 +71,7 @@ const GameInputModal: FC<GameInputModalProps> = ({
         bannerImage: null,
         title: "",
         description: "",
-        orderIndex: 0,
+        orderIndex: 1,
         serverType: "",
         isDisable: false,
       });
@@ -105,13 +107,12 @@ const GameInputModal: FC<GameInputModalProps> = ({
     formData.append("title", form.title);
     formData.append("description", form.description);
     formData.append("orderIndex", form.orderIndex.toString());
-    formData.append("serverType", form.serverType);
-    formData.append("isDisable", String(form.isDisable));
+    formData.append("serverType", form.serverType === null ? "" : "");
+    formData.append("isDisable", form.isDisable ? "True" : "False");
 
     // These fields might be required for backend compatibility
     formData.append("logo", ""); // You might set this to existing logo URL if needed
     formData.append("bannerImage", ""); // Same as above
-
     if (form.logo) {
       formData.append("file_Logo", form.logo);
     }
@@ -131,6 +132,12 @@ const GameInputModal: FC<GameInputModalProps> = ({
     }
   };
 
+  const isFormInvalid =
+    !form.logo ||
+    !form.bannerImage ||
+    !form.title.trim() ||
+    form.orderIndex === 0;
+
   return (
     <Dialog open={open} onOpenChange={onOpenChange} modal>
       <DialogContent className="sm:max-w-lg">
@@ -143,6 +150,14 @@ const GameInputModal: FC<GameInputModalProps> = ({
               ? "Update the details of your game."
               : "Fill out the form to add a new game."}
           </DialogDescription>
+
+          {error ? (
+            <>
+              <p className=" text-red-500 font-semibold text-xl">{error}</p>
+            </>
+          ) : (
+            <></>
+          )}
         </DialogHeader>
 
         <div className="flex flex-col gap-5">
@@ -266,7 +281,7 @@ const GameInputModal: FC<GameInputModalProps> = ({
             <Textarea
               id="description"
               name="description"
-              value={form.description}
+              value={form.description ? form.description : ""}
               onChange={handleChange}
             />
           </div>
@@ -276,7 +291,7 @@ const GameInputModal: FC<GameInputModalProps> = ({
           <DialogClose asChild>
             <Button variant="outline">Cancel</Button>
           </DialogClose>
-          <Button onClick={handleSubmit}>
+          <Button onClick={handleSubmit} disabled={isFormInvalid}>
             {currentGame ? "Update Game" : "Create Game"}
           </Button>
         </DialogFooter>

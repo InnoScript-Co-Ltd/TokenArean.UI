@@ -7,8 +7,10 @@ export interface PaginationParams {
 
 // Login
 export interface LoginResponse {
-  accessToken: string;
-  refreshToken: string;
+  payLoad: {
+    accessToken: string;
+    refreshToken: string;
+  };
 }
 export interface LoginPayload {
   email: string;
@@ -16,14 +18,34 @@ export interface LoginPayload {
 }
 // Login
 
-// Login
+// Refresh Token
 export interface RefreshTokenResponse {
   accessToken: string;
 }
 export interface RefreshTokenPayload {
   refreshToken: string;
 }
-// Login
+// Refresh Token
+
+// Forget Password
+export interface ForgetPasswordResponse {
+  message: string;
+}
+export interface ForgetPasswordPayload {
+  email: string;
+}
+// Forget Password
+
+// Change Password
+export interface ChangePasswordResponse {
+  message: string;
+}
+export interface ChangePasswordPayload {
+  oldPassword: string;
+  newPassword: string;
+  confirmPassword: string;
+}
+// Change Password
 
 // Logout
 export interface LogoutResponse {
@@ -151,7 +173,8 @@ export interface Order {
   status: string;
   createdAt: Date;
   updatedAt: Date;
-  operatorBy: Game;
+  userDto: User;
+  gameTitle: string;
 }
 
 export interface OrderListResponse {

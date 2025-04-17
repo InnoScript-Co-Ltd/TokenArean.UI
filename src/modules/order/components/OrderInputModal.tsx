@@ -1,5 +1,5 @@
 // src/components/GameInputModal.tsx
-import React, { FC, useEffect, useState, useRef, ChangeEvent } from "react";
+import { FC, useEffect, useState, useRef, ChangeEvent } from "react";
 import {
   Dialog,
   DialogContent,
@@ -35,6 +35,7 @@ interface FormState {
   mobileNumber: string;
   orderStatus: string;
   tokenPackageId: string;
+  gameTitle: string;
 }
 
 const OrderInputModal: FC<OrderInputModalProps> = ({
@@ -50,6 +51,7 @@ const OrderInputModal: FC<OrderInputModalProps> = ({
     mobileNumber: "",
     orderStatus: "",
     tokenPackageId: "",
+    gameTitle: "",
   });
   const [screenShotPreview, setScreenShotPreview] = useState<string>("");
   const imageRef = useRef<HTMLImageElement>(null);
@@ -63,6 +65,7 @@ const OrderInputModal: FC<OrderInputModalProps> = ({
         mobileNumber: currentOrder.mobileNumber,
         orderStatus: currentOrder.status,
         tokenPackageId: currentOrder.tokenPackageDto.id,
+        gameTitle: currentOrder.gameTitle,
       });
       setScreenShotPreview(currentOrder.screenShot);
     } else {
@@ -73,6 +76,7 @@ const OrderInputModal: FC<OrderInputModalProps> = ({
         mobileNumber: "",
         orderStatus: "",
         tokenPackageId: "",
+        gameTitle: "",
       });
       setScreenShotPreview("");
     }
@@ -220,7 +224,16 @@ const OrderInputModal: FC<OrderInputModalProps> = ({
                 readOnly
               />
             </div>
-
+            {/* Game Title */}
+            <div className="flex flex-col gap-3">
+              <Label htmlFor="gameTitle">Game</Label>
+              <Input
+                id="gameTitle"
+                name="gameTitle"
+                value={form.gameTitle}
+                readOnly
+              />
+            </div>
             {/* Token Package */}
             <div className="flex flex-col gap-3">
               <Label htmlFor="tokenPackageTitle">Token Package</Label>

@@ -1,5 +1,7 @@
 import axiosInstance from "@/constants/axios";
 import {
+  ForgetPasswordPayload,
+  ForgetPasswordResponse,
   LoginPayload,
   LoginResponse,
   LogoutResponse,
@@ -18,7 +20,8 @@ export const fetchLogin = async (
       requestBody
     );
     console.log("login:", response);
-    return response.data.payLoad;
+
+    return response.data;
   } catch (error) {
     console.log("Failed to Login:", error);
     throw error;
@@ -42,7 +45,7 @@ export const fetchRefreshToken = async (): Promise<RefreshTokenResponse> => {
       requestBody
     );
 
-    return response.data.payLoad;
+    return response.data;
   } catch (error) {
     console.error("Failed to Refresh:", error);
     throw error;
@@ -58,6 +61,24 @@ export const fetchLogout = async (): Promise<LogoutResponse> => {
     return response.data;
   } catch (error) {
     console.log("Failed to Logout:", error);
+    throw error;
+  }
+};
+
+export const fetchForgetPassword = async (
+  email: string
+): Promise<ForgetPasswordResponse> => {
+  try {
+    const requestBody: ForgetPasswordPayload = { email };
+
+    const response = await axiosInstance.post<ForgetPasswordResponse>(
+      "api/v1/auth/Forgot-password",
+      requestBody
+    );
+
+    return response.data;
+  } catch (error) {
+    console.log("Failed to fetch forgot password:", error);
     throw error;
   }
 };

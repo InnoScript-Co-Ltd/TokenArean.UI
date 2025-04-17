@@ -120,7 +120,12 @@ const PaymentModal: React.FC<PaymentModalProps> = ({
         <div className="mt-6 ">
           <button
             onClick={onConfirm}
-            className=" w-full cursor-pointer bg-primary text-white font-semibold py-2 px-4 rounded-md hover:opacity-90 transition"
+            disabled={!previewUrl}
+            className={`w-full font-semibold py-2 px-4 rounded-md transition ${
+              previewUrl
+                ? "cursor-pointer bg-primary text-white hover:opacity-90"
+                : "cursor-not-allowed bg-gray-300 text-gray-500"
+            }`}
           >
             {lang === "mm" ? "ဝယ်ယူမည်" : "Confirm"}
           </button>

@@ -3,10 +3,8 @@
 import axiosInstance from "@/constants/axios";
 import {
   DeleteOrderResponse,
-  Order,
   OrderEntryResponse,
   OrderListResponse,
-  OrderPayload,
   PaginationParams,
 } from "@/constants/config";
 

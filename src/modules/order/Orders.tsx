@@ -1,16 +1,14 @@
 // src/pages/Games.tsx
 import Banner from "@/components/global/Banner";
 import { useState, useCallback } from "react";
-import { useNavigate } from "react-router-dom";
 import OrderTable from "./components/OrderTable";
 import useOrder from "@/redux/hook/order/userOrder";
-import { Order, OrderPayload } from "@/constants/config";
+import { Order } from "@/constants/config";
 import OrderInputModal from "./components/OrderInputModal";
 import Loader from "@/components/global/Loader";
 import ConfirmModal from "@/components/global/ConfirmModal";
 
 const Orders: React.FC = () => {
-  const navigate = useNavigate();
   const [pagination, setPagination] = useState({
     currentPage: 1,
     pageSize: 12,

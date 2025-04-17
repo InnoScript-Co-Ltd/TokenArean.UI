@@ -1,5 +1,5 @@
 // src/components/GameInputModal.tsx
-import React, { FC, useEffect, useState, ChangeEvent } from "react";
+import { FC, useEffect, useState, ChangeEvent } from "react";
 import {
   Dialog,
   DialogContent,
@@ -12,15 +12,6 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
-import { Switch } from "@/components/ui/switch";
-import { Textarea } from "@/components/ui/textarea";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import type { User, UserPayload } from "@/constants/config";
 
 interface UserInputModalProps {

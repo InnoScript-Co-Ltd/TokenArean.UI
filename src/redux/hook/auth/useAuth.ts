@@ -2,8 +2,9 @@
 import { useSelector, useDispatch } from "react-redux";
 import { useCallback, useEffect } from "react";
 import type { RootState, AppDispatch } from "@/redux/store";
-import { LoginResponse } from "@/constants/config";
+import { ForgetPasswordResponse, LoginResponse } from "@/constants/config";
 import {
+  forgotPassword,
   login,
   logout,
   setIsAuthenticated,
@@ -38,7 +39,21 @@ const useAuth = () => {
     }
   }, [dispatch]);
 
-  return { token, isAuthenticated, login: handleLogin, logout: handleLogout };
+  const handleForgotPassword = useCallback(
+    async (email: string): Promise<ForgetPasswordResponse> => {
+      const response = await dispatch(forgotPassword({ email })).unwrap();
+      return response;
+    },
+    [dispatch]
+  );
+
+  return {
+    token,
+    isAuthenticated,
+    login: handleLogin,
+    logout: handleLogout,
+    forgotPassword: handleForgotPassword,
+  };
 };
 
 export default useAuth;

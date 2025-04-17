@@ -7,7 +7,7 @@ import {
   updateTokenPackage,
   deleteTokenPackage,
 } from "@/redux/service/tokenPackage/tokenPackageSlice";
-import { TokenPackagePayload, PaginationParams } from "@/constants/config";
+import { PaginationParams } from "@/constants/config";
 import { useAppDispatch, useAppSelector } from "../hook";
 import { RootState } from "@/redux/store";
 

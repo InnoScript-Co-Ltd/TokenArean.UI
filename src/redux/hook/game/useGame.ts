@@ -47,15 +47,18 @@ const useGame = ({ currentPage = 1, pageSize = 12 }: PaginationParams = {}) => {
   const handleUpdateGame = useCallback(
     async (id: string, payload: FormData) => {
       try {
-        const response = await dispatch(
-          updateGame({ id, data: payload })
-        ).unwrap();
-        return response;
+        const pagination = {
+          currentPage,
+          pageSize,
+        };
+
+        await dispatch(updateGame({ id, data: payload })).unwrap();
+        await dispatch(loadGames({ pagination, searchTerm }));
       } catch (err) {
         console.error("Failed to update game:", err);
       }
     },
-    [dispatch]
+    [dispatch, searchTerm, currentPage, pageSize]
   );
 
   const handleDeleteGame = useCallback(

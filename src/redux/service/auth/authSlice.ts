@@ -2,11 +2,14 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { AxiosError } from "axios";
 import {
+  fetchForgetPassword,
   fetchLogin,
   fetchRefreshToken,
   fetchLogout,
 } from "@/redux/api/auth/authApi";
 import {
+  ForgetPasswordPayload,
+  ForgetPasswordResponse,
   LoginPayload,
   LoginResponse,
   RefreshTokenResponse,
@@ -99,6 +102,30 @@ export const logout = createAsyncThunk<void, void, { rejectValue: string }>(
   }
 );
 
+// Thunk: forgot password
+export const forgotPassword = createAsyncThunk<
+  ForgetPasswordResponse,
+  ForgetPasswordPayload,
+  { rejectValue: string }
+>("auth/forgot-password", async (payload, { rejectWithValue }) => {
+  try {
+    const response = await fetchForgetPassword(payload.email);
+
+    return response;
+  } catch (error: unknown) {
+    let errorMessage = "An unknown error occurred";
+    if (error instanceof AxiosError) {
+      errorMessage =
+        (error.response?.data as { message?: string })?.message ||
+        error.message;
+      return rejectWithValue(error.response?.data.Message);
+    } else if (error instanceof Error) {
+      errorMessage = error.message;
+    }
+    return rejectWithValue(errorMessage);
+  }
+});
+
 const authSlice = createSlice({
   name: "auth",
   initialState,
@@ -123,8 +150,8 @@ const authSlice = createSlice({
         login.fulfilled,
         (state, action: PayloadAction<LoginResponse>) => {
           state.loginStatus = "succeeded";
-          const accessToken = action.payload.accessToken;
-          const refreshToken = action.payload.refreshToken;
+          const accessToken = action.payload.payLoad.accessToken;
+          const refreshToken = action.payload.payLoad.refreshToken;
           state.token = accessToken;
           localStorage.setItem("authToken", accessToken);
           localStorage.setItem("refreshToken", refreshToken);
@@ -169,6 +196,18 @@ const authSlice = createSlice({
       .addCase(logout.rejected, (state, action) => {
         state.loginStatus = "failed";
         state.error = action.payload || "Logout failed";
+      })
+
+      .addCase(forgotPassword.pending, (state) => {
+        state.loginStatus = "loading";
+        state.error = null;
+      })
+      .addCase(forgotPassword.fulfilled, (state) => {
+        state.loginStatus = "succeeded";
+      })
+      .addCase(forgotPassword.rejected, (state, action) => {
+        state.loginStatus = "failed";
+        state.error = action.payload || "Forgot Password failed";
       });
   },
 });

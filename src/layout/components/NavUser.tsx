@@ -1,6 +1,7 @@
 "use client";
 
-import { ChevronsUpDown, LogOut } from "lucide-react";
+import { ChevronsUpDown, LogOut, Lock } from "lucide-react";
+import { Link } from "react-router-dom";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
@@ -71,7 +72,12 @@ export function NavUser({
               </div>
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
-
+            <Link to={"/dashboard/change-password"}>
+              <DropdownMenuItem className=" cursor-pointer">
+                <Lock />
+                Change Password
+              </DropdownMenuItem>
+            </Link>
             <DropdownMenuItem
               onClick={() => logout()}
               className=" cursor-pointer"

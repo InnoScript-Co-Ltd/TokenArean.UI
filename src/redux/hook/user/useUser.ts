@@ -6,8 +6,13 @@ import {
   createUser,
   updateUser,
   deleteUser,
+  changePassword,
 } from "@/redux/service/user/userSlice";
-import { UserPayload, PaginationParams } from "@/constants/config";
+import {
+  UserPayload,
+  PaginationParams,
+  ChangePasswordPayload,
+} from "@/constants/config";
 import { useAppDispatch, useAppSelector } from "../hook";
 import { RootState } from "@/redux/store";
 
@@ -40,7 +45,13 @@ const useUser = ({ currentPage = 1, pageSize = 10 }: PaginationParams = {}) => {
     },
     [dispatch]
   );
-
+  const handleChangePassword = useCallback(
+    async (payload: ChangePasswordPayload) => {
+      const response = await dispatch(changePassword(payload)).unwrap();
+      return response;
+    },
+    [dispatch]
+  );
   const handleUpdateUser = useCallback(
     async (id: string, payload: UserPayload) => {
       try {
@@ -79,6 +90,7 @@ const useUser = ({ currentPage = 1, pageSize = 10 }: PaginationParams = {}) => {
     createUser: handleCreateUser,
     updateUser: handleUpdateUser,
     deleteUser: handleDeleteUser,
+    password: handleChangePassword,
   };
 };
 

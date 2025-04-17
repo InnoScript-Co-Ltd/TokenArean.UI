@@ -49,11 +49,13 @@ const Home = () => {
               {lang === "en" ? " MOST POPULAR" : "လူကြိုက်များသောဂိမ်းများ"}
             </h2>
             <div className="grid grid-cols-1 min-[428px]:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 md:gap-10 mt-5 ">
-              {games?.map((game, index) => (
-                <div key={index} className=" col-span-1">
-                  <GameCard game={game} />
-                </div>
-              ))}
+              {games?.map((game, index) =>
+                !game.isDisable ? (
+                  <div key={index} className=" col-span-1">
+                    <GameCard game={game} />
+                  </div>
+                ) : null
+              )}
             </div>
 
             {totalCount == null || totalCount <= 12 ? (
