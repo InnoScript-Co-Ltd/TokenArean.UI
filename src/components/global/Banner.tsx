@@ -22,7 +22,7 @@ const Banner = ({ title, path1, path2 }: BannerProps) => {
       <Breadcrumb className=" sm:ml-2">
         <BreadcrumbList>
           <BreadcrumbItem className="">
-            <BreadcrumbLink href="/">Home</BreadcrumbLink>
+            <BreadcrumbLink href="/dashboard">Home</BreadcrumbLink>
           </BreadcrumbItem>
 
           {path1 || path2 ? (
@@ -31,7 +31,7 @@ const Banner = ({ title, path1, path2 }: BannerProps) => {
                 <>
                   <BreadcrumbSeparator className="" />
                   <BreadcrumbItem>
-                    <BreadcrumbLink href={`/${path1.toLowerCase()}`}>
+                    <BreadcrumbLink href={`/dashboard/${path1.toLowerCase()}`}>
                       {path1}
                     </BreadcrumbLink>
                   </BreadcrumbItem>
@@ -42,7 +42,7 @@ const Banner = ({ title, path1, path2 }: BannerProps) => {
                   <BreadcrumbSeparator className="" />
                   <BreadcrumbItem>
                     <BreadcrumbLink
-                      href={`/${path1?.toLowerCase()}/${path2.toLowerCase()}`}
+                      href={`/dashboard/${path1?.toLowerCase()}/${path2.toLowerCase()}`}
                     >
                       {path2}
                     </BreadcrumbLink>

@@ -4,16 +4,19 @@ import {
   fetchCreateOrder,
   fetchUpdateOrder,
   fetchDeleteOrder,
+  fetchOrderDetail,
 } from "@/redux/api/order/orderApi";
 import {
   Order,
   OrderListResponse,
   OrderEntryResponse,
   PaginationParams,
+  OrderDetailResponse,
 } from "@/constants/config";
 
 interface OrderState {
   orders: Order[];
+  orderDetail: Order | null;
   total: number;
   totalPages: number;
   totalCount: number;
@@ -23,6 +26,7 @@ interface OrderState {
 
 const initialState: OrderState = {
   orders: [],
+  orderDetail: null,
   total: 0,
   totalPages: 0,
   totalCount: 0,
@@ -36,7 +40,7 @@ export const loadOrders = createAsyncThunk<
   { pagination: PaginationParams; searchTerm: string | undefined },
   { rejectValue: string }
 >(
-  "order/loadOrderss",
+  "order/loadOrders",
   async ({ pagination, searchTerm }, { rejectWithValue }) => {
     try {
       return await fetchOrder(pagination, searchTerm);
@@ -78,6 +82,18 @@ export const deleteOrder = createAsyncThunk<
   try {
     const res = await fetchDeleteOrder(id);
     return res.id;
+  } catch (err) {
+    return rejectWithValue((err as Error).message);
+  }
+});
+
+export const loadOrderDetail = createAsyncThunk<
+  OrderDetailResponse,
+  string,
+  { rejectValue: string }
+>("order/loadOrderDetail", async (id, { rejectWithValue }) => {
+  try {
+    return await fetchOrderDetail(id);
   } catch (err) {
     return rejectWithValue((err as Error).message);
   }
@@ -151,6 +167,20 @@ const orderSlice = createSlice({
       .addCase(deleteOrder.rejected, (state, { payload }) => {
         state.status = "failed";
         state.error = payload || "Failed to delete Order";
+      })
+
+      // order Detail
+      .addCase(loadOrderDetail.pending, (state) => {
+        state.status = "loading";
+        state.error = null;
+      })
+      .addCase(loadOrderDetail.fulfilled, (state, { payload }) => {
+        state.status = "succeeded";
+        state.orderDetail = payload?.payLoad;
+      })
+      .addCase(loadOrderDetail.rejected, (state, { payload }) => {
+        state.status = "failed";
+        state.error = payload || "Failed to load game detail";
       });
   },
 });

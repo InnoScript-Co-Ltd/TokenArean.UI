@@ -3,7 +3,6 @@ import { useState, useCallback } from "react";
 import OrderTable from "./components/OrderTable";
 import useOrder from "@/redux/hook/order/userOrder";
 import { Order } from "@/constants/config";
-import OrderInputModal from "./components/OrderInputModal";
 import Loader from "@/components/global/Loader";
 import ConfirmModal from "@/components/global/ConfirmModal";
 import { Input } from "@/components/ui/input";
@@ -14,7 +13,6 @@ const Orders: React.FC = () => {
     currentPage: 1,
     pageSize: 12,
   });
-  const [open, setOpen] = useState(false);
   const [currentOrder, setCurrentOrder] = useState<Order | null>(null);
   const [alertOpen, setAlertOpen] = useState(false);
   const [localSearch, setLocalSearch] = useState("");
@@ -23,18 +21,11 @@ const Orders: React.FC = () => {
     setPagination((p) => ({ ...p, currentPage: page }));
   }, []);
 
-  const {
-    orders,
-    status,
-    error,
-    totalCount,
-    updateOrder,
-    deleteOrder,
-    setSearchTerm,
-  } = useOrder({
-    currentPage: pagination.currentPage,
-    pageSize: pagination.pageSize,
-  });
+  const { orders, status, error, totalCount, deleteOrder, setSearchTerm } =
+    useOrder({
+      currentPage: pagination.currentPage,
+      pageSize: pagination.pageSize,
+    });
 
   const handleDeleteOrder = useCallback(
     (id: string) => {
@@ -45,20 +36,6 @@ const Orders: React.FC = () => {
       }
     },
     [orders]
-  );
-
-  const handleEditOrder = useCallback((order: Order) => {
-    setAlertOpen(false);
-    setCurrentOrder(order);
-    setOpen(true);
-  }, []);
-
-  const handleUpdateOrder = useCallback(
-    async (id: string | number, data: FormData) => {
-      await updateOrder(id.toString(), data);
-      setOpen(false);
-    },
-    [updateOrder]
   );
 
   const confirmDelete = () => {
@@ -104,16 +81,9 @@ const Orders: React.FC = () => {
           pageSize={pagination.pageSize}
           totalCount={totalCount}
           onPageChange={handlePageChange}
-          onEdit={handleEditOrder}
           onDelete={handleDeleteOrder}
         />
       </div>
-      <OrderInputModal
-        open={open}
-        onOpenChange={setOpen}
-        currentOrder={currentOrder}
-        handleUpdateOrder={handleUpdateOrder}
-      />
       <ConfirmModal
         open={alertOpen}
         onCancel={cancelDelete}

@@ -213,6 +213,12 @@ export interface OrderPayload {
 export interface DeleteOrderResponse {
   id: string;
 }
+export interface OrderDetailResponse {
+  message: string;
+  payLoad: Order;
+  payLoadList: null;
+  statusCode: number;
+}
 // Order
 // User
 export interface User {

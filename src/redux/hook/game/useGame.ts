@@ -1,4 +1,3 @@
-// src/hooks/useGame.ts
 import { shallowEqual } from "react-redux";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import {
