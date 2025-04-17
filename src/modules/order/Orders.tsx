@@ -1,4 +1,3 @@
-// src/pages/Games.tsx
 import Banner from "@/components/global/Banner";
 import { useState, useCallback } from "react";
 import OrderTable from "./components/OrderTable";
@@ -7,6 +6,8 @@ import { Order } from "@/constants/config";
 import OrderInputModal from "./components/OrderInputModal";
 import Loader from "@/components/global/Loader";
 import ConfirmModal from "@/components/global/ConfirmModal";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 
 const Orders: React.FC = () => {
   const [pagination, setPagination] = useState({
@@ -16,15 +17,24 @@ const Orders: React.FC = () => {
   const [open, setOpen] = useState(false);
   const [currentOrder, setCurrentOrder] = useState<Order | null>(null);
   const [alertOpen, setAlertOpen] = useState(false);
+  const [localSearch, setLocalSearch] = useState("");
+
   const handlePageChange = useCallback((page: number) => {
     setPagination((p) => ({ ...p, currentPage: page }));
   }, []);
 
-  const { orders, status, error, totalCount, updateOrder, deleteOrder } =
-    useOrder({
-      currentPage: pagination.currentPage,
-      pageSize: pagination.pageSize,
-    });
+  const {
+    orders,
+    status,
+    error,
+    totalCount,
+    updateOrder,
+    deleteOrder,
+    setSearchTerm,
+  } = useOrder({
+    currentPage: pagination.currentPage,
+    pageSize: pagination.pageSize,
+  });
 
   const handleDeleteOrder = useCallback(
     (id: string) => {
@@ -64,6 +74,10 @@ const Orders: React.FC = () => {
     setCurrentOrder(null);
   };
 
+  const handleSearch = () => {
+    setSearchTerm(localSearch);
+  };
+
   if (status === "loading") return <Loader />;
   if (status === "failed") return <p>Error: {error}</p>;
 
@@ -73,6 +87,17 @@ const Orders: React.FC = () => {
         <Banner title="Orders" />
       </div>
       <div className="my-5 px-5 py-3 min-w-[500px] overflow-x-auto w-full">
+        <div className=" flex items-center gap-2 mb-5">
+          <Input
+            id="searchTerm"
+            name="searchTerm"
+            placeholder="Search orders ..."
+            value={localSearch}
+            onChange={(e) => setLocalSearch(e.target.value)}
+            className=" max-w-[200px]"
+          />
+          <Button onClick={handleSearch}>Search</Button>
+        </div>
         <OrderTable
           orders={orders}
           currentPage={pagination.currentPage}
