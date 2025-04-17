@@ -1,5 +1,4 @@
-// src/components/GameInputModal.tsx
-import React, { FC, useEffect, useState, ChangeEvent } from "react";
+import { FC, useEffect, useState, ChangeEvent } from "react";
 import {
   Dialog,
   DialogContent,
@@ -12,8 +11,6 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
-import { Switch } from "@/components/ui/switch";
-import { Textarea } from "@/components/ui/textarea";
 import {
   Select,
   SelectContent,
@@ -88,16 +85,6 @@ const OrderInputModal: FC<OrderInputModalProps> = ({
       ...prev,
       [name]: type === "number" ? parseInt(value, 10) : value,
     }));
-  };
-
-  const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const { name, files } = e.target;
-    if (files && files[0]) {
-      const file = files[0];
-      setForm((prev) => ({ ...prev, [name]: file }));
-      const url = URL.createObjectURL(file);
-      if (name === "screenshot") setScreenShotPreview(url);
-    }
   };
 
   const handleSubmit = async () => {
