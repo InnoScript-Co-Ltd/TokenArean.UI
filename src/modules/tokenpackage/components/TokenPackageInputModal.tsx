@@ -65,7 +65,9 @@ const TokenPackageInputModal: FC<TokenPackageInputModalProps> = ({
         currency: currentTokenPackage.currency,
         gameId: currentTokenPackage.gameDto?.id.toString() || "",
       });
-      setPackageImagePreview(currentTokenPackage.packageImage);
+      setPackageImagePreview(
+        `${currentTokenPackage.packageImage}?${Date.now()}`
+      );
     } else {
       setForm({
         packageImage: null,
@@ -133,7 +135,13 @@ const TokenPackageInputModal: FC<TokenPackageInputModalProps> = ({
       console.error("Submit failed:", err);
     }
   };
-
+  const isFormInvalid =
+    !form.packageImage ||
+    !form.price ||
+    !form.unit ||
+    !form.tokenTitle.trim() ||
+    !form.currency ||
+    !form.gameId;
   return (
     <Dialog open={open} onOpenChange={onOpenChange} modal>
       <DialogContent className="sm:max-w-lg">
@@ -252,7 +260,7 @@ const TokenPackageInputModal: FC<TokenPackageInputModalProps> = ({
           <DialogClose asChild>
             <Button variant="outline">Cancel</Button>
           </DialogClose>
-          <Button onClick={handleSubmit}>
+          <Button onClick={handleSubmit} disabled={isFormInvalid}>
             {currentTokenPackage
               ? "Update TokenPackage"
               : "Create TokenPackage"}

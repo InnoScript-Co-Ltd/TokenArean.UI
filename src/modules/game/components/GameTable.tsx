@@ -37,7 +37,6 @@ const GameTable: React.FC<GameTableProps> = ({
         <TableHeader>
           <TableRow>
             <TableHead>Title</TableHead>
-            <TableHead>Description</TableHead>
             <TableHead>Server Type</TableHead>
             <TableHead>Order Index</TableHead>
             <TableHead>Created At</TableHead>
@@ -48,7 +47,6 @@ const GameTable: React.FC<GameTableProps> = ({
           {games?.map((game) => (
             <TableRow key={game.id}>
               <TableCell>{game.title}</TableCell>
-              <TableCell>{game.description}</TableCell>
               <TableCell>{game.serverType}</TableCell>
               <TableCell>{game.orderIndex}</TableCell>
               <TableCell>{new Date(game.createdAt).toLocaleString()}</TableCell>
