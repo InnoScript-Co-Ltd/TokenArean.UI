@@ -80,12 +80,6 @@ const Login = () => {
               <div className="grid gap-2">
                 <div className="flex items-center justify-between">
                   <Label htmlFor="password">Password</Label>
-                  <Link
-                    className=" text-sm hover:opacity-70"
-                    to={"/forget-password"}
-                  >
-                    Forget Password
-                  </Link>
                 </div>
                 <Input
                   id="password"
@@ -95,6 +89,12 @@ const Login = () => {
                   onChange={handleChange}
                   required
                 />
+                <Link
+                  className=" text-sm hover:opacity-70 items-right"
+                  to={"/forget-password"}
+                >
+                  Forget Password
+                </Link>
               </div>
               <Button type="submit" className="w-full cursor-pointer">
                 Login

@@ -3,6 +3,7 @@
 import axiosInstance from "@/constants/axios";
 import {
   DeleteOrderResponse,
+  OrderDetailResponse,
   OrderEntryResponse,
   OrderListResponse,
   PaginationParams,
@@ -70,4 +71,19 @@ export const fetchDeleteOrder = async (
     `/api/v1/Order/${id}`
   );
   return response.data;
+};
+
+export const fetchOrderDetail = async (
+  id: string
+): Promise<OrderDetailResponse> => {
+  try {
+    const response = await axiosInstance.get<OrderDetailResponse>(
+      `/api/v1/Order/${id}`
+    );
+
+    return response.data;
+  } catch (error) {
+    console.error("Failed to fetch Order Detail :", error);
+    throw error;
+  }
 };

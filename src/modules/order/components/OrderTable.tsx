@@ -9,6 +9,7 @@ import {
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import type { Order } from "@/constants/config";
+import { Link } from "react-router-dom";
 
 interface OrderTableProps {
   orders: Order[];
@@ -16,7 +17,6 @@ interface OrderTableProps {
   pageSize: number;
   totalCount: number;
   onPageChange: (page: number) => void;
-  onEdit?: (order: Order) => void;
   onDelete?: (id: string) => void;
 }
 const OrderTable: React.FC<OrderTableProps> = ({
@@ -25,7 +25,6 @@ const OrderTable: React.FC<OrderTableProps> = ({
   pageSize,
   totalCount,
   onPageChange,
-  onEdit,
   onDelete,
 }) => {
   const totalPages = Math.ceil(totalCount / pageSize);
@@ -46,7 +45,7 @@ const OrderTable: React.FC<OrderTableProps> = ({
             <TableHead>Operator By</TableHead>
             <TableHead>Created At</TableHead>
             <TableHead>Updated At</TableHead>
-            {(onEdit || onDelete) && <TableHead>Actions</TableHead>}
+            {onDelete && <TableHead>Actions</TableHead>}
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -68,17 +67,14 @@ const OrderTable: React.FC<OrderTableProps> = ({
               <TableCell>
                 {new Date(order.updatedAt).toLocaleString()}
               </TableCell>
-              {(onEdit || onDelete) && (
-                <TableCell className="flex gap-2">
-                  {onEdit && (
-                    <Button
-                      size="sm"
-                      variant="outline"
-                      onClick={() => onEdit(order)}
-                    >
-                      Edit
-                    </Button>
-                  )}
+              {onDelete && (
+                <TableCell className="flex items-center gap-2">
+                  <Link
+                    to={`/dashboard/order-detail/${order?.id}`}
+                    className=" border rounded-lg px-3 py-1.5 h-full w-fit"
+                  >
+                    View Detail
+                  </Link>
                   {onDelete && (
                     <Button
                       size="sm"

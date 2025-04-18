@@ -1,5 +1,3 @@
-// src/redux/api/game/gameApi.ts
-
 import axiosInstance from "@/constants/axios";
 import {
   UserListResponse,

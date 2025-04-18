@@ -14,6 +14,7 @@ import Login from "@/pages/Login";
 import { Route, Routes } from "react-router-dom";
 import ForgotPassword from "@/pages/ForgotPassword";
 import ChangePassword from "@/pages/ChangePassword";
+import OrderDetail from "@/modules/order/OrderDetail";
 
 const Path = () => {
   return (
@@ -50,6 +51,7 @@ const Path = () => {
 
           {/* Order Page */}
           <Route path="orders" element={<Orders />} />
+          <Route path="order-detail/:orderID" element={<OrderDetail />} />
           {/* Order Page */}
         </Route>
 
