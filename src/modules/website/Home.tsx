@@ -3,10 +3,11 @@ import Footer from "./components/Footer";
 import EmblaCarousel from "./components/EmblaCarousel";
 import GameCard from "@/components/global/GameCard";
 import useGame from "@/redux/hook/game/useGame";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { FaChevronDown } from "react-icons/fa";
 import { useLanguage } from "@/redux/hook/language/useLanguage";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import toast, { Toaster } from "react-hot-toast";
 
 const Home = () => {
   const [pagination, setPagination] = useState({
@@ -18,13 +19,29 @@ const Home = () => {
     pageSize: pagination.pageSize,
   });
   const { lang } = useLanguage();
+  const location = useLocation();
+  const nav = useNavigate();
 
   const handleSeeMore = () => {
     setPagination({ currentPage: 1, pageSize: pagination.pageSize + 12 });
   };
-  console.log("bannerList:", bannerList);
+
+  const hasToasted = useRef(false);
+
+  useEffect(() => {
+    const message = location.state?.message;
+
+    if (message && !hasToasted.current) {
+      toast.success(message);
+      hasToasted.current = true;
+
+      nav(location.pathname, { replace: true });
+    }
+  }, [location, nav]);
+
   return (
     <>
+      <Toaster position="bottom-right" reverseOrder={false} />
       <Header />
       <main className=" pt-8">
         {/* Carousel */}
