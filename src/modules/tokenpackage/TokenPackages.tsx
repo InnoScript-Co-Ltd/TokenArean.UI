@@ -41,8 +41,12 @@ const TokenPackages: React.FC = () => {
   }, []);
   const handleCreateTokenPackage = useCallback(
     async (data: FormData) => {
-      await createTokenPackage(data);
-      setOpen(false);
+      try {
+        await createTokenPackage(data);
+        setOpen(false);
+      } catch (error) {
+        console.log(error);
+      }
     },
     [createTokenPackage]
   );

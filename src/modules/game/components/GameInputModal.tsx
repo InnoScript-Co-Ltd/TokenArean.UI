@@ -63,8 +63,8 @@ const GameInputModal: FC<GameInputModalProps> = ({
         isDisable: currentGame?.isDisable,
       });
 
-      setLogoPreview(currentGame.logo);
-      setBannerPreview(currentGame.bannerImage);
+      setLogoPreview(`${currentGame.logo}?${Date.now()}`);
+      setBannerPreview(`${currentGame.bannerImage}?${Date.now()}`);
     } else {
       setForm({
         logo: null,
@@ -107,7 +107,10 @@ const GameInputModal: FC<GameInputModalProps> = ({
     formData.append("title", form.title);
     formData.append("description", form.description);
     formData.append("orderIndex", form.orderIndex.toString());
-    formData.append("serverType", form.serverType === null ? "" : "");
+    formData.append(
+      "serverType",
+      form.serverType === null ? "" : form.serverType
+    );
     formData.append("isDisable", form.isDisable ? "True" : "False");
 
     // These fields might be required for backend compatibility
@@ -133,10 +136,7 @@ const GameInputModal: FC<GameInputModalProps> = ({
   };
 
   const isFormInvalid =
-    !form.logo ||
-    !form.bannerImage ||
-    !form.title.trim() ||
-    form.orderIndex === 0;
+    !form.logo || !form.title.trim() || form.orderIndex === 0;
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange} modal>
@@ -273,17 +273,6 @@ const GameInputModal: FC<GameInputModalProps> = ({
               }
             />
             <Label htmlFor="isDisable">Disabled</Label>
-          </div>
-
-          {/* Description */}
-          <div className="flex flex-col gap-3">
-            <Label htmlFor="description">Description</Label>
-            <Textarea
-              id="description"
-              name="description"
-              value={form.description ? form.description : ""}
-              onChange={handleChange}
-            />
           </div>
         </div>
 

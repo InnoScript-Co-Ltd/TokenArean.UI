@@ -69,6 +69,7 @@ const UserInputModal: FC<UserInputModalProps> = ({
       console.error("Submit failed:", err);
     }
   };
+  const isFormInvalid = !user?.email || (!currentUser && !user?.password);
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange} modal>
@@ -117,7 +118,7 @@ const UserInputModal: FC<UserInputModalProps> = ({
           <DialogClose asChild>
             <Button variant="outline">Cancel</Button>
           </DialogClose>
-          <Button onClick={handleSubmit}>
+          <Button onClick={handleSubmit} disabled={isFormInvalid}>
             {currentUser ? "Update User" : "Create User"}
           </Button>
         </DialogFooter>
