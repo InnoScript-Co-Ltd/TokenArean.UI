@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 import { IoShieldCheckmarkSharp } from "react-icons/io5";
@@ -15,6 +15,7 @@ const GameDetail: React.FC = () => {
   const { gameDetail } = useGameDetail({ id: gameId });
   const { handleCreateOrder, error } = useOrder();
   const { lang } = useLanguage();
+  const nav = useNavigate();
 
   const [isPaymentModalOpen, setIsPaymentModalOpen] = useState(false);
   const [selectedPackage, setSelectedPackage] = useState<TokenPackage | null>(
@@ -57,18 +58,24 @@ const GameDetail: React.FC = () => {
     if (formData.screenShot) {
       payload.append("file_ScreenShot", formData.screenShot);
     }
-    console.log(payload);
 
-    await handleCreateOrder(payload);
+    const res = await handleCreateOrder(payload);
 
-    setFormData({
-      inGameUserId: "",
-      serverInfo: "",
-      mobileNumber: "",
-      tokenPackageId: "",
-      screenShot: null,
-    });
-    setIsPaymentModalOpen(false);
+    if (res?.statusCode == 201) {
+      setFormData({
+        inGameUserId: "",
+        serverInfo: "",
+        mobileNumber: "",
+        tokenPackageId: "",
+        screenShot: null,
+      });
+      setIsPaymentModalOpen(false);
+      nav("/", {
+        state: {
+          message: "Order has been successfully placed!",
+        },
+      });
+    }
   };
 
   const total = selectedPackage?.price || "0 Ks";
@@ -123,7 +130,7 @@ const GameDetail: React.FC = () => {
                   <li>
                     {lang === "mm"
                       ? "အသုံးပြုသူ ဖုန်းနံပတ်ထည့်ပါ"
-                      : "Enter Your Mobile Number (Optional)"}
+                      : "Enter Your Mobile Number"}
                   </li>
                   <li>
                     {lang === "mm"
@@ -220,7 +227,7 @@ const GameDetail: React.FC = () => {
                     placeholder={
                       lang === "mm"
                         ? "အသုံးပြုသူ ဖုန်းနံပတ်ထည့်ပါ ..."
-                        : "Enter Mobile Number (Optional) ..."
+                        : "Enter Mobile Number ..."
                     }
                     className="w-full h-12 px-5 rounded-md bg-[#f5f5f5] border-0"
                   />
@@ -279,7 +286,11 @@ const GameDetail: React.FC = () => {
                 {/* Buy Now Button */}
                 <button
                   onClick={handleBuyNow}
-                  disabled={!selectedPackage || !formData?.inGameUserId}
+                  disabled={
+                    !selectedPackage ||
+                    !formData?.inGameUserId ||
+                    !formData?.mobileNumber
+                  }
                   className="bg-primary text-white w-full cursor-pointer py-2 px-6 rounded-md font-semibold hover:opacity-80 transition disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   {lang === "mm" ? "ဝယ်ယူမည်" : "Buy Now"}
