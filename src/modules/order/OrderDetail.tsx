@@ -1,11 +1,6 @@
 import Banner from "@/components/global/Banner";
 import useOrderDetail from "@/redux/hook/order/useOrderDetail";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogClose,
-} from "@/components/ui/dialog";
+import { Dialog, DialogContent } from "@/components/ui/dialog";
 
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
@@ -178,16 +173,11 @@ const OrderDetail = () => {
       {/* Lightbox Dialog */}
       {lightboxOpen && (
         <Dialog open={lightboxOpen} onOpenChange={setLightboxOpen}>
-          <DialogContent className="bg-transparent shadow-none p-0">
-            <DialogHeader>
-              <DialogClose className="absolute top-2 right-2 text-white text-2xl cursor-pointer">
-                ×
-              </DialogClose>
-            </DialogHeader>
+          <DialogContent className="bg-transparent shadow-none p-5 w-fit scale-95">
             <img
               src={screenShotPreview}
               alt="Screenshot Large"
-              className="max-w-full max-h-screen object-contain"
+              className=" w-full max-h-screen object-contain"
             />
           </DialogContent>
         </Dialog>
