@@ -135,7 +135,10 @@ const GameInputModal: FC<GameInputModalProps> = ({
   };
 
   const isFormInvalid =
-    !form.logo || !form.title.trim() || form.orderIndex === 0;
+    !form.logo ||
+    !form.title.trim() ||
+    form.orderIndex === 0 ||
+    !form.serverType;
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange} modal>
@@ -255,6 +258,7 @@ const GameInputModal: FC<GameInputModalProps> = ({
                   <SelectValue placeholder="Select server type" />
                 </SelectTrigger>
                 <SelectContent>
+                  <SelectItem value="NONE">None</SelectItem>
                   <SelectItem value="SERVER">Server</SelectItem>
                   <SelectItem value="ZONEID">Zone ID</SelectItem>
                 </SelectContent>

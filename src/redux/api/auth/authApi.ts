@@ -41,7 +41,7 @@ export const fetchRefreshToken = async (): Promise<RefreshTokenResponse> => {
     };
 
     const response = await axiosInstance.post<RefreshTokenResponse>(
-      "api/v1/auth/refresh",
+      "api/v1/auth/refresh-token",
       requestBody
     );
 

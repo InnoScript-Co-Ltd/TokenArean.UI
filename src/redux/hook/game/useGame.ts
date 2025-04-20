@@ -35,6 +35,7 @@ const useGame = ({ currentPage = 1, pageSize = 12 }: PaginationParams = {}) => {
     async (payload: FormData) => {
       try {
         const response = await dispatch(createGame(payload)).unwrap();
+
         return response;
       } catch (err) {
         console.error("Failed to create game:", err);

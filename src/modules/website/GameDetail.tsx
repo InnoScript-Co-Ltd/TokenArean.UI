@@ -181,41 +181,51 @@ const GameDetail: React.FC = () => {
                 </div>
 
                 {/* Server Info */}
-                {gameDetail?.serverType && (
-                  <div className="col-span-3 sm:col-span-1">
-                    {gameDetail?.serverType.toLowerCase() === "server" ? (
-                      <select
-                        name="serverInfo"
-                        value={formData?.serverInfo}
-                        onChange={handleInputChange}
-                        className="w-full h-12 px-5 rounded-md bg-[#f5f5f5] border-0"
-                      >
-                        <option value="">
-                          {lang === "mm"
-                            ? "Server ရွေးချယ်ပါ"
-                            : "Select Server"}
-                        </option>
-                        <option value="America">America</option>
-                        <option value="Europe">Europe</option>
-                        <option value="Asia">Asia</option>
-                        <option value="TW, HK, MO">TW, HK, MO</option>
-                      </select>
-                    ) : (
-                      <input
-                        type="text"
-                        name="serverInfo"
-                        value={formData?.serverInfo}
-                        onChange={handleInputChange}
-                        placeholder={
-                          lang === "mm"
-                            ? "Zone IDထည့်ပါ ..."
-                            : "Enter Zone ID ..."
-                        }
-                        className="w-full h-12 px-5 rounded-md bg-[#f5f5f5] border-0"
-                      />
-                    )}
-                  </div>
-                )}
+                {gameDetail?.serverType &&
+                  (() => {
+                    const type = gameDetail.serverType.toLowerCase();
+                    if (type === "server") {
+                      return (
+                        <div className="col-span-3 sm:col-span-1">
+                          <select
+                            name="serverInfo"
+                            value={formData?.serverInfo}
+                            onChange={handleInputChange}
+                            className="w-full h-12 px-5 rounded-md bg-[#f5f5f5] border-0"
+                          >
+                            <option value="">
+                              {lang === "mm"
+                                ? "Server ရွေးချယ်ပါ"
+                                : "Select Server"}
+                            </option>
+                            <option value="America">America</option>
+                            <option value="Europe">Europe</option>
+                            <option value="Asia">Asia</option>
+                            <option value="TW, HK, MO">TW, HK, MO</option>
+                          </select>
+                        </div>
+                      );
+                    } else if (type === "zoneid") {
+                      return (
+                        <div className="col-span-3 sm:col-span-1">
+                          <input
+                            type="text"
+                            name="serverInfo"
+                            value={formData?.serverInfo}
+                            onChange={handleInputChange}
+                            placeholder={
+                              lang === "mm"
+                                ? "Zone ID ထည့်ပါ ..."
+                                : "Enter Zone ID ..."
+                            }
+                            className="w-full h-12 px-5 rounded-md bg-[#f5f5f5] border-0"
+                          />
+                        </div>
+                      );
+                    } else {
+                      return null; // Don't render anything for "none" or unknown values
+                    }
+                  })()}
 
                 {/* Mobile Number */}
                 <div className="col-span-3">

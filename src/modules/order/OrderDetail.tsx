@@ -142,11 +142,13 @@ const OrderDetail = () => {
                     className="w-10 h-10 object-cover rounded"
                   />
                   <span className="font-semibold">
+                    {orderDetail?.tokenPackageDto.unit}{" "}
                     {orderDetail?.tokenPackageDto?.tokenTitle}
                   </span>
                 </div>
                 <span className="font-semibold">
-                  {orderDetail?.tokenPackageDto.price}
+                  {orderDetail?.tokenPackageDto.price}{" "}
+                  {orderDetail?.tokenPackageDto.currency}
                 </span>
               </div>
             </div>
