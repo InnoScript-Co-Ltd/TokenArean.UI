@@ -7,6 +7,7 @@ import Loader from "@/components/global/Loader";
 import ConfirmModal from "@/components/global/ConfirmModal";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import ErrorComponent from "@/components/global/ErrorComponent";
 
 const Orders: React.FC = () => {
   const [pagination, setPagination] = useState({
@@ -56,7 +57,7 @@ const Orders: React.FC = () => {
   };
 
   if (status === "loading") return <Loader />;
-  if (status === "failed") return <p>Error: {error}</p>;
+  if (status === "failed") return <ErrorComponent error={error} />;
 
   return (
     <>

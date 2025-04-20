@@ -7,6 +7,7 @@ import GameInputModal from "./components/GameInputModal";
 import useGame from "@/redux/hook/game/useGame";
 import type { Game } from "@/constants/config";
 import ConfirmModal from "@/components/global/ConfirmModal";
+import ErrorComponent from "@/components/global/ErrorComponent";
 
 const Games: React.FC = () => {
   const [pagination, setPagination] = useState({
@@ -84,7 +85,7 @@ const Games: React.FC = () => {
   };
 
   if (status === "loading") return <Loader />;
-  if (status === "failed") return <p>Error: {error}</p>;
+  if (status === "failed") return <ErrorComponent error={error} />;
 
   return (
     <>

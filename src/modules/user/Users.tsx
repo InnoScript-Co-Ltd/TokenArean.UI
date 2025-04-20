@@ -6,6 +6,7 @@ import useUser from "@/redux/hook/user/useUser";
 import { User, UserPayload } from "@/constants/config";
 import UserInputModal from "./components/UserInputModal";
 import ConfirmModal from "@/components/global/ConfirmModal";
+import ErrorComponent from "@/components/global/ErrorComponent";
 
 const Users: React.FC = () => {
   const [pagination, setPagination] = useState({
@@ -78,7 +79,7 @@ const Users: React.FC = () => {
   console.log("user", Users);
 
   if (status === "loading") return <Loader />;
-  if (status === "failed") return <p>Error: {error}</p>;
+  if (status === "failed") return <ErrorComponent error={error} />;
   return (
     <>
       <div className="flex flex-row gap-5 items-center justify-between px-5 py-3">

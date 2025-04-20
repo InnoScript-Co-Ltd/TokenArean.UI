@@ -9,6 +9,7 @@ import { TokenPackage } from "@/constants/config";
 import TokenPackageInputModal from "./components/TokenPackageInputModal";
 import useGame from "@/redux/hook/game/useGame";
 import ConfirmModal from "@/components/global/ConfirmModal";
+import ErrorComponent from "@/components/global/ErrorComponent";
 
 const TokenPackages: React.FC = () => {
   const [pagination, setPagination] = useState({
@@ -90,7 +91,7 @@ const TokenPackages: React.FC = () => {
   console.log("token", tokenPackages);
 
   if (status === "loading") return <Loader />;
-  if (status === "failed") return <p>Error: {error}</p>;
+  if (status === "failed") return <ErrorComponent error={error} />;
   return (
     <>
       <div className="flex flex-row gap-5 items-center justify-between px-5 py-3">
