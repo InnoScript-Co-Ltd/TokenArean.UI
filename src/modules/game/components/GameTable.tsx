@@ -61,7 +61,7 @@ const GameTable: React.FC<GameTableProps> = ({
                       Edit
                     </Button>
                   )}
-                  {onDelete && (
+                  {/* {onDelete && (
                     <Button
                       size="sm"
                       variant="destructive"
@@ -69,7 +69,7 @@ const GameTable: React.FC<GameTableProps> = ({
                     >
                       Delete
                     </Button>
-                  )}
+                  )} */}
                 </TableCell>
               )}
             </TableRow>

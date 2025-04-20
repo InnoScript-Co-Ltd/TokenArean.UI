@@ -32,9 +32,9 @@ axiosInstance.interceptors.response.use(
   (res) => res,
   async (error) => {
     const original = error.config;
+    console.log("error:", error);
+
     if (original.url?.includes("/refresh")) {
-      dispatch(logout());
-      window.location.href = "/login";
       return Promise.reject(error);
     }
 
@@ -44,15 +44,15 @@ axiosInstance.interceptors.response.use(
     ) {
       original._retry = true;
       try {
-        const { accessToken } = await dispatch(refreshToken()).unwrap();
+        const { payLoad } = await dispatch(refreshToken()).unwrap();
         axiosInstance.defaults.headers.common[
           "Authorization"
-        ] = `Bearer ${accessToken}`;
-        original.headers["Authorization"] = `Bearer ${accessToken}`;
+        ] = `Bearer ${payLoad.accessToken}`;
+        original.headers["Authorization"] = `Bearer ${payLoad.accessToken}`;
         return axiosInstance(original);
       } catch {
-        dispatch(logout());
-        window.location.href = "/login";
+        // dispatch(logout());
+        // window.location.href = "/login";
         return Promise.reject(new Error("Session expired"));
       }
     }

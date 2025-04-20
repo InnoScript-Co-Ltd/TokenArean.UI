@@ -56,6 +56,8 @@ const Games: React.FC = () => {
     async (data: FormData) => {
       await createGame(data);
       setOpen(false);
+
+      window.location.href = "/dashboard/games";
     },
     [createGame]
   );

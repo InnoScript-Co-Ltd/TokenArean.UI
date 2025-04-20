@@ -20,7 +20,10 @@ export interface LoginPayload {
 
 // Refresh Token
 export interface RefreshTokenResponse {
-  accessToken: string;
+  payLoad: {
+    accessToken: string;
+    refreshToken: string;
+  };
 }
 export interface RefreshTokenPayload {
   refreshToken: string;

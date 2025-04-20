@@ -136,7 +136,7 @@ const TokenPackageInputModal: FC<TokenPackageInputModalProps> = ({
     }
   };
   const isFormInvalid =
-    !form.packageImage ||
+    (!form.packageImage && !currentTokenPackage) ||
     !form.price ||
     !form.unit ||
     !form.tokenTitle.trim() ||
