@@ -113,7 +113,7 @@ const EmblaCarousel: React.FC<PropType> = ({ games, options }) => {
               key={index}
             >
               <img
-                className="embla__slide__img w-full h-64 object-cover rounded-lg shadow-lg"
+                className="embla__slide__img w-full min-h-60 aspect-[5/2] object-cover rounded-lg shadow-lg"
                 src={slide?.bannerImage}
                 alt={slide?.title || `Slide ${index + 1}`}
               />

@@ -50,7 +50,7 @@ const Home = () => {
             <Link to={`game/${bannerList[0]?.id}`}>
               <img
                 src={bannerList[0]?.bannerImage}
-                className=" min-h-[300px] w-full h-full object-cover rounded-lg shadow-lg overflow-hidden "
+                className=" min-h-60 object-cover aspect-[5/2] w-full h-full rounded-lg shadow-lg overflow-hidden "
                 alt=""
               />
             </Link>
