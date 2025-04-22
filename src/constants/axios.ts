@@ -1,6 +1,6 @@
 import axios from "axios";
 import config from "@/constants/environment";
-import { logout, refreshToken } from "@/redux/service/auth/authSlice";
+import { refreshToken } from "@/redux/service/auth/authSlice";
 import type { AppDispatch } from "@/redux/store";
 
 let dispatch: AppDispatch;
