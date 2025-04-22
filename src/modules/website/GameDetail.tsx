@@ -329,8 +329,11 @@ const GameDetail: React.FC = () => {
                   alt={pkg?.tokenTitle}
                   className="w-16 h-16 object-cover mb-3"
                 />
-                <span className="font-semibold">{pkg?.tokenTitle}</span>
-                <span className="text-gray-600 mt-1">{pkg.price}</span>
+                <div className=" flex flex-row gap-2">
+                  <span className="text-gray-600 mt-1">{pkg?.unit}</span>
+                  <span className="text-gray-600 mt-1">{pkg?.tokenTitle}</span>
+                </div>
+                <p className="font-semibold">{pkg?.price}</p>
               </div>
             ))}
           </div>
