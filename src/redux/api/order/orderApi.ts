@@ -2,6 +2,7 @@
 
 import axiosInstance from "@/constants/axios";
 import {
+  CleanOrderRequest,
   DeleteOrderResponse,
   OrderDetailResponse,
   OrderEntryResponse,
@@ -60,6 +61,20 @@ export const fetchUpdateOrder = async (
     return response.data;
   } catch (error) {
     console.error("Failed to update Order data:", error);
+    throw error;
+  }
+};
+export const fetchCleanOrder = async (
+  order: CleanOrderRequest
+): Promise<OrderEntryResponse> => {
+  try {
+    const response = await axiosInstance.post<OrderEntryResponse>(
+      `/api/v1/Order/Clean-Order`,
+      order
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Failed to clean Order data:", error);
     throw error;
   }
 };

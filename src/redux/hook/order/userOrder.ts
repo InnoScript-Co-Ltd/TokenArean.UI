@@ -6,8 +6,9 @@ import {
   createOrder,
   updateOrder,
   deleteOrder,
+  cleanOrder,
 } from "@/redux/service/order/orderSlice";
-import { PaginationParams } from "@/constants/config";
+import { CleanOrderRequest, PaginationParams } from "@/constants/config";
 import { useAppDispatch, useAppSelector } from "../hook";
 import { RootState } from "@/redux/store";
 
@@ -60,7 +61,18 @@ const useOrder = ({
     },
     [dispatch]
   );
-
+  const handleCleanOrder = useCallback(
+    async (payload: CleanOrderRequest) => {
+      try {
+        const response = await dispatch(cleanOrder({ data: payload })).unwrap();
+        console.log("useOrder:", response);
+        return response;
+      } catch (err) {
+        console.error("Failed to delete Order:", err);
+      }
+    },
+    [dispatch]
+  );
   const handleDeleteOrder = useCallback(
     async (id: string) => {
       try {
@@ -84,6 +96,7 @@ const useOrder = ({
     setSearchTerm,
     updateOrder: handleUpdateOrder,
     deleteOrder: handleDeleteOrder,
+    cleanOrder: handleCleanOrder,
     handleCreateOrder,
   };
 };

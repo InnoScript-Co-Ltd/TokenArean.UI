@@ -179,7 +179,10 @@ export interface Order {
   userDto: User;
   gameTitle: string;
 }
-
+export interface CleanOrderRequest {
+  type: "WEEKLY" | "MONTHLY";
+  count: number;
+}
 export interface OrderListResponse {
   statusCode: number;
   message: string;

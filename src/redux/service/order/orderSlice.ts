@@ -5,6 +5,7 @@ import {
   fetchUpdateOrder,
   fetchDeleteOrder,
   fetchOrderDetail,
+  fetchCleanOrder,
 } from "@/redux/api/order/orderApi";
 import {
   Order,
@@ -12,6 +13,7 @@ import {
   OrderEntryResponse,
   PaginationParams,
   OrderDetailResponse,
+  CleanOrderRequest,
 } from "@/constants/config";
 
 interface OrderState {
@@ -69,6 +71,17 @@ export const updateOrder = createAsyncThunk<
 >("order/updateOrder", async ({ id, data }, { rejectWithValue }) => {
   try {
     return await fetchUpdateOrder(id, data);
+  } catch (err) {
+    return rejectWithValue((err as Error).message);
+  }
+});
+export const cleanOrder = createAsyncThunk<
+  OrderEntryResponse,
+  { data: CleanOrderRequest },
+  { rejectValue: string }
+>("order/CleanOrder", async ({ data }, { rejectWithValue }) => {
+  try {
+    return await fetchCleanOrder(data);
   } catch (err) {
     return rejectWithValue((err as Error).message);
   }
@@ -153,6 +166,19 @@ const orderSlice = createSlice({
       .addCase(updateOrder.rejected, (state, { payload }) => {
         state.status = "failed";
         state.error = payload || "Failed to update Order";
+      })
+
+      // CleanOrder
+      .addCase(cleanOrder.pending, (state) => {
+        state.status = "loading";
+        state.error = null;
+      })
+      .addCase(cleanOrder.fulfilled, (state) => {
+        state.status = "succeeded";
+      })
+      .addCase(cleanOrder.rejected, (state, { payload }) => {
+        state.status = "failed";
+        state.error = payload || "Failed to clean Order";
       })
 
       // deleteGame
