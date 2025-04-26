@@ -4,6 +4,7 @@ import gameReducer from "@/redux/service/game/gameSlice";
 import tokenPackageReducer from "@/redux/service/tokenPackage/tokenPackageSlice";
 import orderReducer from "@/redux/service/order/orderSlice";
 import userReducer from "@/redux/service/user/userSlice";
+import configSettingReducer from "@/redux/service/configSetting/configSettingSlice";
 
 import { injectStore } from "@/constants/axios";
 
@@ -14,6 +15,7 @@ export const store = configureStore({
     tokenPackage: tokenPackageReducer,
     order: orderReducer,
     user: userReducer,
+    configSetting: configSettingReducer,
   },
 });
 

@@ -95,13 +95,15 @@ const OrderDetail = () => {
           <h2 className="text-2xl mb-4">Order Detail</h2>
           <div className="flex flex-col gap-5">
             <div className="flex items-center gap-5">
-              <h3>Account ID : </h3>
-              <p>{orderDetail?.inGameUserId}</p>
+              <h3>Account ID/Server Info : </h3>
+              <p>
+                {orderDetail?.inGameUserId} ({orderDetail?.serverInfo})
+              </p>
             </div>
-            <div className="flex items-center gap-5">
+            {/* <div className="flex items-center gap-5">
               <h3>Server / Zone ID : </h3>
               <p>{orderDetail?.serverInfo}</p>
-            </div>
+            </div> */}
             <div className="flex items-center gap-5">
               <h3>Mobile Number : </h3>
               <p>{orderDetail?.mobileNumber}</p>

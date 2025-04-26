@@ -266,3 +266,46 @@ export interface DeleteUserResponse {
   id: string;
 }
 // User
+
+// ConfigSetting
+export interface ConfigSetting {
+  id: number;
+  paymentName: string;
+  phone: string;
+  orderIndex: number;
+}
+
+export interface ConfigSettingListResponse {
+  statusCode: number;
+  message: string;
+  payLoad: {
+    paging: {
+      totalCount: number;
+      totalPages: number;
+      previousPage: number | null;
+      nextPage: number | null;
+      firstRowOnPage: number;
+      lastRowOnPage: number;
+    };
+    items: ConfigSetting[];
+  };
+  payLoadList: null;
+}
+
+export interface ConfigSettingEntryResponse {
+  statusCode: number;
+  message: string;
+  payLoad: ConfigSetting;
+  payLoadList: null;
+}
+
+// Create payload — omit id, timestamps
+export interface ConfigSettingPayload {
+  paymentName: string;
+  phone: string;
+  orderIndex: number;
+}
+export interface DeleteConfigSettingResponse {
+  id: number;
+}
+// ConfigSetting

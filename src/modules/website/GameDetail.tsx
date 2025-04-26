@@ -78,7 +78,7 @@ const GameDetail: React.FC = () => {
     }
   };
 
-  const total = selectedPackage?.price || "0 Ks";
+  const total = selectedPackage?.price || "0 MMK";
 
   return (
     <>
@@ -271,11 +271,13 @@ const GameDetail: React.FC = () => {
                           className="w-10 h-10 object-cover rounded"
                         />
                         <span className="font-semibold">
-                          {selectedPackage?.tokenTitle}
+                          {selectedPackage.unit} {selectedPackage?.tokenTitle}
                         </span>
                       </div>
+
                       <span className="font-semibold">
-                        {selectedPackage.price}
+                        {selectedPackage.currency}
+                        {"  "} {selectedPackage.price}
                       </span>
                     </>
                   ) : (
@@ -290,7 +292,11 @@ const GameDetail: React.FC = () => {
                   <span className="text-lg font-semibold">
                     {lang === "mm" ? "စုစုပေါင်း" : "Total"}
                   </span>
-                  <span className="text-lg font-semibold">{total}</span>
+                  <span className="text-lg font-semibold">
+                    {selectedPackage?.currency}
+                    {"  "}
+                    {total}
+                  </span>
                 </div>
 
                 {/* Buy Now Button */}

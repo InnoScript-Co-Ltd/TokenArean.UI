@@ -71,6 +71,18 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
           },
         ],
       },
+      {
+        title: "ConfigSetting",
+        url: "configsetting",
+        icon: Gamepad,
+        isActive: true,
+        items: [
+          {
+            title: "ConfigSetting List",
+            url: "/dashboard/configsetting",
+          },
+        ],
+      },
     ],
   };
 

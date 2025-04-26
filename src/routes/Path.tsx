@@ -4,6 +4,7 @@ import ScrollToTop from "@/components/ScrollToTop";
 import DashboardLayout from "@/layout/DashboardLayout";
 import Dashboard from "@/modules/dashboard/Dashboard";
 import Games from "@/modules/game/Games";
+import ConfigSettings from "@/modules/configsetting/ConfigSettings";
 import TokenPackages from "@/modules/tokenpackage/TokenPackages";
 import Users from "@/modules/user/Users";
 
@@ -36,6 +37,10 @@ const Path = () => {
           {/* ChangePassword Page */}
           <Route path="change-password" element={<ChangePassword />} />
           {/* ChangePassword Page */}
+
+          {/* ConfigSetting Page */}
+          <Route path="configSetting" element={<ConfigSettings />} />
+          {/* ConfigSetting Page */}
 
           {/* User Page */}
           <Route path="users" element={<Users />} />

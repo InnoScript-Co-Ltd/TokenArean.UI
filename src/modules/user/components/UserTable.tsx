@@ -57,7 +57,7 @@ const UserTable: React.FC<UserTableProps> = ({
                       Edit
                     </Button>
                   )}
-                  {onDelete && (
+                  {/* {onDelete && (
                     <Button
                       size="sm"
                       variant="destructive"
@@ -65,7 +65,7 @@ const UserTable: React.FC<UserTableProps> = ({
                     >
                       Delete
                     </Button>
-                  )}
+                  )} */}
                 </TableCell>
               )}
             </TableRow>

@@ -65,7 +65,7 @@ const TokenPackageTable: React.FC<TokenPackageTableProps> = ({
                       Edit
                     </Button>
                   )}
-                  {onDelete && (
+                  {/* {onDelete && (
                     <Button
                       size="sm"
                       variant="destructive"
@@ -73,7 +73,7 @@ const TokenPackageTable: React.FC<TokenPackageTableProps> = ({
                     >
                       Delete
                     </Button>
-                  )}
+                  )} */}
                 </TableCell>
               )}
             </TableRow>
