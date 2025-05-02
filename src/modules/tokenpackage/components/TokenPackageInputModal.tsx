@@ -36,6 +36,7 @@ interface FormState {
   price: number;
   currency: string;
   gameId: string;
+  paymentMethod: string;
 }
 
 const TokenPackageInputModal: FC<TokenPackageInputModalProps> = ({
@@ -53,6 +54,7 @@ const TokenPackageInputModal: FC<TokenPackageInputModalProps> = ({
     price: 0,
     currency: "",
     gameId: "",
+    paymentMethod: "",
   });
   const [packageImagePreview, setPackageImagePreview] = useState<string>("");
   useEffect(() => {
@@ -64,6 +66,7 @@ const TokenPackageInputModal: FC<TokenPackageInputModalProps> = ({
         price: currentTokenPackage.price,
         currency: currentTokenPackage.currency,
         gameId: currentTokenPackage.gameDto?.id.toString() || "",
+        paymentMethod: currentTokenPackage.paymentMethod || "",
       });
       setPackageImagePreview(
         `${currentTokenPackage.packageImage}?${Date.now()}`
@@ -76,6 +79,7 @@ const TokenPackageInputModal: FC<TokenPackageInputModalProps> = ({
         price: 0,
         currency: "",
         gameId: "",
+        paymentMethod: "",
       });
       setPackageImagePreview("");
     }
@@ -109,6 +113,7 @@ const TokenPackageInputModal: FC<TokenPackageInputModalProps> = ({
     formData.append("currency", form.currency);
     formData.append("packageImage", "");
     formData.append("gameId", form.gameId);
+    formData.append("paymentMethod", form.paymentMethod);
 
     if (form.packageImage) {
       formData.append("file_PackageImage", form.packageImage);
@@ -239,6 +244,24 @@ const TokenPackageInputModal: FC<TokenPackageInputModalProps> = ({
                       {game.title}
                     </SelectItem>
                   ))}
+                </SelectContent>
+              </Select>
+            </div>
+            {/* Server Type */}
+            <div className="col-span-1 flex flex-col gap-3">
+              <Label htmlFor="paymentMethod">Payment Method</Label>
+              <Select
+                value={form.paymentMethod}
+                onValueChange={(value) =>
+                  setForm((prev) => ({ ...prev, paymentMethod: value }))
+                }
+              >
+                <SelectTrigger className="w-full cursor-pointer">
+                  <SelectValue placeholder="Select Payment Method" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="PHONEBILL">PHONEBILL</SelectItem>
+                  <SelectItem value="NORMAL">NORMAL</SelectItem>
                 </SelectContent>
               </Select>
             </div>

@@ -40,9 +40,13 @@ const GameInputModal: FC<GameInputModalProps> = ({
 }) => {
   const [logoPreview, setLogoPreview] = useState<string>("");
   const [bannerPreview, setBannerPreview] = useState<string>("");
+  const [gameProfileImagePreview, setGameProfileImagePreview] =
+    useState<string>("");
+
   const [form, setForm] = useState<GamePayload>({
     logo: null,
     bannerImage: null,
+    gameProfileImage: null,
     title: "",
     description: "",
     orderIndex: 1,
@@ -55,6 +59,7 @@ const GameInputModal: FC<GameInputModalProps> = ({
       setForm({
         logo: currentGame?.logo,
         bannerImage: currentGame?.bannerImage,
+        gameProfileImage: currentGame?.gameProfileImage,
         title: currentGame?.title,
         description: currentGame?.description,
         orderIndex: currentGame?.orderIndex,
@@ -64,10 +69,14 @@ const GameInputModal: FC<GameInputModalProps> = ({
 
       setLogoPreview(`${currentGame.logo}?${Date.now()}`);
       setBannerPreview(`${currentGame.bannerImage}?${Date.now()}`);
+      setGameProfileImagePreview(
+        `${currentGame.gameProfileImage}?${Date.now()}`
+      );
     } else {
       setForm({
         logo: null,
         bannerImage: null,
+        gameProfileImage: null,
         title: "",
         description: "",
         orderIndex: 1,
@@ -76,6 +85,7 @@ const GameInputModal: FC<GameInputModalProps> = ({
       });
       setLogoPreview("");
       setBannerPreview("");
+      setGameProfileImagePreview("");
     }
   }, [currentGame, open]);
 
@@ -97,6 +107,7 @@ const GameInputModal: FC<GameInputModalProps> = ({
       const url = URL.createObjectURL(file);
       if (name === "logo") setLogoPreview(url);
       else if (name === "bannerImage") setBannerPreview(url);
+      else if (name === "gameProfileImage") setGameProfileImagePreview(url);
     }
   };
 
@@ -121,6 +132,9 @@ const GameInputModal: FC<GameInputModalProps> = ({
     if (form.bannerImage) {
       formData.append("file_BannerImage", form.bannerImage);
     }
+    if (form.gameProfileImage) {
+      formData.append("file_GameProfileImage", form.gameProfileImage);
+    }
 
     try {
       if (currentGame?.id) {
@@ -136,6 +150,7 @@ const GameInputModal: FC<GameInputModalProps> = ({
 
   const isFormInvalid =
     !form.logo ||
+    !form.gameProfileImage ||
     !form.title.trim() ||
     form.orderIndex === 0 ||
     !form.serverType;
@@ -214,6 +229,33 @@ const GameInputModal: FC<GameInputModalProps> = ({
                 type="file"
                 id="banner_input"
                 name="bannerImage"
+                accept="image/*"
+                onChange={handleFileChange}
+                className="sr-only"
+              />
+            </div>
+            {/* GameProfileImage Upload */}
+            <div className="col-span-3 md:col-span-2">
+              <label
+                htmlFor="gameProfileImage_input"
+                className="cursor-pointer w-full h-full max-h-[120px] bg-gray-100 border border-dashed rounded flex items-center justify-center overflow-hidden pl-5"
+              >
+                {gameProfileImagePreview ? (
+                  <img
+                    src={gameProfileImagePreview}
+                    alt="gameProfileImage preview"
+                    className="w-full h-full object-cover"
+                  />
+                ) : (
+                  <span className="text-gray-500 text-sm sm:text-base">
+                    No Game Profile image
+                  </span>
+                )}
+              </label>
+              <input
+                type="file"
+                id="gameProfileImage_input"
+                name="gameProfileImage"
                 accept="image/*"
                 onChange={handleFileChange}
                 className="sr-only"

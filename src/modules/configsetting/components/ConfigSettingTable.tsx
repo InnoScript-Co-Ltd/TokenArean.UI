@@ -8,7 +8,7 @@ import {
   TableCell,
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
-import type { ConfigSetting, ConfigSettingPayload } from "@/constants/config";
+import type { ConfigSetting } from "@/constants/config";
 
 interface ConfigSettingTableProps {
   configSettings: ConfigSetting[];

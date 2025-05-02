@@ -63,6 +63,7 @@ export interface Game {
   description: string;
   logo: string;
   bannerImage: string;
+  gameProfileImage: string;
   orderIndex: number;
   serverType: string;
   isDisable: boolean;
@@ -105,6 +106,7 @@ export interface GamePayload {
   title: string;
   description: string;
   logo: string | null;
+  gameProfileImage: string | null;
   bannerImage: string | null;
   file_Logo?: File | null;
   file_BannerImage?: File | null;
@@ -125,6 +127,7 @@ export interface TokenPackage {
   currency: string;
   createdDate: Date;
   gameDto: Game;
+  paymentMethod: string;
 }
 
 export interface TokenPackageListResponse {
@@ -159,6 +162,7 @@ export interface TokenPackagePayload {
   price: number;
   currency: string;
   gameId: number;
+  paymentMethod: string;
 }
 export interface DeleteTokenPackageResponse {
   id: string;
