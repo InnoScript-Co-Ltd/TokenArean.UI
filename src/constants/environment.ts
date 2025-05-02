@@ -1,4 +1,4 @@
-export const BASE_URL = "http://4.145.92.57:84";
+export const BASE_URL = "http://localhost:5132/";
 
 const environment = {
   API_URL: `${BASE_URL}`,

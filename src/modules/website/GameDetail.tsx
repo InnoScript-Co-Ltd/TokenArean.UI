@@ -9,6 +9,11 @@ import useGameDetail from "@/redux/hook/game/useGameDetail";
 import { OrderPayload, TokenPackage } from "@/constants/config";
 import useOrder from "@/redux/hook/order/userOrder";
 import { useLanguage } from "@/redux/hook/language/useLanguage";
+import {
+  HoverCard,
+  HoverCardContent,
+  HoverCardTrigger,
+} from "@radix-ui/react-hover-card";
 
 const GameDetail: React.FC = () => {
   const { gameId } = useParams();
@@ -17,6 +22,7 @@ const GameDetail: React.FC = () => {
   const { lang } = useLanguage();
   const nav = useNavigate();
 
+  const [paymentMethod, setPaymentMethod] = useState("NORMAL");
   const [isPaymentModalOpen, setIsPaymentModalOpen] = useState(false);
   const [selectedPackage, setSelectedPackage] = useState<TokenPackage | null>(
     null
@@ -80,6 +86,11 @@ const GameDetail: React.FC = () => {
 
   const total = selectedPackage?.price || "0 MMK";
 
+  const filteredPkgs =
+    gameDetail?.tokenPackageDto?.filter(
+      (pkg) => pkg.paymentMethod === paymentMethod
+    ) ?? [];
+
   return (
     <>
       <Header />
@@ -100,11 +111,11 @@ const GameDetail: React.FC = () => {
                 {gameDetail?.title}
               </h1>
               <div className="flex flex-wrap gap-3">
-                <div className="rounded-full bg-[#00a9de40] text-[#333] px-3 py-1 flex items-center gap-1">
+                <div className="rounded-full bg-secondary text-[#333] px-3 py-1 flex items-center gap-1">
                   <IoShieldCheckmarkSharp />
                   <span className="text-xs">Official Supply & Safe</span>
                 </div>
-                <div className="rounded-full bg-[#00a9de40] text-[#333] px-3 py-1 flex items-center gap-1">
+                <div className="rounded-full bg-secondary text-[#333] px-3 py-1 flex items-center gap-1">
                   <PiMedalFill />
                   <span className="text-xs">100% Trusted</span>
                 </div>
@@ -149,7 +160,7 @@ const GameDetail: React.FC = () => {
 
           {/* Right Panel */}
           <div className="col-span-3 md:col-span-2 md:ms-5">
-            <div className="bg-[#00a9de40] p-5 rounded-lg shadow-lg flex flex-col justify-between h-full">
+            <div className="bg-secondary p-5 rounded-lg shadow-lg flex flex-col justify-between h-full">
               <div className="grid grid-cols-3 gap-5">
                 <div className="col-span-3">
                   <p className="text-xl font-semibold text-[#333]">
@@ -157,6 +168,33 @@ const GameDetail: React.FC = () => {
                       ? "အကောင့်အချက်အလက်များ ဖြည့်သွင်းပါ"
                       : "Enter Account Details"}
                   </p>
+
+                  <div className=" flex flex-row items-center gap-3 mt-3">
+                    <p className=" text-xs font-semibold text-[#333]">
+                      {lang === "mm"
+                        ? "အကောင့်အချက်အလက်များ ရယူရန်"
+                        : "Get Account Details"}
+                    </p>
+
+                    <HoverCard>
+                      <HoverCardTrigger asChild>
+                        <img
+                          src="/assets/images/qm.svg"
+                          className=" w-4 h-4 cursor-pointer"
+                          alt=""
+                        />
+                      </HoverCardTrigger>
+                      <HoverCardContent className="w-80">
+                        <div className=" w-[300px] h-[250px] shadow-md ">
+                          <img
+                            src={gameDetail?.gameProfileImage}
+                            className=" w-full h-full object-cover "
+                            alt=""
+                          />
+                        </div>
+                      </HoverCardContent>
+                    </HoverCard>
+                  </div>
                 </div>
 
                 {/* User ID */}
@@ -254,8 +292,36 @@ const GameDetail: React.FC = () => {
                 <></>
               )}
 
+              <div className="mt-3 flex flex-col gap-3">
+                <p className=" font-semibold text-[#333]">
+                  {lang === "mm"
+                    ? "ငွေပေးချေမှု နည်းလမ်းအားရွေးချယ်ပါ "
+                    : "Choose payment method."}
+                </p>
+                <div className=" flex flex-row gap-5">
+                  <div
+                    className={` px-2 py-1 border border-black rounded-md cursor-pointer hover:bg-primary duration-200 transition-colors hover:text-white ${
+                      paymentMethod === "PHONEBILL"
+                        ? "bg-primary text-white"
+                        : ""
+                    }`}
+                    onClick={() => setPaymentMethod("PHONEBILL")}
+                  >
+                    Phone Bill
+                  </div>
+                  <div
+                    className={` px-2 py-1 border border-black rounded-md cursor-pointer hover:bg-primary duration-200 transition-colors hover:text-white ${
+                      paymentMethod === "NORMAL" ? "bg-primary text-white" : ""
+                    }`}
+                    onClick={() => setPaymentMethod("NORMAL")}
+                  >
+                    Mobile Banking
+                  </div>
+                </div>
+              </div>
+
               {/* Selected Item & Total */}
-              <div className="mt-6 space-y-4">
+              <div className=" mt-3 space-y-4">
                 <p className="text-lg font-semibold text-[#333]">
                   {lang === "mm"
                     ? "ရွေးချယ်ထားသော ဂိမ်းPackage"
@@ -321,25 +387,25 @@ const GameDetail: React.FC = () => {
           <h2 className="text-2xl font-bold mb-5">
             {lang === "mm" ? "ဂိမ်းItem ရွေးချယ်မည်" : "Select Game Item"}
           </h2>
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5">
-            {gameDetail?.tokenPackageDto?.map((pkg) => (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            {filteredPkgs.map((pkg) => (
               <div
-                key={pkg?.id}
+                key={pkg.id}
                 onClick={() => setSelectedPackage(pkg)}
                 className={`cursor-pointer border rounded-lg p-4 flex flex-col items-center hover:shadow-md transition ${
-                  selectedPackage?.id === pkg?.id ? "ring-2 ring-blue-500" : ""
+                  selectedPackage?.id === pkg.id ? "ring-2 ring-primary" : ""
                 }`}
               >
                 <img
-                  src={pkg?.packageImage}
-                  alt={pkg?.tokenTitle}
+                  src={pkg.packageImage}
+                  alt={pkg.tokenTitle}
                   className="w-16 h-16 object-cover mb-3"
                 />
-                <div className=" flex flex-row gap-2">
-                  <span className="text-gray-600 mt-1">{pkg?.unit}</span>
-                  <span className="text-gray-600 mt-1">{pkg?.tokenTitle}</span>
+                <div className="flex flex-row gap-2">
+                  <span className="text-gray-600 mt-1">{pkg.unit}</span>
+                  <span className="text-gray-600 mt-1">{pkg.tokenTitle}</span>
                 </div>
-                <p className="font-semibold">{pkg?.price}</p>
+                <p className="font-semibold">{pkg.price}</p>
               </div>
             ))}
           </div>
