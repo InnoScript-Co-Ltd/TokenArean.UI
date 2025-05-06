@@ -182,6 +182,7 @@ export interface Order {
   updatedAt: Date;
   userDto: User;
   gameTitle: string;
+  isRead: boolean;
 }
 export interface CleanOrderRequest {
   type: "WEEKLY" | "MONTHLY";

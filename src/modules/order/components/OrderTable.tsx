@@ -9,7 +9,8 @@ import {
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import type { Order } from "@/constants/config";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import axiosInstance from "@/constants/axios";
 
 interface OrderTableProps {
   orders: Order[];
@@ -29,6 +30,18 @@ const OrderTable: React.FC<OrderTableProps> = ({
 }) => {
   const totalPages = Math.ceil(totalCount / pageSize);
   console.log(orders);
+  const navigate = useNavigate();
+
+  const handleViewDetail = async (orderId: string) => {
+    try {
+      await axiosInstance.put(`/api/v1/Order/isRead/${orderId}`);
+      navigate(`/dashboard/order-detail/${orderId}`);
+    } catch (error) {
+      console.error("Failed to update isRead:", error);
+      // Optionally handle error (e.g., show a toast)
+    }
+  };
+
   return (
     <>
       <Table>
@@ -50,7 +63,10 @@ const OrderTable: React.FC<OrderTableProps> = ({
         </TableHeader>
         <TableBody>
           {orders?.map((order) => (
-            <TableRow key={order.id}>
+            <TableRow
+              key={order.id}
+              className={order.isRead ? "opacity-40" : ""}
+            >
               <TableCell>{order.inGameUserId}</TableCell>
               <TableCell>{order.mobileNumber}</TableCell>
               <TableCell>{order.gameTitle}</TableCell>
@@ -69,12 +85,13 @@ const OrderTable: React.FC<OrderTableProps> = ({
               </TableCell>
               {onDelete && (
                 <TableCell className="flex items-center gap-2">
-                  <Link
-                    to={`/dashboard/order-detail/${order?.id}`}
-                    className=" border rounded-lg px-3 py-1.5 h-full w-fit"
+                  <button
+                    onClick={() => handleViewDetail(order.id)}
+                    className="border rounded-lg px-3 py-1.5 h-full w-fit"
                   >
                     View Detail
-                  </Link>
+                  </button>
+
                   {onDelete && (
                     <Button
                       size="sm"

@@ -24,8 +24,8 @@ const Footer: React.FC = () => {
           <p className="font-semibold">Contact Info</p>
           <div className=" flex flex-col">
             <p>Address: Your address here</p>
-            <p>Email: email@mail.com</p>
-            <p>Phone: 098877887</p>
+            <p>Email: Lorigamingstore@gmail.com</p>
+            <p>Phone: 09777741993</p>
           </div>
         </div>
 
@@ -33,10 +33,10 @@ const Footer: React.FC = () => {
         <div className=" flex flex-col gap-3">
           <p className="font-semibold">Contact Us</p>
           <div className="flex gap-5">
-            <a href="#">
+            <a href="https://www.facebook.com/profile.php?id=61552719172292">
               <FaFacebook className=" text-3xl" />
             </a>
-            <a href="#">
+            <a href="https://t.me/LoRIGameStoreAdmin">
               <FaTelegram className=" text-3xl" />
             </a>
           </div>
