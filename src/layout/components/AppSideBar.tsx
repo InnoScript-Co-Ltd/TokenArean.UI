@@ -97,7 +97,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                   <GalleryVerticalEnd className="size-4" />
                 </div>
                 <div className="flex flex-col gap-0.5 leading-none">
-                  <span className="font-semibold">Token Arena</span>
+                  <span className="font-semibold">LoRi Gaming Store</span>
                 </div>
               </Link>
             </SidebarMenuButton>

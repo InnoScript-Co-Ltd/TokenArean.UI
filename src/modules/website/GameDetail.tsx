@@ -416,6 +416,7 @@ const GameDetail: React.FC = () => {
       {isPaymentModalOpen && (
         <PaymentModal
           selectedPackage={selectedPackage}
+          configSetting={gameDetail?.configSettingDtos}
           total={total}
           setForm={setFormData}
           onClose={() => setIsPaymentModalOpen(false)}

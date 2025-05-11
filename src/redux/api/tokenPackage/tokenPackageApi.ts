@@ -21,7 +21,7 @@ export const fetchTokenPackage = async (
         params,
       }
     );
-    console.log(response.data);
+    // console.log(response.data);
     return response.data;
   } catch (error) {
     console.error("Failed to fetch TokenPackage:", error);

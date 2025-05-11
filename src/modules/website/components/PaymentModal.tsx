@@ -6,12 +6,13 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { MdOutlineFileUpload } from "react-icons/md";
-import { OrderPayload, TokenPackage } from "@/constants/config";
+import { ConfigSetting, OrderPayload, TokenPackage } from "@/constants/config";
 import { useLanguage } from "@/redux/hook/language/useLanguage";
 
 export interface PaymentModalProps {
   selectedPackage: TokenPackage | null;
   total: string | number | null;
+  configSetting: ConfigSetting[] | null | undefined;
   setForm: React.Dispatch<React.SetStateAction<OrderPayload>>;
   onClose: () => void;
   onConfirm: () => void;
@@ -20,6 +21,7 @@ export interface PaymentModalProps {
 const PaymentModal: React.FC<PaymentModalProps> = ({
   selectedPackage,
   total,
+  configSetting,
   setForm,
   onClose,
   onConfirm,
@@ -45,7 +47,7 @@ const PaymentModal: React.FC<PaymentModalProps> = ({
         </DialogHeader>
 
         {/* Confirmation */}
-        <div className="border-b pb-4 mb-4">
+        <div className="border-b pb-4">
           {selectedPackage ? (
             <div className="flex items-center gap-4">
               <img
@@ -70,6 +72,32 @@ const PaymentModal: React.FC<PaymentModalProps> = ({
               {lang === "mm" ? "စုစုပေါင်း : " : "Total : "}
             </span>
             <span className="font-semibold">{total}</span>
+          </div>
+        </div>
+
+        <div className=" mb-2 flex flex-col gap-3">
+          <span className="font-semibold">
+            {lang === "mm" ? "ငွေပေးချေရန် အကောင့်များ" : "Payment Methods"}
+          </span>
+          <div className=" flex items-center gap-5">
+            {configSetting?.map((setting) => {
+              return (
+                <>
+                  <div className=" p-4 rounded-lg border flex flex-col gap-2">
+                    <p className=" text-lg font-bold">{setting?.paymentName}</p>
+                    <p
+                      className=" cursor-pointer"
+                      title="Click to copy"
+                      onClick={() =>
+                        navigator.clipboard.writeText(setting?.phone)
+                      }
+                    >
+                      {setting?.phone}
+                    </p>
+                  </div>
+                </>
+              );
+            })}
           </div>
         </div>
 
