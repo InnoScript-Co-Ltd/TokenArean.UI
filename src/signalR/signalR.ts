@@ -1,72 +1,105 @@
+import environment from "@/constants/environment";
 import {
   HubConnection,
   HubConnectionBuilder,
+  HttpTransportType,
   LogLevel,
 } from "@microsoft/signalr";
 
-const HUB_URL = "http://localhost:5132/api/v1/Order/notification-list";
+class SignalRService {
+  private connection: HubConnection | null = null;
 
-let connection: HubConnection | null = null;
+  /**
+   * Builds & starts connection (once), logs every step.
+   */
+  public async startConnection(token?: string): Promise<void> {
+    if (!this.connection) {
+      this.connection = new HubConnectionBuilder()
+        .withUrl(environment.SignalR_URL, {
+          accessTokenFactory: () => token ?? "",
+          transport:
+            HttpTransportType.WebSockets | HttpTransportType.LongPolling,
+          withCredentials: true,
+        })
+        .configureLogging(LogLevel.Trace)
+        .withAutomaticReconnect([0, 2000, 5000, 10000])
+        .build();
 
-/**
- * Creates (or returns existing) HubConnection.
- */
-export const createSignalRConnection = (token?: string): HubConnection => {
-  if (connection) {
-    return connection;
-  }
+      this.connection.onclose((error?: Error) => {
+        console.warn("SignalR ▶ connection closed.", error);
+      });
+      this.connection.onreconnecting((error?: Error) => {
+        console.warn("SignalR ▶ reconnecting...", error);
+      });
+      this.connection.onreconnected((connectionId?: string) => {
+        console.log("SignalR ▶ reconnected, connectionId =", connectionId);
+      });
+    }
 
-  connection = new HubConnectionBuilder()
-    .withUrl(HUB_URL, {
-      accessTokenFactory: () => token ?? "",
-      withCredentials: true,
-    })
-    .configureLogging(LogLevel.Information)
-    .withAutomaticReconnect()
-    .build();
+    if (this.connection.state === "Disconnected") {
+      try {
+        console.log("SignalR ▶ Starting connection...");
+        await this.connection.start();
+        console.log("SignalR ▶ Connected!");
+      } catch (error) {
+        console.error("SignalR ▶ Start failed:", error);
+        // Retry once after a pause
+        await new Promise((r) => setTimeout(r, 3000));
+        return this.startConnection(token);
+      }
+    }
 
-  return connection;
-};
-
-/**
- * Starts the connection if it’s not already running.
- */
-export const startConnection = async (
-  token?: string
-): Promise<HubConnection> => {
-  const conn = createSignalRConnection(token);
-
-  if (conn.state === "Disconnected") {
-    try {
-      await conn.start();
-      console.log("SignalR connected.");
-    } catch (err) {
-      console.error("SignalR connection failed:", err);
-      throw err;
+    // Wait until fully connected
+    while (this.connection.state !== "Connected") {
+      console.log("SignalR ▶ waiting for Connected state...");
+      // small backoff to avoid tight loop
+      // eslint-disable-next-line no-await-in-loop
+      await new Promise((r) => setTimeout(r, 200));
     }
   }
 
-  return conn;
-};
-
-/**
- * Stops and clears the connection.
- */
-export const stopConnection = async (): Promise<void> => {
-  if (connection && connection.state !== "Disconnected") {
-    await connection.stop();
-    console.log("SignalR disconnected.");
-    connection = null;
+  /**
+   * Invoke a hub method. Ensures the connection is Connected first.
+   * T is the return type you expect from the hub method.
+   */
+  public async invokeMethod<T = void>(
+    methodName: string,
+    ...args: unknown[]
+  ): Promise<T> {
+    if (!this.connection) {
+      throw new Error("SignalR connection not initialized.");
+    }
+    if (this.connection.state !== "Connected") {
+      await this.startConnection();
+    }
+    return this.connection.invoke<T>(methodName, ...args);
   }
-};
 
-/**
- * A single default export for easy import.
- */
-const signalRService = {
-  createSignalRConnection,
-  startConnection,
-  stopConnection,
-};
+  /**
+   * Register a callback for an incoming hub message.
+   * Payload parameters will be passed as unknown—you can cast them in your callback.
+   */
+  public onReceive(
+    methodName: string,
+    callback: (...args: unknown[]) => void
+  ): void {
+    if (!this.connection) {
+      throw new Error("SignalR connection not initialized.");
+    }
+    this.connection.on(methodName, callback);
+    console.log(`SignalR ▶ Listening for '${methodName}'`);
+  }
 
-export default signalRService;
+  /**
+   * Stops and tears down the connection.
+   */
+  public async stopConnection(): Promise<void> {
+    if (this.connection) {
+      await this.connection.stop();
+      console.log("SignalR ▶ Stopped connection");
+      this.connection = null;
+    }
+  }
+}
+
+export default new SignalRService();
