@@ -74,10 +74,10 @@ const ConfigSettingInputModal: FC<ConfigSettingInputModalProps> = ({
       console.error("Submit failed:", err);
     }
   };
-  // const isFormInvalid =
-  //   !configSetting?.paymentName ||
-  //   !configSetting.phone ||
-  //   (currentConfigSetting && !configSetting?.orderIndex);
+  const isFormInvalid =
+    !configSetting?.paymentName ||
+    !configSetting.phone ||
+    (currentConfigSetting && !configSetting?.orderIndex);
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange} modal>
@@ -140,7 +140,7 @@ const ConfigSettingInputModal: FC<ConfigSettingInputModalProps> = ({
           <DialogClose asChild>
             <Button variant="outline">Cancel</Button>
           </DialogClose>
-          <Button onClick={handleSubmit}>
+          <Button onClick={handleSubmit} disabled={isFormInvalid ?? false}>
             {currentConfigSetting
               ? "Update ConfigSetting"
               : "Create ConfigSetting"}
