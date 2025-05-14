@@ -29,7 +29,7 @@ const OrderTable: React.FC<OrderTableProps> = ({
   onDelete,
 }) => {
   const totalPages = Math.ceil(totalCount / pageSize);
-  console.log(orders);
+  // console.log(orders);
   const navigate = useNavigate();
 
   const handleViewDetail = async (orderId: string) => {

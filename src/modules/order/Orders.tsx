@@ -95,7 +95,7 @@ const Orders: React.FC = () => {
     setLoading(true);
     setMessage(null); // clear previous messages
     const payload: CleanOrderRequest = { type, count };
-    var response = await cleanOrder(payload);
+    const response = await cleanOrder(payload);
     localStorage.setItem(
       "cleanOrderMessage",
       response?.message || "Orders deleted successfully"

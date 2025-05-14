@@ -1,4 +1,4 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import {
   fetchOrder,
   fetchCreateOrder,
@@ -118,6 +118,11 @@ const orderSlice = createSlice({
   initialState,
   reducers: {
     clearOrderData: () => initialState,
+    orderAdded(state, action: PayloadAction<Order>) {
+      state.orders.unshift(action.payload);
+      // adjust totalCount if you like:
+      state.totalCount += 1;
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -211,5 +216,5 @@ const orderSlice = createSlice({
   },
 });
 
-export const { clearOrderData } = orderSlice.actions;
+export const { clearOrderData, orderAdded } = orderSlice.actions;
 export default orderSlice.reducer;

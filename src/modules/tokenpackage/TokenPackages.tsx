@@ -1,4 +1,3 @@
-// src/pages/Games.tsx
 import Banner from "@/components/global/Banner";
 import { useState, useCallback } from "react";
 import Loader from "@/components/global/Loader";
@@ -88,7 +87,7 @@ const TokenPackages: React.FC = () => {
     setAlertOpen(false);
     setCurrentTokenPackage(null);
   };
-  console.log("token", tokenPackages);
+  // console.log("token", tokenPackages);
 
   if (status === "loading") return <Loader />;
   if (status === "failed") return <ErrorComponent error={error} />;

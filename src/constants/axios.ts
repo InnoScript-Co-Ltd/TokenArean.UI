@@ -1,6 +1,6 @@
 import axios from "axios";
 import config from "@/constants/environment";
-import { refreshToken } from "@/redux/service/auth/authSlice";
+import { logout, refreshToken } from "@/redux/service/auth/authSlice";
 import type { AppDispatch } from "@/redux/store";
 
 let dispatch: AppDispatch;
@@ -51,8 +51,8 @@ axiosInstance.interceptors.response.use(
         original.headers["Authorization"] = `Bearer ${payLoad.accessToken}`;
         return axiosInstance(original);
       } catch {
-        // dispatch(logout());
-        // window.location.href = "/login";
+        dispatch(logout());
+        window.location.href = "/login";
         return Promise.reject(new Error("Session expired"));
       }
     }

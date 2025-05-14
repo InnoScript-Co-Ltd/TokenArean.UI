@@ -71,6 +71,7 @@ export interface Game {
   file_BannerImage: File;
   tokenPackageDto: TokenPackage[] | null;
   createdAt: Date;
+  configSettingDtos: ConfigSetting[] | null | undefined;
 }
 
 export interface GameListResponse {
