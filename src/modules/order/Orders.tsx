@@ -15,7 +15,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import SignalRService from "../../signalR/signalR";
 
 const Orders: React.FC = () => {
   const [pagination, setPagination] = useState({
@@ -105,38 +104,6 @@ const Orders: React.FC = () => {
 
     setLoading(false);
   };
-  useEffect(() => {
-    const setupSignalR = async () => {
-      try {
-        await SignalRService.startConnection();
-
-        SignalRService.onReceive("ReceiveOrder", (...args: unknown[]) => {
-          console.log("📦 ReceiveOrder data:", args);
-          // Optionally: you can parse it if it's a known object type
-          // const order = args[0] as Order;
-          // setOrders((prev) => [...prev, order]);
-        });
-
-        SignalRService.onReceive(
-          "ReceiveNotificationMessage",
-          (...args: unknown[]) => {
-            console.log("🔔 ReceiveNotificationMessage data:", args);
-            // const notification = args[0] as Notification;
-            // showToast(notification.message);
-          }
-        );
-      } catch (err) {
-        console.error("❌ Error setting up SignalR:", err);
-      }
-    };
-
-    setupSignalR();
-
-    // Optional cleanup on unmount
-    return () => {
-      SignalRService.stopConnection();
-    };
-  }, []);
 
   if (status === "loading") return <Loader />;
   if (status === "failed") return <ErrorComponent error={error} />;

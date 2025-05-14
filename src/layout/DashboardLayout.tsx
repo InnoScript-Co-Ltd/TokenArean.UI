@@ -1,3 +1,4 @@
+// src/layouts/DashboardLayout.tsx
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import {
@@ -8,10 +9,9 @@ import {
 import { Outlet } from "react-router-dom";
 import { AppSidebar } from "./components/AppSideBar";
 import { IoIosNotifications } from "react-icons/io";
-import signalRService from "@/signalR/signalR";
-
-import { orderAdded } from "@/redux/service/order/orderSlice";
+import SignalRService from "@/signalR/signalR";
 import { Order } from "@/constants/config";
+import { orderAdded } from "@/redux/service/order/orderSlice";
 
 interface Notification {
   id: string;
@@ -25,74 +25,52 @@ const DashboardLayout: React.FC = () => {
   const [notifications, setNotifications] = useState<Notification[]>([]);
   const [dropdownOpen, setDropdownOpen] = useState(false);
 
-  const token = localStorage.getItem("authToken") || "";
-
   useEffect(() => {
-    let isMounted = true;
-
-    const init = async () => {
+    const setupSignalR = async () => {
       try {
-        // 1) Start connection
-        await signalRService.startConnection(token);
+        // 1️⃣ connect (builds & starts internally)
+        await SignalRService.startConnection();
 
-        // 2) Register handlers BEFORE telling the hub who you are
-        signalRService.onReceive("ReceiveOrder", (raw) => {
-          if (!isMounted) return;
-          // raw is unknown → cast to your Order payload shape
-          const payload = raw as { order: Order } | Order;
-          // handle both forms:
-          const order: Order =
-            "order" in payload ? payload.order : (payload as Order);
-
-          // UI bell notification
-          const newNotif: Notification = {
-            id: crypto.randomUUID(),
-            message: `Order #${order.id} created`,
-            timestamp: new Date(),
-            read: false,
-          };
-          setNotifications((prev) => [newNotif, ...prev]);
-
-          // Redux update
+        // 2️⃣ Listen for new orders → update Redux
+        SignalRService.onReceive("ReceiveOrder", (...args: unknown[]) => {
+          console.log("📦 ReceiveOrder data:", args);
+          const payload = args[0] as { order: Order } | Order;
+          const order = "order" in payload ? payload.order : (payload as Order);
           dispatch(orderAdded(order));
         });
 
-        signalRService.onReceive("ReceiveNotificationMessage", (raw) => {
-          if (!isMounted) return;
-          // raw is unknown → cast to string
-          const message = raw as string;
-          const newNotif: Notification = {
-            id: crypto.randomUUID(),
-            message,
-            timestamp: new Date(),
-            read: false,
-          };
-          setNotifications((prev) => [newNotif, ...prev]);
-        });
-
-        // 3) Now invoke Register if your hub supports it (or skip if you broadcast to all)
-        // await signalRService.invokeMethod("Register", userId);
+        // 3️⃣ Listen for notification messages → update bell UI
+        SignalRService.onReceive(
+          "ReceiveNotificationMessage",
+          (...args: unknown[]) => {
+            console.log("🔔 ReceiveNotificationMessage data:", args);
+            const msg = args[0] as string;
+            const newNotif: Notification = {
+              id: crypto.randomUUID(),
+              message: msg,
+              timestamp: new Date(),
+              read: false,
+            };
+            setNotifications((prev) => [newNotif, ...prev]);
+          }
+        );
       } catch (err) {
-        console.error("SignalR init failed:", err);
+        console.error("❌ Error setting up SignalR:", err);
       }
     };
 
-    init();
+    setupSignalR();
+
     return () => {
-      isMounted = false;
-      signalRService.stopConnection();
+      SignalRService.stopConnection();
     };
-  }, [dispatch, token]);
+  }, [dispatch]);
 
   const unreadCount = notifications.filter((n) => !n.read).length;
-
   const handleBellClick = () => {
-    // mark all read
     setNotifications((prev) => prev.map((n) => ({ ...n, read: true })));
     setDropdownOpen((o) => !o);
   };
-
-  console.log(unreadCount);
 
   return (
     <SidebarProvider>
@@ -102,7 +80,6 @@ const DashboardLayout: React.FC = () => {
           <SidebarTrigger />
           <div className="flex items-center justify-between w-full pe-10 relative">
             <h1 className="font-semibold">LoRi Gaming Store</h1>
-
             <div className="relative">
               <IoIosNotifications
                 onClick={handleBellClick}
@@ -115,19 +92,18 @@ const DashboardLayout: React.FC = () => {
                   {unreadCount}
                 </span>
               )}
-
               {dropdownOpen && (
                 <div className="absolute right-0 mt-2 w-64 bg-white border shadow-lg z-10">
                   <div className="p-2 font-semibold border-b">
                     Notifications
                   </div>
                   <ul className="max-h-64 overflow-y-auto">
-                    {notifications.length === 0 && (
+                    {notifications?.length === 0 && (
                       <li className="p-2 text-center text-gray-500">
                         No notifications
                       </li>
                     )}
-                    {notifications.map((n) => (
+                    {notifications?.map((n) => (
                       <li
                         key={n.id}
                         className={`p-2 border-b last:border-b-0 ${

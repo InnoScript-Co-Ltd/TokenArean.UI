@@ -36,10 +36,10 @@ const initialState: OrderState = {
   error: null,
 };
 
-// Thunks
+// Async thunks for your REST calls...
 export const loadOrders = createAsyncThunk<
   OrderListResponse,
-  { pagination: PaginationParams; searchTerm: string | undefined },
+  { pagination: PaginationParams; searchTerm?: string },
   { rejectValue: string }
 >(
   "order/loadOrders",
@@ -75,11 +75,12 @@ export const updateOrder = createAsyncThunk<
     return rejectWithValue((err as Error).message);
   }
 });
+
 export const cleanOrder = createAsyncThunk<
   OrderEntryResponse,
   { data: CleanOrderRequest },
   { rejectValue: string }
->("order/CleanOrder", async ({ data }, { rejectWithValue }) => {
+>("order/cleanOrder", async ({ data }, { rejectWithValue }) => {
   try {
     return await fetchCleanOrder(data);
   } catch (err) {
@@ -112,7 +113,6 @@ export const loadOrderDetail = createAsyncThunk<
   }
 });
 
-// Slice
 const orderSlice = createSlice({
   name: "order",
   initialState,
@@ -120,60 +120,52 @@ const orderSlice = createSlice({
     clearOrderData: () => initialState,
     orderAdded(state, action: PayloadAction<Order>) {
       state.orders.unshift(action.payload);
-      // adjust totalCount if you like:
       state.totalCount += 1;
     },
   },
   extraReducers: (builder) => {
     builder
-      // loadGames
       .addCase(loadOrders.pending, (state) => {
         state.status = "loading";
         state.error = null;
       })
       .addCase(loadOrders.fulfilled, (state, { payload }) => {
         state.status = "succeeded";
-        state.orders = payload?.payLoad?.items;
-        state.totalPages = payload?.payLoad?.paging?.totalPages;
-        state.totalCount = payload?.payLoad?.paging?.totalCount;
+        state.orders = payload.payLoad.items;
+        state.totalPages = payload.payLoad.paging.totalPages;
+        state.totalCount = payload.payLoad.paging.totalCount;
       })
       .addCase(loadOrders.rejected, (state, { payload }) => {
         state.status = "failed";
-        state.error = payload || "Failed to load Orders";
+        state.error = payload ?? "Failed to load orders";
       })
 
-      // createGame
       .addCase(createOrder.pending, (state) => {
         state.status = "loading";
         state.error = null;
       })
       .addCase(createOrder.fulfilled, (state) => {
         state.status = "succeeded";
-        // console.log(payload);
-        // state.orders.unshift(payload);
       })
       .addCase(createOrder.rejected, (state, { payload }) => {
         state.status = "failed";
-        console.log(payload);
-        state.error = payload || "Failed to create Order";
+        state.error = payload ?? "Failed to create order";
       })
 
-      // updateGame
       .addCase(updateOrder.pending, (state) => {
         state.status = "loading";
         state.error = null;
       })
       .addCase(updateOrder.fulfilled, (state, { payload }) => {
         state.status = "succeeded";
-        const idx = state.orders.findIndex((g) => g.id === payload.payLoad.id);
+        const idx = state.orders.findIndex((o) => o.id === payload.payLoad.id);
         if (idx !== -1) state.orders[idx] = payload.payLoad;
       })
       .addCase(updateOrder.rejected, (state, { payload }) => {
         state.status = "failed";
-        state.error = payload || "Failed to update Order";
+        state.error = payload ?? "Failed to update order";
       })
 
-      // CleanOrder
       .addCase(cleanOrder.pending, (state) => {
         state.status = "loading";
         state.error = null;
@@ -183,35 +175,33 @@ const orderSlice = createSlice({
       })
       .addCase(cleanOrder.rejected, (state, { payload }) => {
         state.status = "failed";
-        state.error = payload || "Failed to clean Order";
+        state.error = payload ?? "Failed to clean order";
       })
 
-      // deleteGame
       .addCase(deleteOrder.pending, (state) => {
         state.status = "loading";
         state.error = null;
       })
-      .addCase(deleteOrder.fulfilled, (state, { payload: deletedId }) => {
+      .addCase(deleteOrder.fulfilled, (state, { payload: id }) => {
         state.status = "succeeded";
-        state.orders = state.orders.filter((g) => g.id !== deletedId);
+        state.orders = state.orders.filter((o) => o.id !== id);
       })
       .addCase(deleteOrder.rejected, (state, { payload }) => {
         state.status = "failed";
-        state.error = payload || "Failed to delete Order";
+        state.error = payload ?? "Failed to delete order";
       })
 
-      // order Detail
       .addCase(loadOrderDetail.pending, (state) => {
         state.status = "loading";
         state.error = null;
       })
       .addCase(loadOrderDetail.fulfilled, (state, { payload }) => {
         state.status = "succeeded";
-        state.orderDetail = payload?.payLoad;
+        state.orderDetail = payload.payLoad;
       })
       .addCase(loadOrderDetail.rejected, (state, { payload }) => {
         state.status = "failed";
-        state.error = payload || "Failed to load game detail";
+        state.error = payload ?? "Failed to load order detail";
       });
   },
 });
