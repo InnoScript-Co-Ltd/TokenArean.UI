@@ -1,4 +1,3 @@
-// src/layouts/DashboardLayout.tsx
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import {
@@ -6,23 +5,18 @@ import {
   SidebarProvider,
   SidebarTrigger,
 } from "@/components/ui/sidebar";
-import { Outlet } from "react-router-dom";
+import { Link, Outlet } from "react-router-dom";
 import { AppSidebar } from "./components/AppSideBar";
 import { IoIosNotifications } from "react-icons/io";
 import SignalRService from "@/signalR/signalR";
-import { Order } from "@/constants/config";
+import { Notification, Order } from "@/constants/config";
 import { orderAdded } from "@/redux/service/order/orderSlice";
-
-interface Notification {
-  id: string;
-  message: string;
-  timestamp: Date;
-  read: boolean;
-}
+import useNotification from "@/redux/hook/notification/useNotification";
+import { notificationAdded } from "@/redux/service/notification/notificationSlice";
 
 const DashboardLayout: React.FC = () => {
   const dispatch = useDispatch();
-  const [notifications, setNotifications] = useState<Notification[]>([]);
+  const { notifications } = useNotification();
   const [dropdownOpen, setDropdownOpen] = useState(false);
 
   useEffect(() => {
@@ -39,19 +33,18 @@ const DashboardLayout: React.FC = () => {
           dispatch(orderAdded(order));
         });
 
-        // 3️⃣ Listen for notification messages → update bell UI
         SignalRService.onReceive(
           "ReceiveNotificationMessage",
           (...args: unknown[]) => {
             console.log("🔔 ReceiveNotificationMessage data:", args);
-            const msg = args[0] as string;
-            const newNotif: Notification = {
-              id: crypto.randomUUID(),
-              message: msg,
-              timestamp: new Date(),
-              read: false,
-            };
-            setNotifications((prev) => [newNotif, ...prev]);
+            const payload = args[0] as
+              | { notification: Notification }
+              | Notification;
+            const notification =
+              "notification" in payload
+                ? payload.notification
+                : (payload as Notification);
+            dispatch(notificationAdded(notification));
           }
         );
       } catch (err) {
@@ -66,9 +59,9 @@ const DashboardLayout: React.FC = () => {
     };
   }, [dispatch]);
 
-  const unreadCount = notifications.filter((n) => !n.read).length;
+  const unreadCount = notifications?.length;
+
   const handleBellClick = () => {
-    setNotifications((prev) => prev.map((n) => ({ ...n, read: true })));
     setDropdownOpen((o) => !o);
   };
 
@@ -103,17 +96,19 @@ const DashboardLayout: React.FC = () => {
                         No notifications
                       </li>
                     )}
-                    {notifications?.map((n) => (
+                    {notifications?.map((n, index) => (
                       <li
-                        key={n.id}
+                        key={index}
                         className={`p-2 border-b last:border-b-0 ${
-                          n.read ? "bg-gray-50" : "bg-white"
+                          n?.isRead ? "bg-gray-50" : "bg-white"
                         }`}
                       >
-                        <div className="text-sm">{n.message}</div>
-                        <div className="text-xs text-gray-400">
-                          {n.timestamp.toLocaleTimeString()}
-                        </div>
+                        <Link
+                          to={`/dashboard/order-detail/${n?.orderId}`}
+                          className="text-sm"
+                        >
+                          {n.message}
+                        </Link>
                       </li>
                     ))}
                   </ul>

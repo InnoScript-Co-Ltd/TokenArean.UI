@@ -3,6 +3,7 @@ import authReducer from "@/redux/service/auth/authSlice";
 import gameReducer from "@/redux/service/game/gameSlice";
 import tokenPackageReducer from "@/redux/service/tokenPackage/tokenPackageSlice";
 import orderReducer from "@/redux/service/order/orderSlice";
+import notificationReducer from "@/redux/service/notification/notificationSlice";
 import userReducer from "@/redux/service/user/userSlice";
 import configSettingReducer from "@/redux/service/configSetting/configSettingSlice";
 
@@ -14,6 +15,7 @@ export const store = configureStore({
     game: gameReducer,
     tokenPackage: tokenPackageReducer,
     order: orderReducer,
+    notification: notificationReducer,
     user: userReducer,
     configSetting: configSettingReducer,
   },

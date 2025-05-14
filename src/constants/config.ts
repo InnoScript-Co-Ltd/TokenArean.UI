@@ -232,6 +232,32 @@ export interface OrderDetailResponse {
   statusCode: number;
 }
 // Order
+
+//Notification
+export interface Notification {
+  orderId: string;
+  message: string;
+  isRead: boolean;
+}
+
+export interface NotificationListResponse {
+  statusCode: number;
+  message: string;
+  payLoad: {
+    paging: {
+      totalCount: number;
+      totalPages: number;
+      previousPage: number | null;
+      nextPage: number | null;
+      firstRowOnPage: number;
+      lastRowOnPage: number;
+    };
+    items: Notification[];
+  };
+  payLoadList: null;
+}
+
+//Notification
 // User
 export interface User {
   id: string;
