@@ -20,6 +20,7 @@ interface OrderTableProps {
   onPageChange: (page: number) => void;
   onDelete?: (id: string) => void;
 }
+
 const OrderTable: React.FC<OrderTableProps> = ({
   orders,
   currentPage,
@@ -28,9 +29,8 @@ const OrderTable: React.FC<OrderTableProps> = ({
   onPageChange,
   onDelete,
 }) => {
-  const totalPages = Math.ceil(totalCount / pageSize);
-  // console.log(orders);
   const navigate = useNavigate();
+  const totalPages = Math.ceil(totalCount / pageSize);
 
   const handleViewDetail = async (orderId: string) => {
     try {
@@ -38,7 +38,6 @@ const OrderTable: React.FC<OrderTableProps> = ({
       navigate(`/dashboard/order-detail/${orderId}`);
     } catch (error) {
       console.error("Failed to update isRead:", error);
-      // Optionally handle error (e.g., show a toast)
     }
   };
 
@@ -47,6 +46,7 @@ const OrderTable: React.FC<OrderTableProps> = ({
       <Table>
         <TableHeader>
           <TableRow>
+            <TableHead>No</TableHead>
             <TableHead>InGameUserId</TableHead>
             <TableHead>Mobile Number</TableHead>
             <TableHead>Game</TableHead>
@@ -62,37 +62,37 @@ const OrderTable: React.FC<OrderTableProps> = ({
           </TableRow>
         </TableHeader>
         <TableBody>
-          {orders?.map((order) => (
-            <TableRow
-              key={order.id}
-              className={order.isRead ? "opacity-40" : ""}
-            >
-              <TableCell>{order.inGameUserId}</TableCell>
-              <TableCell>{order.mobileNumber}</TableCell>
-              <TableCell>{order.gameTitle}</TableCell>
-              <TableCell>{order.tokenPackageDto.tokenTitle}</TableCell>
-              <TableCell>{order.serverInfo}</TableCell>
-              <TableCell>{order.status}</TableCell>
-              <TableCell>{order.tokenPackageDto.unit}</TableCell>
-              <TableCell>{order.tokenPackageDto.price}</TableCell>
-              <TableCell>{order.userDto?.email}</TableCell>
-
-              <TableCell>
-                {new Date(order.createdAt).toLocaleString()}
-              </TableCell>
-              <TableCell>
-                {new Date(order.updatedAt).toLocaleString()}
-              </TableCell>
-              {onDelete && (
-                <TableCell className="flex items-center gap-2">
-                  <button
-                    onClick={() => handleViewDetail(order.id)}
-                    className="border rounded-lg px-3 py-1.5 h-full w-fit"
-                  >
-                    View Detail
-                  </button>
-
-                  {onDelete && (
+          {orders?.map((order, index) => {
+            const no = totalCount - (currentPage - 1) * pageSize - index;
+            return (
+              <TableRow
+                key={order.id}
+                className={order.isRead ? "opacity-40" : ""}
+              >
+                <TableCell>{no}</TableCell>
+                <TableCell>{order.inGameUserId}</TableCell>
+                <TableCell>{order.mobileNumber}</TableCell>
+                <TableCell>{order.gameTitle}</TableCell>
+                <TableCell>{order.tokenPackageDto.tokenTitle}</TableCell>
+                <TableCell>{order.serverInfo}</TableCell>
+                <TableCell>{order.status}</TableCell>
+                <TableCell>{order.tokenPackageDto.unit}</TableCell>
+                <TableCell>{order.tokenPackageDto.price}</TableCell>
+                <TableCell>{order.userDto?.email}</TableCell>
+                <TableCell>
+                  {new Date(order.createdAt).toLocaleString()}
+                </TableCell>
+                <TableCell>
+                  {new Date(order.updatedAt).toLocaleString()}
+                </TableCell>
+                {onDelete && (
+                  <TableCell className="flex items-center gap-2">
+                    <button
+                      onClick={() => handleViewDetail(order.id)}
+                      className="border rounded-lg px-3 py-1.5 h-full w-fit"
+                    >
+                      View Detail
+                    </button>
                     <Button
                       size="sm"
                       variant="destructive"
@@ -100,13 +100,14 @@ const OrderTable: React.FC<OrderTableProps> = ({
                     >
                       Delete
                     </Button>
-                  )}
-                </TableCell>
-              )}
-            </TableRow>
-          ))}
+                  </TableCell>
+                )}
+              </TableRow>
+            );
+          })}
         </TableBody>
       </Table>
+
       {/* Pagination Controls */}
       <div className="flex items-center justify-between mt-5 px-3 md:px-5 lg:px-10">
         <span>

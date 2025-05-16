@@ -13,11 +13,14 @@ import { Notification, Order } from "@/constants/config";
 import { orderAdded } from "@/redux/service/order/orderSlice";
 import useNotification from "@/redux/hook/notification/useNotification";
 import { notificationAdded } from "@/redux/service/notification/notificationSlice";
+import { useNavigate } from "react-router-dom";
+import axiosInstance from "@/constants/axios";
 
 const DashboardLayout: React.FC = () => {
   const dispatch = useDispatch();
   const { notifications } = useNotification();
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const setupSignalR = async () => {
@@ -103,12 +106,27 @@ const DashboardLayout: React.FC = () => {
                           n?.isRead ? "bg-gray-50" : "bg-white"
                         }`}
                       >
-                        <Link
+                        {/* <Link
                           to={`/dashboard/order-detail/${n?.orderId}`}
                           className="text-sm"
                         >
                           {n.message}
-                        </Link>
+                        </Link> */}
+                        <button
+                          onClick={async () => {
+                            try {
+                              await axiosInstance.put(
+                                `/api/v1/Order/isRead/${n.orderId}`
+                              );
+                              navigate(`/dashboard/order-detail/${n.orderId}`);
+                            } catch (error) {
+                              console.error("Failed to mark as read", error);
+                            }
+                          }}
+                          className="text-sm text-left w-full"
+                        >
+                          {n.message}
+                        </button>
                       </li>
                     ))}
                   </ul>
