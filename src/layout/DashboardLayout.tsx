@@ -5,7 +5,7 @@ import {
   SidebarProvider,
   SidebarTrigger,
 } from "@/components/ui/sidebar";
-import { Link, Outlet } from "react-router-dom";
+import { Outlet } from "react-router-dom";
 import { AppSidebar } from "./components/AppSideBar";
 import { IoIosNotifications } from "react-icons/io";
 import SignalRService from "@/signalR/signalR";
@@ -76,18 +76,24 @@ const DashboardLayout: React.FC = () => {
           <SidebarTrigger />
           <div className="flex items-center justify-between w-full pe-10 relative">
             <h1 className="font-semibold">LoRi Gaming Store</h1>
-            <div className="relative">
-              <IoIosNotifications
-                onClick={handleBellClick}
-                className={`text-3xl cursor-pointer transition-colors ${
-                  unreadCount > 0 ? "text-red-600 animate-ping" : "text-black"
+            <div className={`relative`}>
+              <div
+                className={`relative p-2.5 ${
+                  unreadCount > 0 ? "text-red-600 animate-bounce " : ""
                 }`}
-              />
-              {unreadCount > 0 && (
-                <span className="absolute -top-1 -right-1 bg-red-600 text-white rounded-full text-xs w-5 h-5 flex items-center justify-center">
-                  {unreadCount}
-                </span>
-              )}
+              >
+                <IoIosNotifications
+                  onClick={handleBellClick}
+                  className={`text-3xl cursor-pointer transition-colors ${
+                    unreadCount > 0 ? "text-red-600" : "text-black"
+                  }`}
+                />
+                {unreadCount > 0 && (
+                  <p className="absolute top-0 right-0 bg-red-600 text-white rounded-full text-xs w-5 h-5 flex items-center justify-center">
+                    {unreadCount}
+                  </p>
+                )}
+              </div>
               {dropdownOpen && (
                 <div className="absolute right-0 mt-2 w-64 bg-white border shadow-lg z-10">
                   <div className="p-2 font-semibold border-b">
@@ -123,7 +129,7 @@ const DashboardLayout: React.FC = () => {
                               console.error("Failed to mark as read", error);
                             }
                           }}
-                          className="text-sm text-left w-full"
+                          className="text-sm text-left w-full cursor-pointer hover:text-primary"
                         >
                           {n.message}
                         </button>

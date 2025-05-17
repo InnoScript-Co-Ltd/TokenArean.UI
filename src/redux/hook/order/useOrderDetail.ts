@@ -3,6 +3,7 @@ import { useEffect, useMemo } from "react";
 import { loadOrderDetail } from "@/redux/service/order/orderSlice";
 import { useAppDispatch, useAppSelector } from "../hook";
 import { RootState } from "@/redux/store";
+import { loadNotifications } from "@/redux/service/notification/notificationSlice";
 
 const useOrderDetail = ({ id }: { id?: string }) => {
   const dispatch = useAppDispatch();
@@ -15,7 +16,12 @@ const useOrderDetail = ({ id }: { id?: string }) => {
   const { orderDetail } = orderResponse;
 
   useEffect(() => {
-    if (id) dispatch(loadOrderDetail(id));
+    if (id) {
+      dispatch(loadOrderDetail(id));
+      dispatch(
+        loadNotifications({ pagination: { currentPage: 1, pageSize: 20 } })
+      );
+    }
   }, [dispatch, id]);
 
   return {
