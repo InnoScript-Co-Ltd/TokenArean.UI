@@ -6,6 +6,7 @@ import {
   fetchDeleteOrder,
   fetchOrderDetail,
   fetchCleanOrder,
+  fetchReadOrder,
 } from "@/redux/api/order/orderApi";
 import {
   Order,
@@ -113,6 +114,18 @@ export const loadOrderDetail = createAsyncThunk<
   }
 });
 
+export const readOrder = createAsyncThunk<
+  OrderEntryResponse,
+  { id: string },
+  { rejectValue: string }
+>("order/readOrder", async ({ id }, { rejectWithValue }) => {
+  try {
+    return await fetchReadOrder(id);
+  } catch (err) {
+    return rejectWithValue((err as Error).message);
+  }
+});
+
 const orderSlice = createSlice({
   name: "order",
   initialState,
@@ -162,6 +175,20 @@ const orderSlice = createSlice({
         if (idx !== -1) state.orders[idx] = payload.payLoad;
       })
       .addCase(updateOrder.rejected, (state, { payload }) => {
+        state.status = "failed";
+        state.error = payload ?? "Failed to update order";
+      })
+
+      .addCase(readOrder.pending, (state) => {
+        state.status = "loading";
+        state.error = null;
+      })
+      .addCase(readOrder.fulfilled, (state, { payload }) => {
+        state.status = "succeeded";
+        const idx = state.orders.findIndex((o) => o.id === payload.payLoad.id);
+        if (idx !== -1) state.orders[idx] = payload.payLoad;
+      })
+      .addCase(readOrder.rejected, (state, { payload }) => {
         state.status = "failed";
         state.error = payload ?? "Failed to update order";
       })

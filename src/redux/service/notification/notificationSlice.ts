@@ -59,8 +59,8 @@ const notificationSlice = createSlice({
       .addCase(loadNotifications.fulfilled, (state, { payload }) => {
         state.status = "succeeded";
         state.notifications = payload.payLoad.items;
-        state.totalPages = payload.payLoad.paging.totalPages;
-        state.totalCount = payload.payLoad.paging.totalCount;
+        // state.totalPages = payload.payLoad.paging.totalPages;
+        // state.totalCount = payload.payLoad.paging.totalCount;
       })
       .addCase(loadNotifications.rejected, (state, { payload }) => {
         state.status = "failed";

@@ -88,6 +88,7 @@ export const logout = createAsyncThunk<void, void, { rejectValue: string }>(
       await fetchLogout();
       localStorage.removeItem("authToken");
       localStorage.removeItem("userData");
+      localStorage.removeItem("refreshToken");
     } catch (error: unknown) {
       let errorMessage = "An unknown error occurred";
       if (error instanceof AxiosError) {

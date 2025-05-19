@@ -7,7 +7,7 @@ import { loadNotifications } from "@/redux/service/notification/notificationSlic
 
 const useNotification = ({
   currentPage = 1,
-  pageSize = 10,
+  pageSize = 100000,
 }: PaginationParams = {}) => {
   const dispatch = useAppDispatch();
   const [searchTerm, setSearchTerm] = useState("");

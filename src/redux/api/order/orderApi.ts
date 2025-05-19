@@ -102,3 +102,17 @@ export const fetchOrderDetail = async (
     throw error;
   }
 };
+
+export const fetchReadOrder = async (
+  id: string
+): Promise<OrderEntryResponse> => {
+  try {
+    const response = await axiosInstance.put<OrderEntryResponse>(
+      `/api/v1/Order/isRead/${id}`
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Failed to read Order data:", error);
+    throw error;
+  }
+};

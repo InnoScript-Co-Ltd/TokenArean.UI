@@ -5,7 +5,7 @@ import {
   SidebarProvider,
   SidebarTrigger,
 } from "@/components/ui/sidebar";
-import { Outlet } from "react-router-dom";
+import { Link, Outlet } from "react-router-dom";
 import { AppSidebar } from "./components/AppSideBar";
 import { IoIosNotifications } from "react-icons/io";
 import SignalRService from "@/signalR/signalR";
@@ -13,14 +13,11 @@ import { Notification, Order } from "@/constants/config";
 import { orderAdded } from "@/redux/service/order/orderSlice";
 import useNotification from "@/redux/hook/notification/useNotification";
 import { notificationAdded } from "@/redux/service/notification/notificationSlice";
-import { useNavigate } from "react-router-dom";
-import axiosInstance from "@/constants/axios";
 
 const DashboardLayout: React.FC = () => {
   const dispatch = useDispatch();
   const { notifications } = useNotification();
   const [dropdownOpen, setDropdownOpen] = useState(false);
-  const navigate = useNavigate();
 
   useEffect(() => {
     const setupSignalR = async () => {
@@ -108,23 +105,25 @@ const DashboardLayout: React.FC = () => {
                     {notifications?.map((n, index) => (
                       <li
                         key={index}
-                        className={`p-2 border-b last:border-b-0 ${
+                        className={`border-b last:border-b-0 ${
                           n?.isRead ? "bg-gray-50" : "bg-white"
                         }`}
+                        onClick={() => setDropdownOpen(false)}
                       >
-                        {/* <Link
+                        <Link
                           to={`/dashboard/order-detail/${n?.orderId}`}
-                          className="text-sm"
+                          className="text-sm text-left w-full cursor-pointer hover:text-primary inline-block p-2"
                         >
                           {n.message}
-                        </Link> */}
-                        <button
+                        </Link>
+                        {/* <button
                           onClick={async () => {
                             try {
                               await axiosInstance.put(
                                 `/api/v1/Order/isRead/${n.orderId}`
                               );
                               navigate(`/dashboard/order-detail/${n.orderId}`);
+                              setDropdownOpen(false);
                             } catch (error) {
                               console.error("Failed to mark as read", error);
                             }
@@ -132,7 +131,7 @@ const DashboardLayout: React.FC = () => {
                           className="text-sm text-left w-full cursor-pointer hover:text-primary"
                         >
                           {n.message}
-                        </button>
+                        </button> */}
                       </li>
                     ))}
                   </ul>
