@@ -65,7 +65,7 @@ const Home = () => {
             <h2 className="text-xl md:text-2xl lg:text-3xl font-bold mb-5 lg:mb-10">
               {lang === "en" ? " MOST POPULAR" : "လူကြိုက်များသောဂိမ်းများ"}
             </h2>
-            <div className="grid grid-cols-1 min-[428px]:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 md:gap-10 mt-5 ">
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 md:gap-10 mt-5 ">
               {games?.map((game, index) =>
                 !game.isDisable ? (
                   <div key={index} className=" col-span-1">

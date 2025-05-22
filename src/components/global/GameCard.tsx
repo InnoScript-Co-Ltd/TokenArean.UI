@@ -17,8 +17,10 @@ const GameCard: React.FC<GameCardProps> = ({ game }) => {
             className="w-full h-full object-cover group-hover/game-card:scale-110 transition-all duration-300"
           />
         </div>
-        <div className="w-full py-4 flex justify-center items-center gap-3 group-hover/game-card:gap-4 transition-all duration-300 bg-primary">
-          <p className="text-center font-semibold text-white">{game.title}</p>
+        <div className="w-full p-4 flex justify-center items-center gap-3 group-hover/game-card:gap-4 transition-all duration-300 bg-primary">
+          <p className="text-center font-semibold text-white text-xs sm:text-sm md:text-base text-nowrap overflow-ellipsis overflow-hidden ">
+            {game.title}
+          </p>
           <FaArrowRightLong className=" text-white text-xl font-bold" />
         </div>
       </div>

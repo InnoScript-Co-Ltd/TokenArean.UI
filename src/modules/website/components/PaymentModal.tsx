@@ -37,7 +37,7 @@ const PaymentModal: React.FC<PaymentModalProps> = ({
 
   return (
     <Dialog open onOpenChange={(open) => !open && onClose()}>
-      <DialogContent className="max-w-md">
+      <DialogContent className=" w-full">
         <DialogHeader>
           <DialogTitle>
             {lang === "mm"
@@ -47,7 +47,7 @@ const PaymentModal: React.FC<PaymentModalProps> = ({
         </DialogHeader>
 
         {/* Confirmation */}
-        <div className="border-b pb-4">
+        <div className="border-b pb-4 w-full">
           {selectedPackage ? (
             <div className="flex items-center gap-4">
               <img
@@ -75,29 +75,33 @@ const PaymentModal: React.FC<PaymentModalProps> = ({
           </div>
         </div>
 
-        <div className=" mb-2 flex flex-col gap-3">
+        <div className=" mb-2 flex flex-col gap-3 max-w-[300px] md:max-w-[500px] overflow-auto w-full">
           <span className="font-semibold">
             {lang === "mm" ? "ငွေပေးချေရန် အကောင့်များ" : "Payment Methods"}
           </span>
-          <div className=" flex items-center gap-5">
-            {configSetting?.map((setting) => {
-              return (
-                <>
-                  <div className=" p-4 rounded-lg border flex flex-col gap-2">
-                    <p className=" text-lg font-bold">{setting?.paymentName}</p>
-                    <p
-                      className=" cursor-pointer"
-                      title="Click to copy"
-                      onClick={() =>
-                        navigator.clipboard.writeText(setting?.phone)
-                      }
-                    >
-                      {setting?.phone}
-                    </p>
-                  </div>
-                </>
-              );
-            })}
+          <div className=" w-full overflow-x-auto">
+            <div className=" flex items-center gap-5">
+              {configSetting?.map((setting) => {
+                return (
+                  <>
+                    <div className=" p-4 rounded-lg border flex flex-col gap-2">
+                      <p className=" text-lg font-bold">
+                        {setting?.paymentName}
+                      </p>
+                      <p
+                        className=" cursor-pointer"
+                        title="Click to copy"
+                        onClick={() =>
+                          navigator.clipboard.writeText(setting?.phone)
+                        }
+                      >
+                        {setting?.phone}
+                      </p>
+                    </div>
+                  </>
+                );
+              })}
+            </div>
           </div>
         </div>
 
@@ -122,7 +126,7 @@ const PaymentModal: React.FC<PaymentModalProps> = ({
             if (file) handleFile(file);
           }}
           onClick={() => document.getElementById("receipt")?.click()}
-          className="mt-3 px-2 py-4 md:px-4 md:py-8 border-dashed border-2 border-gray-300 rounded-lg text-center cursor-pointer hover:bg-gray-50 transition"
+          className=" w-full mt-3 px-2 py-4 md:px-4 md:py-8 border-dashed border-2 border-gray-300 rounded-lg text-center cursor-pointer hover:bg-gray-50 transition"
         >
           {previewUrl ? (
             <img
@@ -145,7 +149,7 @@ const PaymentModal: React.FC<PaymentModalProps> = ({
           )}
         </div>
 
-        <div className="mt-6 ">
+        <div className="mt-6  w-full">
           <button
             onClick={onConfirm}
             disabled={!previewUrl}
