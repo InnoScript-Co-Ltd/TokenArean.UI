@@ -75,7 +75,7 @@ const PaymentModal: React.FC<PaymentModalProps> = ({
           </div>
         </div>
 
-        <div className=" mb-2 flex flex-col gap-3 max-w-[300px] md:max-w-[500px] overflow-auto w-full">
+        <div className=" mb-2 flex flex-col gap-3 max-w-[500px] overflow-auto w-full">
           <span className="font-semibold">
             {lang === "mm" ? "ငွေပေးချေရန် အကောင့်များ" : "Payment Methods"}
           </span>
