@@ -84,7 +84,18 @@ const PaymentModal: React.FC<PaymentModalProps> = ({
               {configSetting?.map((setting) => {
                 return (
                   <>
-                    <div className=" p-4 rounded-lg border flex flex-col gap-2">
+                    <div className=" p-4 rounded-lg border flex flex-col gap-2 min-w-[200px] min-h-[130px]">
+                      {setting?.logo ? (
+                        <>
+                          <img
+                            src={setting?.logo}
+                            className=" w-full min-h-[200px] object-cover rounded-md"
+                            alt=""
+                          />
+                        </>
+                      ) : (
+                        <></>
+                      )}
                       <p className=" text-lg font-bold">
                         {setting?.paymentName}
                       </p>

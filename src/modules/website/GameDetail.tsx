@@ -9,11 +9,6 @@ import useGameDetail from "@/redux/hook/game/useGameDetail";
 import { OrderPayload, TokenPackage } from "@/constants/config";
 import useOrder from "@/redux/hook/order/userOrder";
 import { useLanguage } from "@/redux/hook/language/useLanguage";
-import {
-  HoverCard,
-  HoverCardContent,
-  HoverCardTrigger,
-} from "@radix-ui/react-hover-card";
 
 const GameDetail: React.FC = () => {
   const { gameId } = useParams();
@@ -22,6 +17,7 @@ const GameDetail: React.FC = () => {
   const { lang } = useLanguage();
   const nav = useNavigate();
 
+  const [isClick, setIsClick] = useState(false);
   const [paymentMethod, setPaymentMethod] = useState("NORMAL");
   const [isPaymentModalOpen, setIsPaymentModalOpen] = useState(false);
   const [selectedPackage, setSelectedPackage] = useState<TokenPackage | null>(
@@ -175,25 +171,27 @@ const GameDetail: React.FC = () => {
                         ? "အကောင့်အချက်အလက်များ ရယူရန်"
                         : "Get Account Details"}
                     </p>
-
-                    <HoverCard>
-                      <HoverCardTrigger asChild>
+                    <div
+                      onClick={() => setIsClick(!isClick)}
+                      className=" relative"
+                    >
+                      <img
+                        src="/assets/images/qm.svg"
+                        className=" w-4 h-4 cursor-pointer"
+                        alt=""
+                      />
+                      <div
+                        className={`${
+                          isClick ? " block" : "hidden"
+                        } w-[300px] aspect-[4/3] md:w-[500px] shadow-md absolute top-full left-0`}
+                      >
                         <img
-                          src="/assets/images/qm.svg"
-                          className=" w-4 h-4 cursor-pointer"
+                          src={gameDetail?.gameProfileImage}
+                          className=" w-full h-full object-cover "
                           alt=""
                         />
-                      </HoverCardTrigger>
-                      <HoverCardContent className="w-80">
-                        <div className=" w-[300px] h-[250px] shadow-md ">
-                          <img
-                            src={gameDetail?.gameProfileImage}
-                            className=" w-full h-full object-cover "
-                            alt=""
-                          />
-                        </div>
-                      </HoverCardContent>
-                    </HoverCard>
+                      </div>
+                    </div>
                   </div>
                 </div>
 
