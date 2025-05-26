@@ -31,7 +31,7 @@ export const fetchConfig = async (
 };
 
 export const fetchCreateConfig = async (
-  configSetting: ConfigSettingPayload
+  configSetting: FormData
 ): Promise<ConfigSettingEntryResponse> => {
   try {
     const response = await axiosInstance.post<ConfigSettingEntryResponse>(
@@ -47,7 +47,7 @@ export const fetchCreateConfig = async (
 
 export const fetchUpdateConfig = async (
   id: number,
-  configSetting: ConfigSettingPayload
+  configSetting: FormData
 ): Promise<ConfigSettingEntryResponse> => {
   try {
     const response = await axiosInstance.put<ConfigSettingEntryResponse>(

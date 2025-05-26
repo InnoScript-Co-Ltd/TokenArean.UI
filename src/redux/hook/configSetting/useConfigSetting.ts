@@ -39,7 +39,7 @@ const useConfigSetting = ({
   }, [dispatch, currentPage, pageSize, searchTerm]);
 
   const handleCreateConfigSetting = useCallback(
-    async (payload: ConfigSettingPayload) => {
+    async (payload: FormData) => {
       try {
         const response = await dispatch(createConfigSetting(payload)).unwrap();
 
@@ -52,7 +52,7 @@ const useConfigSetting = ({
   );
 
   const handleUpdateConfigSetting = useCallback(
-    async (id: number, payload: ConfigSettingPayload) => {
+    async (id: number, payload: FormData) => {
       try {
         const pagination = {
           currentPage,

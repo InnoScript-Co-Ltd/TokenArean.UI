@@ -302,9 +302,11 @@ export interface DeleteUserResponse {
 // ConfigSetting
 export interface ConfigSetting {
   id: number;
+  logo: string;
   paymentName: string;
   phone: string;
   orderIndex: number;
+  file_Logo?: File | null;
 }
 
 export interface ConfigSettingListResponse {
@@ -335,6 +337,9 @@ export interface ConfigSettingEntryResponse {
 export interface ConfigSettingPayload {
   paymentName: string;
   phone: string;
+  logo: string | null;
+  file_Logo?: File | null;
+
   orderIndex: number;
 }
 export interface DeleteConfigSettingResponse {

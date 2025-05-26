@@ -17,11 +17,8 @@ interface ConfigSettingInputModalProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   currentConfigSetting?: ConfigSetting | null;
-  handleCreateConfigSetting: (data: ConfigSettingPayload) => Promise<void>;
-  handleUpdateConfigSetting: (
-    id: number,
-    data: ConfigSettingPayload
-  ) => Promise<void>;
+  handleCreateConfigSetting: (data: FormData) => Promise<void>;
+  handleUpdateConfigSetting: (id: number, data: FormData) => Promise<void>;
 }
 
 const ConfigSettingInputModal: FC<ConfigSettingInputModalProps> = ({
@@ -31,24 +28,31 @@ const ConfigSettingInputModal: FC<ConfigSettingInputModalProps> = ({
   handleCreateConfigSetting,
   handleUpdateConfigSetting,
 }) => {
-  const [configSetting, setConfigSetting] = useState<ConfigSettingPayload>({
+  const [logoPreview, setLogoPreview] = useState<string>("");
+
+  const [form, setForm] = useState<ConfigSettingPayload>({
     paymentName: "",
+    logo: null,
     phone: "",
     orderIndex: 0,
   });
   useEffect(() => {
     if (currentConfigSetting) {
-      setConfigSetting({
+      setForm({
         paymentName: currentConfigSetting.paymentName,
+        logo: currentConfigSetting.logo,
         phone: currentConfigSetting.phone,
         orderIndex: currentConfigSetting.orderIndex,
       });
+      setLogoPreview(`${currentConfigSetting.logo}?${Date.now()}`);
     } else {
-      setConfigSetting({
+      setForm({
         paymentName: "",
+        logo: "",
         phone: "",
         orderIndex: 0,
       });
+      setLogoPreview("");
     }
   }, [currentConfigSetting, open]);
 
@@ -56,18 +60,36 @@ const ConfigSettingInputModal: FC<ConfigSettingInputModalProps> = ({
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     const { name, value, type } = e.target;
-    setConfigSetting((prev) => ({
+    setForm((prev) => ({
       ...prev,
       [name]: type === "number" ? parseInt(value, 10) : value,
     }));
   };
+  const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const { name, files } = e.target;
+    if (files && files[0]) {
+      const file = files[0];
+      setForm((prev) => ({ ...prev, [name]: file }));
+      const url = URL.createObjectURL(file);
+      if (name === "logo") setLogoPreview(url);
+    }
+  };
 
   const handleSubmit = async () => {
+    const formData = new FormData();
+    formData.append("paymentName", form.paymentName);
+    formData.append("orderIndex", form.orderIndex.toString());
+    formData.append("logo", "");
+    if (form.logo) {
+      formData.append("file_Logo", form.logo);
+    }
+    formData.append("phone", form.phone);
+
     try {
       if (currentConfigSetting?.id) {
-        await handleUpdateConfigSetting(currentConfigSetting.id, configSetting);
+        await handleUpdateConfigSetting(currentConfigSetting.id, formData);
       } else {
-        await handleCreateConfigSetting(configSetting);
+        await handleCreateConfigSetting(formData);
       }
       onOpenChange(false);
     } catch (err) {
@@ -75,9 +97,9 @@ const ConfigSettingInputModal: FC<ConfigSettingInputModalProps> = ({
     }
   };
   const isFormInvalid =
-    !configSetting?.paymentName ||
-    !configSetting.phone ||
-    (currentConfigSetting && !configSetting?.orderIndex);
+    !form?.paymentName ||
+    !form.phone ||
+    (currentConfigSetting && !form?.orderIndex);
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange} modal>
@@ -94,7 +116,33 @@ const ConfigSettingInputModal: FC<ConfigSettingInputModalProps> = ({
               : "Fill out the user to add a new ConfigSetting."}
           </DialogDescription>
         </DialogHeader>
-
+        {/* Logo Upload */}
+        <div className="col-span-1">
+          <label
+            htmlFor="logo_input"
+            className="cursor-pointer w-full aspect-square max-h-[120px] bg-gray-100 border border-dashed rounded flex items-center justify-center overflow-hidden"
+          >
+            {logoPreview ? (
+              <img
+                src={logoPreview}
+                alt="Logo preview"
+                className="w-full h-full object-cover object-center"
+              />
+            ) : (
+              <span className="text-gray-500 text-sm sm:text-base">
+                No logo
+              </span>
+            )}
+          </label>
+          <input
+            type="file"
+            id="logo_input"
+            name="logo"
+            accept="image/*"
+            onChange={handleFileChange}
+            className="sr-only"
+          />
+        </div>
         <div className="flex flex-col gap-5">
           {/* PymentName */}
           <div className="flex flex-col gap-3">
@@ -102,7 +150,7 @@ const ConfigSettingInputModal: FC<ConfigSettingInputModalProps> = ({
             <Input
               id="paymentName"
               name="paymentName"
-              value={configSetting.paymentName}
+              value={form.paymentName}
               onChange={handleChange}
             />
           </div>
@@ -114,7 +162,7 @@ const ConfigSettingInputModal: FC<ConfigSettingInputModalProps> = ({
               <Input
                 id="phone"
                 name="phone"
-                value={configSetting.phone}
+                value={form.phone}
                 onChange={handleChange}
               />
             </div>
@@ -128,7 +176,7 @@ const ConfigSettingInputModal: FC<ConfigSettingInputModalProps> = ({
                   id="orderIndex"
                   name="orderIndex"
                   type="number"
-                  value={configSetting.orderIndex}
+                  value={form.orderIndex}
                   onChange={handleChange}
                 />
               </div>

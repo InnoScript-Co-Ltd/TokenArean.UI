@@ -51,7 +51,7 @@ export const loadConfigSetting = createAsyncThunk<
 
 export const createConfigSetting = createAsyncThunk<
   ConfigSettingEntryResponse,
-  ConfigSettingPayload,
+  FormData,
   { rejectValue: string }
 >("configSetting/createconfigSetting", async (payload, { rejectWithValue }) => {
   try {
@@ -63,7 +63,7 @@ export const createConfigSetting = createAsyncThunk<
 
 export const updateConfigSetting = createAsyncThunk<
   ConfigSettingEntryResponse,
-  { id: number; data: ConfigSettingPayload },
+  { id: number; data: FormData },
   { rejectValue: string }
 >(
   "configSetting/updateconfigSetting",

@@ -58,7 +58,7 @@ const ConfigSettings: React.FC = () => {
   );
 
   const handleCreateConfigSetting = useCallback(
-    async (data: ConfigSettingPayload) => {
+    async (data: FormData) => {
       await createConfigSetting(data);
       setOpen(false);
 
@@ -68,7 +68,7 @@ const ConfigSettings: React.FC = () => {
   );
 
   const handleUpdateConfigSetting = useCallback(
-    async (id: number, data: ConfigSettingPayload) => {
+    async (id: number, data: FormData) => {
       await updateConfigSetting(id, data);
       setOpen(false);
     },
@@ -95,15 +95,17 @@ const ConfigSettings: React.FC = () => {
     <>
       <div className="flex flex-row gap-5 items-center justify-between px-5 py-3">
         <Banner title="ConfigSettings" />
-        <button
-          onClick={() => {
-            setCurrentConfigSetting(null);
-            setOpen(true);
-          }}
-          className="px-3 sm:px-5 py-2 text-white bg-primary rounded-md shadow-md hover:opacity-70 transition-all cursor-pointer text-sm md:text-base"
-        >
-          Add ConfigSetting
-        </button>
+        {configSettings.length < 4 && (
+          <button
+            onClick={() => {
+              setCurrentConfigSetting(null);
+              setOpen(true);
+            }}
+            className="px-3 sm:px-5 py-2 text-white bg-primary rounded-md shadow-md hover:opacity-70 transition-all cursor-pointer text-sm md:text-base"
+          >
+            Add ConfigSetting
+          </button>
+        )}
       </div>
 
       <div className="my-5 px-5 py-3 overflow-x-auto w-full">
