@@ -89,18 +89,18 @@ const PaymentModal: React.FC<PaymentModalProps> = ({
                         <>
                           <img
                             src={setting?.logo}
-                            className=" w-full min-h-[200px] object-cover rounded-md"
+                            className="h-20 w-full object-cover rounded-md"
                             alt=""
                           />
                         </>
                       ) : (
                         <></>
                       )}
-                      <p className=" text-lg font-bold">
+                      <p className=" text-sm font-bold">
                         {setting?.paymentName}
                       </p>
                       <p
-                        className=" cursor-pointer"
+                        className=" cursor-pointer text-xs"
                         title="Click to copy"
                         onClick={() =>
                           navigator.clipboard.writeText(setting?.phone)
@@ -137,13 +137,13 @@ const PaymentModal: React.FC<PaymentModalProps> = ({
             if (file) handleFile(file);
           }}
           onClick={() => document.getElementById("receipt")?.click()}
-          className=" w-full mt-3 px-2 py-4 md:px-4 md:py-8 border-dashed border-2 border-gray-300 rounded-lg text-center cursor-pointer hover:bg-gray-50 transition"
+          className=" w-full mt-3 px-2 py-4 md:px-4 border-dashed border-2 border-gray-300 rounded-lg text-center cursor-pointer hover:bg-gray-50 transition max-h-[200px]"
         >
           {previewUrl ? (
             <img
               src={previewUrl}
               alt="Preview"
-              className="mx-auto h-full max-h-60 object-contain rounded-md"
+              className="mx-auto h-full max-h-[200px] object-contain rounded-md"
             />
           ) : (
             <>
