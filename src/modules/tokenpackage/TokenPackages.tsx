@@ -33,8 +33,8 @@ const TokenPackages: React.FC = () => {
     pageSize: pagination.pageSize,
   });
   const { games } = useGame({
-    currentPage: pagination.currentPage,
-    pageSize: pagination.pageSize,
+    currentPage: 1,
+    pageSize: 1000,
   });
   const handlePageChange = useCallback((page: number) => {
     setPagination((p) => ({ ...p, currentPage: page }));
