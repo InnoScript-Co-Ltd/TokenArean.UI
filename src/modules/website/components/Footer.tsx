@@ -23,7 +23,6 @@ const Footer: React.FC = () => {
         <div className=" flex flex-col gap-3">
           <p className="font-semibold">Contact Info</p>
           <div className=" flex flex-col">
-            <p>Address: Your address here</p>
             <p>Email: Lorigamingstore@gmail.com</p>
             <p>Phone: 09777741993</p>
           </div>
@@ -36,14 +35,16 @@ const Footer: React.FC = () => {
             <a href="https://www.facebook.com/profile.php?id=61552719172292">
               <FaFacebook className=" text-3xl" />
             </a>
-            <a href="https://t.me/LoRIGameStoreAdmin">
+            <a href="https://t.me/LoriAdmin">
               <FaTelegram className=" text-3xl" />
             </a>
           </div>
         </div>
       </div>
       <div className=" border-t flex justify-center items-center mt-4 p-2">
-        <p className="text-xs">© 2025. All rights reserved.</p>
+        <p className="text-xs">
+          © {new Date().getFullYear()} Innoscript.co.ltd. All rights reserved.
+        </p>
       </div>
     </footer>
   );

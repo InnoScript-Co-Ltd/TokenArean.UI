@@ -6,7 +6,7 @@ import {
   updateConfigSetting,
   deleteConfigSetting,
 } from "@/redux/service/configSetting/configSettingSlice";
-import { ConfigSettingPayload, PaginationParams } from "@/constants/config";
+import { PaginationParams } from "@/constants/config";
 import { useAppDispatch, useAppSelector } from "../hook";
 import { RootState } from "@/redux/store";
 

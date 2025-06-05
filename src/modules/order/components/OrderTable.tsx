@@ -109,27 +109,33 @@ const OrderTable: React.FC<OrderTableProps> = ({
       </Table>
 
       {/* Pagination Controls */}
-      <div className="flex items-center justify-between mt-5 px-3 md:px-5 lg:px-10">
-        <span>
-          Page {currentPage} of {totalPages} — {totalCount} items
-        </span>
-        <div className="flex gap-2">
-          <Button
-            size="sm"
-            disabled={currentPage === 1}
-            onClick={() => onPageChange(currentPage - 1)}
-          >
-            Previous
-          </Button>
-          <Button
-            size="sm"
-            disabled={currentPage === totalPages}
-            onClick={() => onPageChange(currentPage + 1)}
-          >
-            Next
-          </Button>
+      {totalCount == null || totalCount == 0 ? (
+        <div className=" w-full h-[450px] flex justify-center items-center">
+          <h4>No Orders Yet</h4>
         </div>
-      </div>
+      ) : (
+        <div className="flex items-center justify-between mt-5 px-3 md:px-5 lg:px-10">
+          <span>
+            Page {currentPage} of {totalPages} — {totalCount} items
+          </span>
+          <div className="flex gap-2">
+            <Button
+              size="sm"
+              disabled={currentPage === 1}
+              onClick={() => onPageChange(currentPage - 1)}
+            >
+              Previous
+            </Button>
+            <Button
+              size="sm"
+              disabled={currentPage === totalPages}
+              onClick={() => onPageChange(currentPage + 1)}
+            >
+              Next
+            </Button>
+          </div>
+        </div>
+      )}
     </>
   );
 };

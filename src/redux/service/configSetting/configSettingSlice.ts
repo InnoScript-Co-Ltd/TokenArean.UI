@@ -2,7 +2,6 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
 import {
   ConfigSetting,
-  ConfigSettingPayload,
   ConfigSettingEntryResponse,
   ConfigSettingListResponse,
   PaginationParams,

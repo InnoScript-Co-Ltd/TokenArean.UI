@@ -181,7 +181,7 @@ const Orders: React.FC = () => {
         </div>
 
         <OrderTable
-          orders={[...orders].sort((a, b) => Number(b.id) - Number(a.id))}
+          orders={orders}
           currentPage={pagination.currentPage}
           pageSize={pagination.pageSize}
           totalCount={totalCount}

@@ -1,6 +1,5 @@
 import axiosInstance from "@/constants/axios";
 import {
-  ConfigSettingPayload,
   ConfigSettingEntryResponse,
   ConfigSettingListResponse,
   PaginationParams,

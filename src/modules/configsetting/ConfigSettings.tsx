@@ -5,7 +5,7 @@ import Loader from "@/components/global/Loader";
 import ConfigSettingTable from "./components/ConfigSettingTable";
 import ConfigSettingInputModal from "./components/ConfigSettingInputModal";
 import useConfigSetting from "@/redux/hook/configSetting/useConfigSetting";
-import type { ConfigSetting, ConfigSettingPayload } from "@/constants/config";
+import type { ConfigSetting } from "@/constants/config";
 import ConfirmModal from "@/components/global/ConfirmModal";
 import ErrorComponent from "@/components/global/ErrorComponent";
 

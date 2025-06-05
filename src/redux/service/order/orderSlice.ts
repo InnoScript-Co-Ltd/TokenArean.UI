@@ -144,9 +144,9 @@ const orderSlice = createSlice({
       })
       .addCase(loadOrders.fulfilled, (state, { payload }) => {
         state.status = "succeeded";
-        state.orders = payload.payLoad.items;
-        state.totalPages = payload.payLoad.paging.totalPages;
-        state.totalCount = payload.payLoad.paging.totalCount;
+        state.orders = payload?.payLoad?.items;
+        state.totalPages = payload?.payLoad?.paging?.totalPages;
+        state.totalCount = payload?.payLoad?.paging?.totalCount;
       })
       .addCase(loadOrders.rejected, (state, { payload }) => {
         state.status = "failed";
