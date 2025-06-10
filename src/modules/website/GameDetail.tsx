@@ -16,6 +16,7 @@ const GameDetail: React.FC = () => {
   const { handleCreateOrder, error } = useOrder();
   const { lang } = useLanguage();
   const nav = useNavigate();
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const [isClick, setIsClick] = useState(false);
   const [paymentMethod, setPaymentMethod] = useState("NORMAL");
@@ -50,6 +51,10 @@ const GameDetail: React.FC = () => {
   };
 
   const handleConfirmPayment = async () => {
+    if (isSubmitting) return; // prevent multiple clicks
+
+    setIsSubmitting(true);
+
     const payload = new FormData();
 
     payload.append("inGameUserId", String(formData.inGameUserId));
@@ -61,22 +66,27 @@ const GameDetail: React.FC = () => {
       payload.append("file_ScreenShot", formData.screenShot);
     }
 
-    const res = await handleCreateOrder(payload);
-
-    if (res?.statusCode == 201) {
-      setFormData({
-        inGameUserId: "",
-        serverInfo: "",
-        mobileNumber: "",
-        tokenPackageId: "",
-        screenShot: null,
-      });
-      setIsPaymentModalOpen(false);
-      nav("/", {
-        state: {
-          message: "Order has been successfully placed!",
-        },
-      });
+    try {
+      const res = await handleCreateOrder(payload);
+      if (res?.statusCode == 201) {
+        setFormData({
+          inGameUserId: "",
+          serverInfo: "",
+          mobileNumber: "",
+          tokenPackageId: "",
+          screenShot: null,
+        });
+        setIsPaymentModalOpen(false);
+        nav("/", {
+          state: {
+            message: "Order has been successfully placed!",
+          },
+        });
+      }
+    } catch (error) {
+      // handle error as needed
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -419,6 +429,7 @@ const GameDetail: React.FC = () => {
           setForm={setFormData}
           onClose={() => setIsPaymentModalOpen(false)}
           onConfirm={handleConfirmPayment}
+          isSubmitting={isSubmitting} // <--- add this
         />
       )}
 

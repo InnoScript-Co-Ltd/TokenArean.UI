@@ -16,6 +16,7 @@ export interface PaymentModalProps {
   setForm: React.Dispatch<React.SetStateAction<OrderPayload>>;
   onClose: () => void;
   onConfirm: () => void;
+  isSubmitting: boolean; // new prop
 }
 
 const PaymentModal: React.FC<PaymentModalProps> = ({
@@ -25,6 +26,7 @@ const PaymentModal: React.FC<PaymentModalProps> = ({
   setForm,
   onClose,
   onConfirm,
+  isSubmitting,
 }) => {
   const { lang } = useLanguage();
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
@@ -163,14 +165,20 @@ const PaymentModal: React.FC<PaymentModalProps> = ({
         <div className="mt-6  w-full">
           <button
             onClick={onConfirm}
-            disabled={!previewUrl}
+            disabled={!previewUrl || isSubmitting}
             className={`w-full font-semibold py-2 px-4 rounded-md transition ${
-              previewUrl
-                ? "cursor-pointer bg-primary text-white hover:opacity-90"
-                : "cursor-not-allowed bg-gray-300 text-gray-500"
+              !previewUrl || isSubmitting
+                ? "cursor-not-allowed bg-gray-300 text-gray-500"
+                : "cursor-pointer bg-primary text-white hover:opacity-90"
             }`}
           >
-            {lang === "mm" ? "ဝယ်ယူမည်" : "Confirm"}
+            {isSubmitting
+              ? lang === "mm"
+                ? "ဝယ်ယူနေသည်..."
+                : "Processing..."
+              : lang === "mm"
+              ? "ဝယ်ယူမည်"
+              : "Confirm"}
           </button>
         </div>
       </DialogContent>
