@@ -11,6 +11,8 @@ import { Button } from "@/components/ui/button";
 import type { Order } from "@/constants/config";
 import { useNavigate } from "react-router-dom";
 import axiosInstance from "@/constants/axios";
+import { notificationMarkedAsRead } from "@/redux/service/notification/notificationSlice";
+import { useDispatch } from "react-redux";
 
 interface OrderTableProps {
   orders: Order[];
@@ -31,10 +33,16 @@ const OrderTable: React.FC<OrderTableProps> = ({
 }) => {
   const navigate = useNavigate();
   const totalPages = Math.ceil(totalCount / pageSize);
+  const dispatch = useDispatch();
 
   const handleViewDetail = async (orderId: string) => {
     try {
       await axiosInstance.put(`/api/v1/Order/isRead/${orderId}`);
+      dispatch(
+        notificationMarkedAsRead({
+          id: orderId.toString(),
+        })
+      );
       navigate(`/dashboard/order-detail/${orderId}`);
     } catch (error) {
       console.error("Failed to update isRead:", error);

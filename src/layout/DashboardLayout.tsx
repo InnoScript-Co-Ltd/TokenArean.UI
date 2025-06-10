@@ -5,7 +5,7 @@ import {
   SidebarProvider,
   SidebarTrigger,
 } from "@/components/ui/sidebar";
-import { Link, Outlet } from "react-router-dom";
+import { Outlet } from "react-router-dom";
 import { AppSidebar } from "./components/AppSideBar";
 import { IoIosNotifications } from "react-icons/io";
 import SignalRService from "@/signalR/signalR";
