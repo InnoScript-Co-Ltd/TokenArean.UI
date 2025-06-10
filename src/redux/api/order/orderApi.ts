@@ -3,7 +3,6 @@
 import axiosInstance from "@/constants/axios";
 import {
   CleanOrderRequest,
-  DeleteOrderResponse,
   OrderDetailResponse,
   OrderEntryResponse,
   OrderListResponse,

@@ -216,6 +216,7 @@ const orderSlice = createSlice({
         const deletedId = payload?.payLoad.id;
 
         state.orders = state.orders.filter((o) => o.id !== deletedId);
+        state.totalCount -= 1;
       })
       .addCase(deleteOrder.rejected, (state, { payload }) => {
         state.status = "failed";

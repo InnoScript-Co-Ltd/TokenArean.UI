@@ -12,13 +12,18 @@ import SignalRService from "@/signalR/signalR";
 import { Notification, Order } from "@/constants/config";
 import { orderAdded } from "@/redux/service/order/orderSlice";
 import useNotification from "@/redux/hook/notification/useNotification";
-import { notificationAdded } from "@/redux/service/notification/notificationSlice";
+import {
+  notificationAdded,
+  notificationMarkedAsRead,
+} from "@/redux/service/notification/notificationSlice";
+import axiosInstance from "@/constants/axios";
+import { useNavigate } from "react-router-dom";
 
 const DashboardLayout: React.FC = () => {
   const dispatch = useDispatch();
   const { notifications } = useNotification();
   const [dropdownOpen, setDropdownOpen] = useState(false);
-
+  const navigate = useNavigate();
   useEffect(() => {
     const setupSignalR = async () => {
       try {
@@ -108,30 +113,38 @@ const DashboardLayout: React.FC = () => {
                         className={`border-b last:border-b-0 ${
                           n?.isRead ? "bg-gray-50" : "bg-white"
                         }`}
-                        onClick={() => setDropdownOpen(false)}
+                        onClick={async () => {
+                          setDropdownOpen(false);
+                        }}
                       >
-                        <Link
+                        {/* <Link
                           to={`/dashboard/order-detail/${n?.orderId}`}
                           className="text-sm text-left w-full cursor-pointer hover:text-primary inline-block p-2"
                         >
                           {n.message}
-                        </Link>
-                        {/* <button
+                        </Link> */}
+                        <button
                           onClick={async () => {
                             try {
                               await axiosInstance.put(
                                 `/api/v1/Order/isRead/${n.orderId}`
                               );
+                              dispatch(
+                                notificationMarkedAsRead({
+                                  id: n.orderId.toString(),
+                                })
+                              );
+
                               navigate(`/dashboard/order-detail/${n.orderId}`);
                               setDropdownOpen(false);
                             } catch (error) {
                               console.error("Failed to mark as read", error);
                             }
                           }}
-                          className="text-sm text-left w-full cursor-pointer hover:text-primary"
+                          className="text-sm text-left w-full cursor-pointer hover:text-primary inline-block p-2"
                         >
                           {n.message}
-                        </button> */}
+                        </button>
                       </li>
                     ))}
                   </ul>
