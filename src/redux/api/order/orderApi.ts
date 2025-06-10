@@ -81,8 +81,8 @@ export const fetchCleanOrder = async (
 
 export const fetchDeleteOrder = async (
   id: string
-): Promise<DeleteOrderResponse> => {
-  const response = await axiosInstance.delete<DeleteOrderResponse>(
+): Promise<OrderEntryResponse> => {
+  const response = await axiosInstance.delete<OrderEntryResponse>(
     `/api/v1/Order/${id}`
   );
   return response.data;

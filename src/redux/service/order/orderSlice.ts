@@ -90,13 +90,12 @@ export const cleanOrder = createAsyncThunk<
 });
 
 export const deleteOrder = createAsyncThunk<
-  string,
+  OrderEntryResponse,
   string,
   { rejectValue: string }
 >("order/deleteOrder", async (id, { rejectWithValue }) => {
   try {
-    const res = await fetchDeleteOrder(id);
-    return res.id;
+    return await fetchDeleteOrder(id);
   } catch (err) {
     return rejectWithValue((err as Error).message);
   }
@@ -209,9 +208,11 @@ const orderSlice = createSlice({
         state.status = "loading";
         state.error = null;
       })
-      .addCase(deleteOrder.fulfilled, (state, { payload: id }) => {
+      .addCase(deleteOrder.fulfilled, (state, { payload }) => {
         state.status = "succeeded";
-        state.orders = state.orders.filter((o) => o.id !== id);
+        const deletedId = payload?.payLoad.id;
+
+        state.orders = state.orders.filter((o) => o.id !== deletedId);
       })
       .addCase(deleteOrder.rejected, (state, { payload }) => {
         state.status = "failed";
