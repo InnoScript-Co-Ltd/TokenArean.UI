@@ -131,6 +131,9 @@ const orderSlice = createSlice({
   reducers: {
     clearOrderData: () => initialState,
     orderAdded(state, action: PayloadAction<Order>) {
+      if (!Array.isArray(state.orders)) {
+        state.orders = [];
+      }
       state.orders.unshift(action.payload);
       state.totalCount += 1;
     },
