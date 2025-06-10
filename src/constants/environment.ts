@@ -1,5 +1,5 @@
-// export const BASE_URL = "https://api.lorigamingstore.com";
-export const BASE_URL = "https://localhost:7004";
+export const BASE_URL = "https://api.lorigamingstore.com";
+// export const BASE_URL = "https://localhost:7004";
 
 const environment = {
   API_URL: `${BASE_URL}`,
