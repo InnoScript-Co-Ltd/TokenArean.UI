@@ -40,7 +40,7 @@ const Home = () => {
             } max-w-xl w-full bg-white shadow-lg rounded-lg pointer-events-auto flex ring-1 ring-black ring-opacity-5`}
           >
             <div className="flex-1 w-0 p-4">
-              <div className="flex items-start">
+              <div className="flex items-center">
                 <div className="flex-shrink-0 pt-0.5">
                   <img
                     className="h-10 w-10 rounded-full"
@@ -48,8 +48,8 @@ const Home = () => {
                     alt=""
                   />
                 </div>
-                <div className="ml-3 flex justify-center items-center">
-                  <p className="text-lg font-medium text-primary">{message}</p>
+                <div className="ml-5 flex justify-center items-center">
+                  <p className="text-xl font-medium text-primary">{message}</p>
                 </div>
               </div>
             </div>
