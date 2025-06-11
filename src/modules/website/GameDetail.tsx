@@ -84,6 +84,7 @@ const GameDetail: React.FC = () => {
         });
       }
     } catch (error) {
+      console.log(error);
       // handle error as needed
     } finally {
       setIsSubmitting(false);
